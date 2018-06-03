@@ -7,23 +7,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
-import com.education.shengnongcollege.api.UserApiManager;
-import com.education.shengnongcollege.model.GetCategoryListRespData;
-import com.education.shengnongcollege.model.GetVideoListRespData;
-import com.education.shengnongcollege.model.ListRespObj;
-import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
-
-import java.io.Serializable;
-import java.util.List;
-
-import com.education.shengnongcollege.network.model.ListResponseResult;
-import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
 import com.education.shengnongcollege.play.VodListPlayerActivity;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.tencent.rtmp.TXLiveBase;
+
+import java.io.Serializable;
 
 public class MainActivity extends BaseTopActivity {
 
@@ -33,7 +24,7 @@ public class MainActivity extends BaseTopActivity {
         setContentView(R.layout.activity_main);
 
         String sdkver = TXLiveBase.getSDKVersionStr();
-        Log.d("liteavsdk", "liteav sdk version is : " + sdkver);
+        Log.d("liteavsdk", "c测试一下我上传成功啦liteav sdk version is : " + sdkver);
 
         findViewById(R.id.zhibo_btn).setOnClickListener(new View.OnClickListener() {
             @Override
