@@ -11,16 +11,24 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.adapter.ClassifyGridAdapter;
 import com.education.shengnongcollege.adapter.ClassifyListAdapter;
+import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
+import com.education.shengnongcollege.model.GetVideoListRespData;
+import com.education.shengnongcollege.model.ListRespObj;
+import com.education.shengnongcollege.network.listener.GWResponseListener;
+import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.utils.Ilisten.IListener;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
+import com.education.shengnongcollege.widget.DialogUtil;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -89,12 +97,12 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                relushListView(i);
+                relushListView(i,false);
             }
         });
         ListenerManager.getInstance().registerListtener(this);
     }
-    private void relushListView(int position){
+    private void relushListView(int position,boolean isShow){
         List<GetCategoryListRespData> dataList=listAdapter.getDataList();
         GetCategoryListRespData bean=dataList.get(position);
         for(GetCategoryListRespData data:dataList){
@@ -106,8 +114,14 @@ public class ClassifyFragment extends BaseFragment implements IListener {
             }
         }
         listAdapter.setDataList(dataList);
-        isTopShow=false;
-        mListView.setVisibility(View.GONE);
+        if (isShow){
+            isTopShow=true;
+            mListView.setVisibility(View.VISIBLE);
+        }else {
+            isTopShow=false;
+            mListView.setVisibility(View.GONE);
+        }
+
 
     }
     @Override
@@ -119,8 +133,18 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                 mListView.setAdapter(listAdapter);
             }
             if(TextUtils.equals("ClassifyFragment_itemShow",str)){
-                isTopShow=true;
-                mListView.setVisibility(View.VISIBLE);
+                GetCategoryListRespData bean= (GetCategoryListRespData) object;
+                List<GetCategoryListRespData> dataList=listAdapter.getDataList();
+                int position=0;
+                for(int i=0;i<dataList.size();i++){
+                    if(TextUtils.equals(bean.getId(),dataList.get(i).getId())){
+                        position=i;
+                        break;
+                    }
+                }
+                relushListView(position,true);
+                getVidioListData(bean.getId());
+
             }
         }
     }
@@ -130,5 +154,22 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         super.changeRefreshData();
         isTopShow=false;
         mListView.setVisibility(View.GONE);
+    }
+    private void getVidioListData(String CategoryId){//首页传这个id
+        DialogUtil.getInstance().showProgressDialog(getActivity());
+        LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
+                List<GetVideoListRespData> data=responseResult.getData();
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
+            }
+        }, CategoryId,"",0, 10);
     }
 }
