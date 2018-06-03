@@ -58,11 +58,7 @@
     <color name="c8">#FFFFFF</color>
     <color name="c9">#777777</color>
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="withe">#FFFFFF</color>
-    <color name="black">#000000</color>
     <color name="divide_line">#a4a4a5</color>
     <color name="table_bg">#C9C9C9</color>
     <color name="background_tab_pressed">#6633B5E5</color>
