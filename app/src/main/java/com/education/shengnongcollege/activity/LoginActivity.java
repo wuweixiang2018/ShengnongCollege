@@ -33,7 +33,8 @@ public class LoginActivity extends BaseTopActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -51,12 +52,6 @@ public class LoginActivity extends BaseTopActivity {
         passWord=findViewById(R.id.password_edit_text);
         login=findViewById(R.id.login_btn);
         register=findViewById(R.id.register_tv);
-    }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-        overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
     }
     private void Login(String userName,String passWord){
         DialogUtil.getInstance().showProgressDialog(this);

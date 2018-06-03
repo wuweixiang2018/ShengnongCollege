@@ -20,4 +20,7 @@
     <string name="init_label_regier">注册？</string>
     <string name="init_label_login">登录</string>
     <string name="init_label_pleaslogin">请登录</string>
+    <string name="init_label_getcode">获取短信验证码</string>
+    <string name="init_hint_register_tel">请输入手机号码</string>
+    <string name="init_label_xieyi">我已阅读并同意《神农学院用户注册协议》</string>
 </resources>
