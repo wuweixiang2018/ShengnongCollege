@@ -3,6 +3,7 @@ package com.education.shengnongcollege;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
@@ -11,10 +12,12 @@ import com.education.shengnongcollege.utils.Ilisten.IListener;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.view.CustomViewPager;
 import com.education.shengnongcollege.view.PagerSlidingTabStrip2;
+import com.tencent.rtmp.TXLiveBase;
 
 import java.util.Map;
 
 public class MainActivity extends BaseTopActivity implements IListener {
+
 
     private CustomViewPager viewPager;
     private PagerSlidingTabStrip2 tabLayout;
@@ -27,6 +30,38 @@ public class MainActivity extends BaseTopActivity implements IListener {
 //            @Override
 //            public void onClick(View v) {
 //                Toast.makeText(getApplicationContext(), "点击hello", Toast.LENGTH_SHORT).show();
+        String sdkver = TXLiveBase.getSDKVersionStr();
+        Log.d("liteavsdk", "liteav sdk version is : " + sdkver);
+
+//        findViewById(R.id.zhibo_btn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, LivePlayerActivity.class));
+//            }
+//        });
+//
+//        findViewById(R.id.dianbo_btn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, VodListPlayerActivity.class));
+//            }
+//        });
+//
+//                LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
+//                    @Override
+//                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
+//                        List<GetCategoryListRespData> data = responseResult.getData();
+//                        GetCategoryListRespObj obj = responseResult.getObj();
+//                        Toast.makeText(getApplicationContext(), "分类列表获取成功", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        Toast.makeText(getApplicationContext(), "分类列表获取失败", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, 1, 10);
+
 //                UserApiManager.getUserSign(new GWResponseListener() {
 //                    @Override
 //                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
@@ -60,7 +95,6 @@ public class MainActivity extends BaseTopActivity implements IListener {
         initView();
     }
     private void initView(){
-
         viewPager =findViewById(R.id.viewpager);
         viewPager.setScanScroll(false);
         viewPager.setSmoothScroll(false);

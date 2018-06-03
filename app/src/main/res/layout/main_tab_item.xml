@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    >
+    <View
+        android:id="@+id/tag"
+        android:layout_width="1px"
+        android:layout_height="1dp"
+        android:layout_centerInParent="true"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        >
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:layout_centerHorizontal="true"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/top_num_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_conner_num_bg"
+        android:visibility="gone"
+        android:singleLine="true"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/tag"
+        android:layout_marginLeft="3dp"
+        android:gravity="center"
+        android:minWidth="16dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textColor="@color/withe"
+        android:textSize="12sp"
+        />
+
+    <ImageView
+        android:id="@+id/top_red_doc_iv"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/shape_red_doc"
+        android:layout_marginTop="3dp"
+        android:layout_toRightOf="@+id/tag"
+        android:layout_marginLeft="4dp"
+        android:visibility="gone" />
+</RelativeLayout>
