@@ -58,4 +58,25 @@
     <color name="c8">#FFFFFF</color>
     <color name="c9">#777777</color>
 
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="withe">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="divide_line">#a4a4a5</color>
+    <color name="table_bg">#C9C9C9</color>
+    <color name="background_tab_pressed">#6633B5E5</color>
+    <color name="top_text_bg">#FF9800</color>
+    <color name="top_text_bg_trans">#F2FF9800</color>
+    <color name="main_home_line">#F7F8F9</color>
+    <color name="bg_circle_green">#8DDD78</color>
+    <color name="bg_circle_fense1">#F77E84</color>
+    <color name="bg_circle_fense2">#FD6F9F</color>
+    <color name="bg_circle_blue">#7DB3F9</color>
+    <color name="bg_circle_zifense">#E5A9FB</color>
+    <color name="bg_circle_qingse">#86F0E6</color>
+    <color name="bg_circle_qianlanse">#7ADAFB</color>
+    <color name="bg_circle_zise">#A2B0FF</color>
+    <color name="bg_circle_qianhuang">#F7C031</color>
+
 </resources>

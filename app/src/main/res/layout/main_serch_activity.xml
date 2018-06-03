@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/withe"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/home_serchBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/top_text_bg_trans">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="42dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:padding="7dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_toLeftOf="@+id/home_erweima_iv"
+                    android:background="@drawable/shape_huise_sousuo">
+
+                    <ImageView
+                        android:id="@+id/search_iv"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/search_ico"/>
+                    <EditText
+                        android:id="@+id/search_et"
+                        android:layout_width="match_parent"
+                        android:gravity="left|center"
+                        android:layout_height="match_parent"
+                        android:singleLine="true"
+                        android:textColor="@color/top_text_bg"
+                        android:hint="英语直播"
+                        android:layout_marginLeft="2dp"
+                        android:background="@null"
+                        android:layout_toRightOf="@+id/search_iv"
+                        android:layout_toLeftOf="@+id/search_clear_iv"
+                        android:textSize="15sp" />
+                    <ImageView
+                        android:id="@+id/search_clear_iv"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/serch_clean"/>
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <ListView
+        android:id="@+id/serch_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/divide_line">
+
+    </ListView>
+</LinearLayout>
