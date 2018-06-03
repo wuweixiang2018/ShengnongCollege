@@ -4,7 +4,7 @@ package com.education.shengnongcollege.model;
  * Created by wuweixiang on 18/6/1.
  */
 
-public class GetCategoryListRespObj extends RespObjBase {
+public class ListRespObj extends RespObjBase {
 
 
     /**

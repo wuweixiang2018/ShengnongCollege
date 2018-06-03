@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="10dp">
+
+    <Button
+        android:id="@+id/btnNew"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/new_address"
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/btnNew"
+        android:background="@drawable/qr_code"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/roomid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/btnScan"
+        android:background="@drawable/input_box"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:singleLine="true"
+        android:textColorHint="#3f000000" />
+</RelativeLayout>

@@ -170,7 +170,8 @@ public class NetworkController {
                             @Override
                             public ListResponseResult<D, O> apply(ResponseBody responseBody) throws Exception {
                                 try {
-                                    return GsonUtil.getCommonGson().fromJson(responseBody.string(),
+                                    String response = responseBody.string();
+                                    return GsonUtil.getCommonGson().fromJson(response,
                                             TypeToken.getParameterized(ListResponseResult.class, dClass, oClass).getType());
                                 } catch (IOException e) {
                                     throw new RuntimeException();
