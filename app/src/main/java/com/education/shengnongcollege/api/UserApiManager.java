@@ -19,10 +19,12 @@ public class UserApiManager {
     /**
      * 获取获取云通信票据（签名）
      *
-     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     * @param Identifier 登录手机号
+     * @param listener   参数result的类型是ResponseResult<String,RespObjBase>
      */
-    public static void getUserSign(GWResponseListener listener) {
+    public static void getUserSign(GWResponseListener listener, String Identifier) {
         HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("Identifier", Identifier);
         new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
                 UserApiPath.GET_USER_SIGN_PATH, 0);
     }

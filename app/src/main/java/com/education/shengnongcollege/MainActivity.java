@@ -22,6 +22,7 @@ import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
 import com.education.shengnongcollege.play.VodListPlayerActivity;
 import com.education.shengnongcollege.push.LivePublisherActivity;
+import com.education.shengnongcollege.utils.BaseUtil;
 import com.tencent.rtmp.TXLiveBase;
 
 public class MainActivity extends BaseTopActivity {
@@ -107,38 +108,51 @@ public class MainActivity extends BaseTopActivity {
 //                        ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
 //                        String userSign = responseResult.getData();
 //                        Toast.makeText(getApplicationContext(), "云通信票据获取成功=" + userSign, Toast.LENGTH_SHORT).show();
+//                        UserApiManager.registerUser(new GWResponseListener() {
+//                            @Override
+//                            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//
+//                            }
+//
+//                            @Override
+//                            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//
+//                            }
+//                        }, "13606645039", "13606645039", "780377", "wu19840710", userSign);
 //                    }
 //
 //                    @Override
 //                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
 //                        Toast.makeText(getApplicationContext(), "云通信票据获取失败", Toast.LENGTH_SHORT).show();
 //                    }
-//                });
+//                }, "13606645039");
 
-                UserApiManager.sendSmsVerfyCode(new GWResponseListener() {
-                    @Override
-                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                        ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
-                        Toast.makeText(getApplicationContext(), "发送验证码成功=" + responseResult.getData(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                        Toast.makeText(getApplicationContext(), "发送验证码失败", Toast.LENGTH_SHORT).show();
-                    }
-                }, "13606645039");
-
-//                UserApiManager.registerUser(new GWResponseListener() {
+//                UserApiManager.sendSmsVerfyCode(new GWResponseListener() {
 //                    @Override
 //                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-//
+//                        ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
+//                        Toast.makeText(getApplicationContext(), "发送验证码成功=" + responseResult.getData(), Toast.LENGTH_SHORT).show();
 //                    }
 //
 //                    @Override
 //                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-//
+//                        Toast.makeText(getApplicationContext(), "发送验证码失败", Toast.LENGTH_SHORT).show();
 //                    }
-//                },"13606645039","");
+//                }, "13606645039");
+
+                LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                    }
+
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                    }
+                }, BaseUtil.UserId, "", "");
+
+
             }
         });
     }

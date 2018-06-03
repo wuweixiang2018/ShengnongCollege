@@ -94,12 +94,20 @@ public class CommonGWService {
                 if (queryMap == null) {
                     queryMap = new HashMap<>();
                 }
+
+                Observable<ResponseBody> postObservable;
+                if (bodyMap == null) {
+                    postObservable = commonPTService.postRquest(apiPath, headMap, queryMap);
+                } else {
+                    postObservable = commonPTService.postRquest(apiPath, headMap, queryMap, bodyMap);
+                }
+
                 if (subscriber != null) {
                     return NetworkController.getInstance(MyApp.context)
-                            .gwApiCallGenic(kClass, vClass, subscriber, commonPTService.postRquest(apiPath, headMap, queryMap, bodyMap));
+                            .gwApiCallGenic(kClass, vClass, subscriber, postObservable);
                 } else {
                     return NetworkController.getInstance(MyApp.context)
-                            .gwApiCallGenicList(kClass, vClass, subscriberlist, commonPTService.postRquest(apiPath, headMap, queryMap, bodyMap));
+                            .gwApiCallGenicList(kClass, vClass, subscriberlist, postObservable);
                 }
 
             case PUT:
@@ -109,12 +117,20 @@ public class CommonGWService {
                 if (queryMap == null) {
                     queryMap = new HashMap<>();
                 }
+
+                Observable<ResponseBody> putObservable;
+                if (bodyMap == null) {
+                    putObservable = commonPTService.putRquest(apiPath, headMap, queryMap);
+                } else {
+                    putObservable = commonPTService.putRquest(apiPath, headMap, queryMap, bodyMap);
+                }
+
                 if (subscriber != null) {
                     return NetworkController.getInstance(MyApp.context)
-                            .gwApiCallGenic(kClass, vClass, subscriber, commonPTService.putRquest(apiPath, headMap, queryMap, bodyMap));
+                            .gwApiCallGenic(kClass, vClass, subscriber, putObservable);
                 } else {
                     return NetworkController.getInstance(MyApp.context)
-                            .gwApiCallGenicList(kClass, vClass, subscriberlist, commonPTService.putRquest(apiPath, headMap, queryMap, bodyMap));
+                            .gwApiCallGenicList(kClass, vClass, subscriberlist, putObservable);
                 }
 
             case DELETE:
@@ -140,5 +156,15 @@ public class CommonGWService {
                                            @HeaderMap Map<String, String> headMap,
                                            @QueryMap Map<String, String> querymap,
                                            @Body Map<String, Object> bodyMap);
+
+        @POST
+        Observable<ResponseBody> postRquest(@Url String path,
+                                            @HeaderMap Map<String, String> headMap,
+                                            @QueryMap Map<String, String> querymap);
+
+        @PUT
+        Observable<ResponseBody> putRquest(@Url String path,
+                                           @HeaderMap Map<String, String> headMap,
+                                           @QueryMap Map<String, String> querymap);
     }
 }
