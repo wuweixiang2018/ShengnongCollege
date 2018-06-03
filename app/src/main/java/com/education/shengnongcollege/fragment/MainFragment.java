@@ -2,6 +2,9 @@ package com.education.shengnongcollege.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +15,8 @@ import android.widget.Toast;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
+import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
-import com.education.shengnongcollege.adapter.MainPagerAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
@@ -22,9 +25,10 @@ import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.view.CustomGridView;
 import com.education.shengnongcollege.view.CustomViewPager;
-import com.education.shengnongcollege.view.PagerSlidingTabStrip2;
+import com.education.shengnongcollege.view.PagerSlidingTabStrip;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,8 +43,8 @@ public class MainFragment extends BaseFragment {
     private View mFragmentView;
     private TextView serchBar;
     private CustomViewPager viewPager;
-    private PagerSlidingTabStrip2 tabLayout;
-    private MainPagerAdapter mainPagerAdapter;
+    private HomeTopTabAdapter mHomeAdapter;
+    private PagerSlidingTabStrip tabs;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,9 @@ public class MainFragment extends BaseFragment {
     private void initView(){
         mGridView=mFragmentView.findViewById(R.id.main_gridview);
         serchBar=mFragmentView.findViewById(R.id.search_et);
+        viewPager =mFragmentView.findViewById(R.id.morelist_viewpager);
+        tabs = mFragmentView.findViewById(R.id.morelist_tabs);
+        tabs.setItemResId(R.layout.main_top_tab_item);
     }
     private void getGridData(){
                 LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
@@ -94,6 +101,7 @@ public class MainFragment extends BaseFragment {
                         ListRespObj obj = responseResult.getObj();
                         adapter=new MainCenterAdapter(getActivity(),data);
                         mGridView.setAdapter(adapter);
+                        initToptab(data);
                         ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
                         Toast.makeText(getActivity(), "分类列表获取成功", Toast.LENGTH_SHORT).show();
                     }
@@ -103,6 +111,36 @@ public class MainFragment extends BaseFragment {
                         Toast.makeText(getActivity(), "分类列表获取失败", Toast.LENGTH_SHORT).show();
                     }
                 }, 1, 10);
+    }
+    private void initToptab(final List<GetCategoryListRespData> data){
+        List<String> str = new ArrayList<>();
+        if(data==null||data.size()==0){
+            return;
+        }
+        for(int i=0;i<data.size();i++){
+            str.add(data.get(i).getName());
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        mHomeAdapter = new HomeTopTabAdapter(fragmentManager, str);
+        viewPager.setAdapter(mHomeAdapter);
+        tabs.setmItems(str);
+        tabs.setViewPager(viewPager);
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int arg0) {
+                Log.e("选中状态",data.get(arg0).getName());
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
+        tabs.setScanScroll(true);
+        tabs.setCurrentItem(0);
     }
 
 }
