@@ -45,6 +45,7 @@
                         android:gravity="left|center"
                         android:layout_height="match_parent"
                         android:singleLine="true"
+                        android:imeOptions="actionSearch"
                         android:textColor="@color/top_text_bg"
                         android:hint="英语直播"
                         android:layout_marginLeft="2dp"
@@ -67,11 +68,19 @@
 
         </RelativeLayout>
     </LinearLayout>
-    <ListView
-        android:id="@+id/serch_list"
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/divide_line">
-
-    </ListView>
+        android:background="@android:color/transparent"
+        android:divider="@color/divide_line"
+        android:dividerHeight="1px"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true"
+        android:scrollbars="none"
+        app:ptrMode="pullFromStart"
+        app:ptrScrollingWhileRefreshingEnabled="true" />
 </LinearLayout>

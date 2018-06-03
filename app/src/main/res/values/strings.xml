@@ -3,4 +3,21 @@
     <string name="main_toast_quit_warnning">再按一次退出程序</string>
     <string name="toast_keyword_empty">关键字不能为空</string>
     <string name="util_dialog_loading_please_waiting">正在加载，请稍后...</string>
+
+    <string name="base_text_empty_message">没有符合条件的信息</string>
+    <string name="base_text_pull_up_loading_more">上拉载入更多</string>
+    <string name="base_text_pull_down_refresh">下拉刷新</string>
+    <string name="base_text_release_to_loading_more">松开载入更多</string>
+    <string name="base_text_release_to_refresh">释放刷新</string>
+    <string name="base_text_header_last_time">上次更新时间：</string>
+    <string name="base_label_refreshing_now">正在刷新</string>
+    <string name="base_label_finish">完成</string>
+    <string name="base_label_finished">已完成</string>
+    <string name="base_text_loading">加载中</string>
+    <string name="base_text_loading_more">正在载入</string>
+    <string name="init_hint_username_text">手机号码</string>
+    <string name="init_hint_password_text">密码</string>
+    <string name="init_label_regier">注册？</string>
+    <string name="init_label_login">登录</string>
+    <string name="init_label_pleaslogin">请登录</string>
 </resources>

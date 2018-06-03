@@ -48,4 +48,9 @@
     </style>
 
 
+    <style name="LoadingMoreTextAppearance">
+        <item name="android:textColor">@color/c9</item>
+        <item name="android:textSize">@dimen/text_size_24px</item>
+    </style>
+
 </resources>
