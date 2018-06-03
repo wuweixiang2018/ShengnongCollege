@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:background="@android:color/transparent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="19dip">
+
+    <LinearLayout
+        android:id="@+id/back_ll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="horizontal"
+        android:paddingBottom="5dip"
+        android:paddingLeft="25dip"
+        android:paddingRight="25dip"
+        android:paddingTop="5dip"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_x_back_white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dip"
+        android:background="@drawable/gray_radius_bg"
+        android:paddingRight="6dip"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dip"
+            android:src="@drawable/ic_danmuku_on" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@id/avatar_iv"
+            android:text="橘子"
+            android:textColor="@color/black"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/room_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_tv"
+            android:layout_toRightOf="@id/avatar_iv"
+            android:text="997843475"
+            android:textColor="@color/black"
+            android:textSize="9sp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/danmuku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:src="@drawable/ic_danmuku_off"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/snapshoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:src="@drawable/ic_vod_snapshot_normal"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/menu_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:src="@drawable/ic_vod_more_normal"
+        android:visibility="gone" />
+
+</LinearLayout>
+

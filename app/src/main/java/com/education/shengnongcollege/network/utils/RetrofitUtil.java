@@ -123,7 +123,7 @@ public class RetrofitUtil {
         if (isAddNetworkInterceptor) {
             builder.addNetworkInterceptor(new Interceptor() {
                 @Override
-                public okhttp3.Response intercept(Chain chain) throws IOException {
+                public Response intercept(Chain chain) throws IOException {
                     Request originalRequest = chain.request();
                     Request.Builder build = originalRequest.newBuilder();
                     //原始请求里面可以放入定制的header,比如token

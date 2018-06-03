@@ -6,10 +6,7 @@ import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.network.subscribers.GWApiSubscriber;
 import com.education.shengnongcollege.network.utils.RetrofitUtil;
-import com.google.gson.JsonObject;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +14,6 @@ import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;

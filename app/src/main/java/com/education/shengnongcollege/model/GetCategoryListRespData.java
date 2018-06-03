@@ -18,6 +18,24 @@ public class GetCategoryListRespData extends RespDataBase {
     private String TencentCategoryId;
     private String Name;
     private String CreateTime;
+    private String BgColor;
+    private boolean ischoose=false;
+
+    public boolean ischoose() {
+        return ischoose;
+    }
+
+    public void setIschoose(boolean ischoose) {
+        this.ischoose = ischoose;
+    }
+
+    public String getBgColor() {
+        return BgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        BgColor = bgColor;
+    }
 
     public String getId() {
         return Id;

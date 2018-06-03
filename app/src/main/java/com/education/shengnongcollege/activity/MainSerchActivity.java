@@ -82,6 +82,6 @@ public class MainSerchActivity extends BaseTopActivity {
     @Override
     public void onBackPressed() {
         finish();
-        overridePendingTransition(R.anim.activity_anim_scenic_in, R.anim.activity_anim_scenic_out);
+        overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
     }
 }

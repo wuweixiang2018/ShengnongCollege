@@ -24,6 +24,9 @@
 
     <color name="orange">#ff9800</color>
 
+    <!--红色-->
+    <color name="colorRed">#FF3333</color>
+
     <color name="white">#FFFFFF</color>
 
     <color name="biz_audio_progress_bg">#00b2ff</color>
@@ -69,5 +72,4 @@
     <color name="c7">#000000</color>
     <color name="c8">#FFFFFF</color>
     <color name="c9">#777777</color>
-
 </resources>

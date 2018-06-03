@@ -71,7 +71,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
             public void onClick(View view) {
                 Intent intent=new Intent(getActivity(), MainSerchActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.activity_anim_scenic_in, R.anim.activity_anim_scenic_out);
+                getActivity().overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
             }
         });
         topItem.setOnClickListener(new View.OnClickListener() {

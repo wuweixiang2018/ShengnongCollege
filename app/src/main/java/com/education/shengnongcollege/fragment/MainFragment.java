@@ -15,7 +15,7 @@ import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
-import com.education.shengnongcollege.model.GetCategoryListRespObj;
+import com.education.shengnongcollege.model.ListRespObj;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
@@ -63,7 +63,7 @@ public class MainFragment extends BaseFragment {
             public void onClick(View view) {
                 Intent intent=new Intent(getActivity(), MainSerchActivity.class);
                 startActivity(intent);
-                getActivity().overridePendingTransition(R.anim.activity_anim_scenic_in, R.anim.activity_anim_scenic_out);
+                getActivity().overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
             }
         });
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,9 +83,9 @@ public class MainFragment extends BaseFragment {
                 LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
                     @Override
                     public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                        ListResponseResult<GetCategoryListRespData, GetCategoryListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, GetCategoryListRespObj>) result;
+                        ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
                         List<GetCategoryListRespData> data = responseResult.getData();
-                        GetCategoryListRespObj obj = responseResult.getObj();
+                        ListRespObj obj = responseResult.getObj();
                         adapter=new MainCenterAdapter(getActivity(),data);
                         mGridView.setAdapter(adapter);
                         ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
