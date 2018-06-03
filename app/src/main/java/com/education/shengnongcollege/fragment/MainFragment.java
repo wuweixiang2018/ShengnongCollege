@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
+import com.education.shengnongcollege.activity.TestActivity;
 import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
@@ -71,7 +72,7 @@ public class MainFragment extends BaseFragment {
         serchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), MainSerchActivity.class);
+                Intent intent = new Intent(getActivity(), MainSerchActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
             }
@@ -79,8 +80,16 @@ public class MainFragment extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ListenerManager.getInstance().sendBroadCast("MainActivity_replace","");//先切换
-                ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow","");//展现出来
+                ListenerManager.getInstance().sendBroadCast("MainActivity_replace", "");//先切换
+                ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow", "");//展现出来
+            }
+        });
+
+        //测试代码
+        mFragmentView.findViewById(R.id.layou1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startActivity(new Intent(getActivity(), TestActivity.class));
             }
         });
     }

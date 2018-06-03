@@ -308,12 +308,13 @@ public class NetworkController {
 
         @Override
         public ListResponseResult<D, O> apply(ListResponseResult<D, O> httpResult) throws Exception {
-            if (httpResult.getStatus_code() != 200) {
-                ResponseError error = new ResponseError();
-                error.setCode(httpResult.getStatus_code());
-                error.setMessage(httpResult.getStatus_message());
-                throw new GWApiException(error);
-            }
+//            if (httpResult.getStatus_code() != 200) {
+//                ResponseError error = new ResponseError();
+//                error.setCode(httpResult.getStatus_code());
+//                error.setMessage(httpResult.getStatus_message());
+//                throw new GWApiException(error);
+//            }
+            //
             return httpResult;
         }
     }

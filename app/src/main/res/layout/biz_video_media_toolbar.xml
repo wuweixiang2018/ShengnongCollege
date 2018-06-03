@@ -8,6 +8,67 @@
     android:orientation="horizontal"
     android:paddingTop="19dip">
 
+    <RelativeLayout
+        android:id="@+id/user_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dip"
+        android:layout_marginRight="15dip"
+        android:background="@drawable/gray_radius_bg"
+        android:paddingRight="12dip"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/avatar_iv"
+            android:layout_width="25dip"
+            android:layout_height="25dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="12dip"
+            android:layout_marginRight="12dip"
+            android:src="@drawable/default_avatar" />
+
+        <TextView
+            android:id="@+id/name_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@id/avatar_iv"
+            android:text="橘子"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+        <TextView
+            android:id="@+id/room_num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name_tv"
+            android:layout_toRightOf="@id/avatar_iv"
+            android:text="997843475"
+            android:textColor="@color/white"
+            android:textSize="9sp" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/danmuku"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="20dp"
+        android:gravity="right"
+        android:src="@drawable/ic_danmuku_off"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/back_ll"
         android:layout_width="wrap_content"
@@ -27,64 +88,6 @@
             android:src="@drawable/btn_x_back_white" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/user_rl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dip"
-        android:background="@drawable/gray_radius_bg"
-        android:paddingRight="6dip"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/avatar_iv"
-            android:layout_width="25dip"
-            android:layout_height="25dip"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="8dip"
-            android:src="@drawable/ic_danmuku_on" />
-
-        <TextView
-            android:id="@+id/name_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dip"
-            android:layout_toRightOf="@id/avatar_iv"
-            android:text="橘子"
-            android:textColor="@color/black"
-            android:textSize="9sp" />
-
-        <TextView
-            android:id="@+id/room_num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/name_tv"
-            android:layout_toRightOf="@id/avatar_iv"
-            android:text="997843475"
-            android:textColor="@color/black"
-            android:textSize="9sp" />
-
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/danmuku"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="22dp"
-        android:layout_marginRight="20dp"
-        android:gravity="right"
-        android:src="@drawable/ic_danmuku_off"
-        android:visibility="gone" />
 
     <ImageView
         android:id="@+id/snapshoot"
