@@ -8,6 +8,9 @@
 
     <color name="orange">#ff9800</color>
 
+    <!--红色-->
+    <color name="colorRed">#FF3333</color>
+
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 

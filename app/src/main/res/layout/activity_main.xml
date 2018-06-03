@@ -36,6 +36,13 @@
             android:layout_marginTop="20dip"
             android:text="点播播放器" />
 
+        <Button
+            android:id="@+id/lubo_btn"
+            android:layout_width="120dip"
+            android:layout_height="50dip"
+            android:layout_marginTop="20dip"
+            android:text="录播" />
+
     </LinearLayout>
 
 

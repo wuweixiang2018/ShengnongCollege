@@ -18,6 +18,7 @@ import java.util.List;
 import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
 import com.education.shengnongcollege.play.VodListPlayerActivity;
+import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 public class MainActivity extends BaseTopActivity {
@@ -41,6 +42,13 @@ public class MainActivity extends BaseTopActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, VodListPlayerActivity.class));
+            }
+        });
+
+        findViewById(R.id.lubo_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, LivePublisherActivity.class));
             }
         });
 
