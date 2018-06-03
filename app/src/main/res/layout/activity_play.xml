@@ -293,44 +293,29 @@
 
 
         <RelativeLayout
+            android:id="@+id/top_one_rl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dip"
             android:layout_marginTop="19dip">
 
-            <LinearLayout
-                android:id="@+id/back_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:paddingBottom="5dip"
-                android:paddingLeft="25dip"
-                android:paddingRight="25dip"
-                android:paddingTop="5dip">
-
-                <ImageView
-                    android:id="@+id/back_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/btn_x_back_white" />
-            </LinearLayout>
-
             <RelativeLayout
+                android:id="@+id/user_rl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/back_ll"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip"
                 android:layout_marginRight="15dip"
                 android:background="@drawable/gray_radius_bg"
-                android:paddingRight="6dip">
+                android:paddingRight="12dip">
 
                 <ImageView
                     android:id="@+id/avatar_iv"
                     android:layout_width="25dip"
                     android:layout_height="25dip"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="8dip"
-                    android:src="@drawable/ic_danmuku_on" />
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:src="@drawable/default_avatar" />
 
                 <TextView
                     android:id="@+id/name_tv"
@@ -339,7 +324,7 @@
                     android:layout_marginTop="2dip"
                     android:layout_toRightOf="@id/avatar_iv"
                     android:text="橘子"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="9sp" />
 
                 <TextView
@@ -349,42 +334,39 @@
                     android:layout_below="@id/name_tv"
                     android:layout_toRightOf="@id/avatar_iv"
                     android:text="997843475"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="9sp" />
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/num_tv"
+            <LinearLayout
+                android:id="@+id/back_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dip"
-                android:text="156人"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                android:visibility="visible" />
+                android:orientation="horizontal"
+                android:paddingBottom="5dip"
+                android:paddingLeft="0dip"
+                android:paddingRight="15dip"
+                android:paddingTop="5dip">
+
+                <ImageView
+                    android:id="@+id/back_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_x_back_white" />
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/camera_switch_iv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/num_tv"
-                android:paddingLeft="10dip"
-                android:paddingRight="15dip"
+                android:layout_toLeftOf="@id/back_ll"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
                 android:src="@drawable/camera_switch"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/danmuku_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/camera_switch_iv"
-                android:paddingLeft="10dip"
-                android:src="@drawable/ic_danmuku_off"
                 android:visibility="visible" />
 
             <ImageView
@@ -392,11 +374,37 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/danmuku_iv"
-                android:paddingLeft="10dip"
+                android:layout_toLeftOf="@id/camera_switch_iv"
+                android:paddingLeft="20dip"
                 android:src="@drawable/record"
                 android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/danmuku_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/record_iv"
+                android:paddingLeft="20dip"
+                android:src="@drawable/ic_danmuku_on"
+                android:visibility="visible" />
+
+
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="79dip"
+            android:background="@drawable/gray_radius_bg_small"
+            android:gravity="center"
+            android:text="156人"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="visible" />
 
         <include
             layout="@layout/titlebar_new"

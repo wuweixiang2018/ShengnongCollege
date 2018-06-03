@@ -130,7 +130,7 @@ public class DanmuView extends DanmakuView {
         if (danmaku != null) {
             danmaku.text = content;
             danmaku.padding = 5;
-            danmaku.textSize = DensityUtil.sp2px(mContext, 20.0f);
+            danmaku.textSize = DensityUtil.sp2px(mContext, 10.0f);
             danmaku.textColor = Color.WHITE;
             danmaku.setTime(getCurrentTime());
             if (withBorder) {

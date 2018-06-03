@@ -45,9 +45,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
 import com.education.shengnongcollege.common.widget.BeautySettingPannel;
+import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
+import com.education.shengnongcollege.model.RespObjBase;
+import com.education.shengnongcollege.network.listener.GWResponseListener;
+import com.education.shengnongcollege.network.model.ResponseResult;
+import com.education.shengnongcollege.utils.BaseUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
@@ -59,6 +65,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -145,6 +152,9 @@ public class LivePublisherActivity extends Activity implements View.OnClickListe
     private RotationObserver mRotationObserver = null;
     private boolean mIsLogShow = false;
 
+    //推流地址
+    private String pushUrl;
+
     private Bitmap decodeResource(Resources resources, int id) {
         TypedValue value = new TypedValue();
         resources.openRawResource(id, value);
@@ -195,6 +205,23 @@ public class LivePublisherActivity extends Activity implements View.OnClickListe
         mPhoneListener = new TXPhoneStateListener(mLivePusher);
         TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Service.TELEPHONY_SERVICE);
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+
+        LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase> responseResult = (ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase>) result;
+                GetPushFlowPlayUrlRespData data = responseResult.getData();
+                pushUrl = data.getPushUrl();
+                mRtmpUrlView.setText(pushUrl);
+                startPublishRtmp();
+                findViewById(R.id.record_layout).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+
+            }
+        }, BaseUtil.UserId, "", "");
 
     }
 
@@ -735,14 +762,14 @@ public class LivePublisherActivity extends Activity implements View.OnClickListe
     }
 
     private boolean startPublishRtmp() {
-        String rtmpUrl = "";
-        String inputUrl = mRtmpUrlView.getText().toString();
-        if (!TextUtils.isEmpty(inputUrl)) {
-            String url[] = inputUrl.split("###");
-            if (url.length > 0) {
-                rtmpUrl = url[0];
-            }
-        }
+        String rtmpUrl = pushUrl;
+//        String inputUrl = mRtmpUrlView.getText().toString();
+//        if (!TextUtils.isEmpty(inputUrl)) {
+//            String url[] = inputUrl.split("###");
+//            if (url.length > 0) {
+//                rtmpUrl = url[0];
+//            }
+//        }
 
         if (TextUtils.isEmpty(rtmpUrl) || (!rtmpUrl.trim().toLowerCase().startsWith("rtmp://"))) {
             Toast.makeText(getApplicationContext(), "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();

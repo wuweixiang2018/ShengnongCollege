@@ -53,5 +53,6 @@ public class TCConstants {
 
     // 点播的信息
     public static final String VOD_APPID = "1256468886";
+    //1400093465
     public static final String VOD_APPKEY = "1973fcc2b70445af8b51053d4f9022bb";
 }

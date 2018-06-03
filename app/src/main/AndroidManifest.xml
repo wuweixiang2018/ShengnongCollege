@@ -35,6 +35,10 @@
         <activity android:name=".activity.MainSerchActivity"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".activity.TestActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".play.NewVodPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

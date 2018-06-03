@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
@@ -69,6 +70,11 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
     private Button mBtnRenderRotation;
     private Button mBtnRenderMode;
     private Button mBtnHWDecode;
+
+    /**
+     * 录制
+     */
+    private ImageView recordIV;
 
     private static final int CACHE_STRATEGY_FAST = 1;  //极速
     private static final int CACHE_STRATEGY_SMOOTH = 2;  //流畅
@@ -233,6 +239,15 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
                 } else {
                     mIsPlaying = startPlay();
                 }
+            }
+        });
+
+        recordIV = findViewById(R.id.record_iv);
+        recordIV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent data = new Intent(LivePlayerActivity.this, LivePublisherActivity.class);
+                startActivity(data);
             }
         });
 
