@@ -1,5 +1,7 @@
 package com.education.shengnongcollege.api;
 
+import com.education.shengnongcollege.model.LoginRespData;
+import com.education.shengnongcollege.model.LoginRespObj;
 import com.education.shengnongcollege.model.RegisterRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
@@ -57,6 +59,15 @@ public class UserApiManager {
         bodyMap.put("UserSig", UserSig);
         new GWApiPresent(listener).commonPost(bodyMap, RegisterRespData.class, RespObjBase.class,
                 UserApiPath.REGISTER_PATH, 0);
+
+    }
+
+    public static void login(GWResponseListener listener, String Mobile, String Password) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("Mobile", Mobile);
+        bodyMap.put("Password", Password);
+        new GWApiPresent(listener).commonPost(bodyMap, LoginRespData.class, LoginRespObj.class,
+                UserApiPath.LOGIN_PATH, 0);
 
     }
 

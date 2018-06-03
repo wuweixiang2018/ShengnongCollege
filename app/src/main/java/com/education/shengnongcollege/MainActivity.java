@@ -7,15 +7,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
+import com.education.shengnongcollege.api.UserApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
+import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 
 import java.io.Serializable;
 import java.util.List;
 
 import com.education.shengnongcollege.network.model.ListResponseResult;
+import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
 import com.education.shengnongcollege.play.VodListPlayerActivity;
 import com.education.shengnongcollege.push.LivePublisherActivity;
@@ -56,31 +59,33 @@ public class MainActivity extends BaseTopActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "点击hello", Toast.LENGTH_SHORT).show();
-                LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
-                    @Override
-                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                        ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
-                        List<GetVideoListRespData> data = responseResult.getData();
-                        if (data != null && data.size() > 1)
-                            LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
-                                @Override
-                                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                                    Toast.makeText(getApplicationContext(), "视频详情获取成功", Toast.LENGTH_SHORT).show();
-                                }
 
-                                @Override
-                                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                                    Toast.makeText(getApplicationContext(), "视频详情获取失败", Toast.LENGTH_SHORT).show();
-                                }
-                            }, "1");
-                        Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
-                    }
+//                LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
+//                    @Override
+//                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
+//                        List<GetVideoListRespData> data = responseResult.getData();
+//                        if (data != null && data.size() > 1)
+//                            LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
+//                                @Override
+//                                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                                    Toast.makeText(getApplicationContext(), "视频详情获取成功", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                @Override
+//                                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                                    Toast.makeText(getApplicationContext(), "视频详情获取失败", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }, "1");
+//                        Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, null, null, 0, 10);
 
-                    @Override
-                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                        Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
-                    }
-                }, null, null, 0, 10);
 //                LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
 //                    @Override
 //                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
@@ -110,18 +115,30 @@ public class MainActivity extends BaseTopActivity {
 //                    }
 //                });
 
-//                UserApiManager.sendSmsVerfyCode(new GWResponseListener() {
+                UserApiManager.sendSmsVerfyCode(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                        ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
+                        Toast.makeText(getApplicationContext(), "发送验证码成功=" + responseResult.getData(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                        Toast.makeText(getApplicationContext(), "发送验证码失败", Toast.LENGTH_SHORT).show();
+                    }
+                }, "13606645039");
+
+//                UserApiManager.registerUser(new GWResponseListener() {
 //                    @Override
 //                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-//                        ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
-//                        Toast.makeText(getApplicationContext(), "发送验证码成功=" + responseResult.getData(), Toast.LENGTH_SHORT).show();
+//
 //                    }
 //
 //                    @Override
 //                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-//                        Toast.makeText(getApplicationContext(), "发送验证码失败", Toast.LENGTH_SHORT).show();
+//
 //                    }
-//                }, "13606645039");
+//                },"13606645039","");
             }
         });
     }

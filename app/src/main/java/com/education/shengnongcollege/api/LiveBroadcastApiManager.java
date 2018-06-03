@@ -3,6 +3,7 @@ package com.education.shengnongcollege.api;
 import android.text.TextUtils;
 
 import com.education.shengnongcollege.model.GetCategoryListRespData;
+import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
 import com.education.shengnongcollege.model.RespDataBase;
@@ -91,5 +92,22 @@ public class LiveBroadcastApiManager {
         new GWApiPresent(listener).commonListPost(bodyMap, RespDataBase.class,
                 RespObjBase.class,
                 LiveBroadcastApiPath.GET_VIDEO_DETAIL_PATH, 0);
+    }
+
+    public static void getPushFlowPlayUrl(GWResponseListener listener, String UserId, String Title,
+                                          String CoverPhotoUrl) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        if (!TextUtils.isEmpty(UserId)) {
+            bodyMap.put("UserId", UserId);
+        }
+        if (!TextUtils.isEmpty(Title)) {
+            bodyMap.put("Title", Title);
+        }
+        if (!TextUtils.isEmpty(CoverPhotoUrl)) {
+            bodyMap.put("CoverPhotoUrl", CoverPhotoUrl);
+        }
+        new GWApiPresent(listener).commonPost(bodyMap, GetPushFlowPlayUrlRespData.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.GET_PUSH_FLOW_PLAYURL_PATH, 0);
     }
 }

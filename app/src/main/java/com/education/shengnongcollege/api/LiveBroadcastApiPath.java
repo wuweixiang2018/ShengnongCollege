@@ -15,4 +15,6 @@ public class LiveBroadcastApiPath {
     public static final String GET_VIDEO_LIST_PATH = "/api/livebroadcast/getvideolist";
     //获取视频详情
     public static final String GET_VIDEO_DETAIL_PATH = "/api/livebroadcast/getvideodetail";
+    //获取推流地址(请求开播，并创建房间)
+    public static final String GET_PUSH_FLOW_PLAYURL_PATH = "/api/livebroadcast/getpushflowplayurl";
 }
