@@ -211,7 +211,8 @@ public class RegisterActivity extends BaseTopActivity {
 
                                 @Override
                                 public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-
+                                    DialogUtil.getInstance().cancelProgressDialog();
+                                    Toast.makeText(getApplicationContext(), "登录用户失败", Toast.LENGTH_SHORT).show();
                                 }
                             }, telEdit.getText().toString(), passWordSet.getText().toString());
                         }
@@ -220,13 +221,15 @@ public class RegisterActivity extends BaseTopActivity {
 
                     @Override
                     public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-
+                        DialogUtil.getInstance().cancelProgressDialog();
+                        Toast.makeText(getApplicationContext(), "注册用户失败", Toast.LENGTH_SHORT).show();
                     }
                 }, telEdit.getText().toString(), telEdit.getText().toString(), TelVerCode, passWordSet.getText().toString(), userSign);
             }
 
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
                 Toast.makeText(getApplicationContext(), "云通信票据获取失败", Toast.LENGTH_SHORT).show();
             }
         }, telEdit.getText().toString());
