@@ -6,11 +6,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseTopActivity;
-import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.api.UserApiManager;
+import com.education.shengnongcollege.model.LoginRespData;
+import com.education.shengnongcollege.model.RespObjBase;
+import com.education.shengnongcollege.network.listener.GWResponseListener;
+import com.education.shengnongcollege.network.model.ResponseResult;
+import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.widget.DialogUtil;
+
+import java.io.Serializable;
 
 public class LoginActivity extends BaseTopActivity {
     private EditText userName,passWord;
@@ -35,14 +44,13 @@ public class LoginActivity extends BaseTopActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
+                Login(userName.getText().toString(),passWord.getText().toString());
             }
         });
     }
@@ -55,5 +63,24 @@ public class LoginActivity extends BaseTopActivity {
     }
     private void Login(String userName,String passWord){
         DialogUtil.getInstance().showProgressDialog(this);
+        UserApiManager.login(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
+                LoginRespData data = responseResult.getData();
+                BaseUtil.UserId=data.getUserId();
+                BaseUtil.Online=data.getOnline();
+                finish();
+                ListenerManager.getInstance().sendBroadCast("MineFragmentReflush","");//通知分类页面也加载页面
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_SHORT).show();
+
+            }
+        }, userName, passWord);
     }
 }

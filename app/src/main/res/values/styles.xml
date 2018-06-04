@@ -52,5 +52,14 @@
         <item name="android:textColor">@color/c9</item>
         <item name="android:textSize">@dimen/text_size_24px</item>
     </style>
-
+    <style name="textview_style">
+        <item name="android:layout_height">41dp</item>
+        <item name="android:layout_width">41dp</item>
+        <item name="android:background">@drawable/shape_wihte_code</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

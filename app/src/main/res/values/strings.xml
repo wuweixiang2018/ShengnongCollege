@@ -3,7 +3,7 @@
     <string name="main_toast_quit_warnning">再按一次退出程序</string>
     <string name="toast_keyword_empty">关键字不能为空</string>
     <string name="util_dialog_loading_please_waiting">正在加载，请稍后...</string>
-
+    <!--刷新框架的-->
     <string name="base_text_empty_message">没有符合条件的信息</string>
     <string name="base_text_pull_up_loading_more">上拉载入更多</string>
     <string name="base_text_pull_down_refresh">下拉刷新</string>
@@ -15,12 +15,23 @@
     <string name="base_label_finished">已完成</string>
     <string name="base_text_loading">加载中</string>
     <string name="base_text_loading_more">正在载入</string>
+    <!--登录和注册页面-->
     <string name="init_hint_username_text">手机号码</string>
     <string name="init_hint_password_text">密码</string>
     <string name="init_label_regier">注册？</string>
     <string name="init_label_login">登录</string>
+    <string name="init_label_login_out">退出登录</string>
     <string name="init_label_pleaslogin">请登录</string>
     <string name="init_label_getcode">获取短信验证码</string>
     <string name="init_hint_register_tel">请输入手机号码</string>
     <string name="init_label_xieyi">我已阅读并同意《神农学院用户注册协议》</string>
+    <string name="init_hint_register_sure">确定</string>
+    <!--我的页面-->
+    <string name="mine_label_title">我的</string>
+    <string name="init_label_loginorregister">登录/注册</string>
+    <string name="mine_label_wsgrxx">完善个人信息</string>
+    <string name="mine_label_xgmm">修改密码</string>
+    <string name="mine_label_yjfk">意见反馈</string>
+    <string name="mine_label_aboutme">关于我们</string>
+
 </resources>

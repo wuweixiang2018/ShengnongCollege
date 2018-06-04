@@ -75,5 +75,5 @@
     <color name="bg_circle_zise">#A2B0FF</color>
     <color name="bg_circle_qianhuang">#F7C031</color>
     <color name="transparent">#00000000</color>
-
+    <color name="translucent_white">#61FFFFFF</color>
 </resources>

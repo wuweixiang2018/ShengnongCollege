@@ -4,6 +4,7 @@ import com.education.shengnongcollege.model.LoginRespData;
 import com.education.shengnongcollege.model.LoginRespObj;
 import com.education.shengnongcollege.model.RegisterRespData;
 import com.education.shengnongcollege.model.RespObjBase;
+import com.education.shengnongcollege.model.UserInfoRespData;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.present.GWApiPresent;
 
@@ -70,6 +71,41 @@ public class UserApiManager {
         bodyMap.put("Password", Password);
         new GWApiPresent(listener).commonPost(bodyMap, LoginRespData.class, LoginRespObj.class,
                 UserApiPath.LOGIN_PATH, 0);
+
+    }
+    /**
+     * 获取个人信息
+     *
+     * @param listener 参数result的类型是ResponseResult<UserInfoRespData,RespObjBase>
+     */
+    public static void getUserInfoById(GWResponseListener listener, String UserId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, UserInfoRespData.class, RespObjBase.class,
+                UserApiPath.GET_USERINFO, 0);
+
+    }
+    /**
+     * 退出登录
+     *
+     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     */
+    public static void exitLogin(GWResponseListener listener, String UserId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.EXIT_LOGIN, 0);
+    }
+    /**
+     * 获取用户登录状态
+     *
+     * @param listener 参数result的类型是ResponseResult<LoginRespData,RespObjBase>
+     */
+    public static void loginState(GWResponseListener listener, String UserId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, LoginRespData.class, LoginRespObj.class,
+                UserApiPath.LOGIN_STATE, 0);
 
     }
 

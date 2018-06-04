@@ -107,7 +107,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:textSize="14sp"
+            android:textSize="@dimen/sub_content"
             />
 
         <Button
