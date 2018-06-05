@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +40,10 @@ public class LoginActivity extends BaseTopActivity {
     }
 
     private void initData() {
-
+        //存的id不为空的时候自动登录一下
+        if (!TextUtils.isEmpty(BaseUtil.UserId)) {
+            getUserLoginState();
+        }
     }
 
     private void initListener() {
@@ -95,6 +99,29 @@ public class LoginActivity extends BaseTopActivity {
         }, userName, passWord);
     }
 
+    //获取用户登录状态
+    private void getUserLoginState(){
+        DialogUtil.getInstance().showProgressDialog(this);
+        UserApiManager.loginState(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                Log.e("获取用户登录状态返回","");
+                DialogUtil.getInstance().cancelProgressDialog();
+                ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
+                LoginRespData data = responseResult.getData();
+                BaseUtil.UserId=data.getUserId();
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                Toast.makeText(LoginActivity.this,"获取用户登录状态失败",Toast.LENGTH_SHORT).show();
+                BaseUtil.UserId="";
+            }
+        }, BaseUtil.UserId);
+    }
     @Override
     public void onBackPressed() {
         finishAll();

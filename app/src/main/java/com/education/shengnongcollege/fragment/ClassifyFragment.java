@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
-import com.education.shengnongcollege.adapter.ClassifyGridAdapter;
 import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.ClassifyListAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
@@ -47,13 +46,12 @@ public class ClassifyFragment extends BaseFragment implements IListener {
     private TextView serchBar;
     private ListView mListView;
     private PullToRefreshGridView mGridView;
-    private ClassifyGridAdapter gridAdapter;
     private ClassifyListAdapter listAdapter;
     private ImageView topItem;
     private boolean isTopShow=false;//决定list列表展现出来没有
     private int pageindex = 0;
     private String CategoryId="";//当前页面的唯一id  什么都不传 就是查全部
-    private ClassifyGridViewAdapter gridViewAdapter;
+    private ClassifyGridViewAdapter gridAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +75,9 @@ public class ClassifyFragment extends BaseFragment implements IListener {
     }
 
     private void initData() {
-        gridViewAdapter = new ClassifyGridViewAdapter(getActivity(), videoListRespData);
-        mGridView.setAdapter(gridViewAdapter);
+        gridAdapter = new ClassifyGridViewAdapter(getActivity(), videoListRespData);
+        mGridView.setAdapter(gridAdapter);
+        getGridData();
     }
 
     private void initView() {
@@ -159,6 +158,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         if (isShow){
             isTopShow=true;
             mListView.setVisibility(View.VISIBLE);
+            mListView.setSelection(position);
         }else {
             isTopShow=false;
             mListView.setVisibility(View.GONE);
@@ -172,19 +172,6 @@ public class ClassifyFragment extends BaseFragment implements IListener {
     @Override
     public void notifyAllActivity(String str, Object object) {
         if(getActivity()!=null){
-            if(TextUtils.equals("ClassifyFragment",str)){
-                List<GetCategoryListRespData> dataList= (List<GetCategoryListRespData>) object;
-                GetCategoryListRespData data=new GetCategoryListRespData();
-                data.setIschoose(true);
-                data.setName("全部");
-                data.setId("");
-                dataList.add(0,data);
-                listAdapter=new ClassifyListAdapter(getActivity(),dataList);
-                mListView.setAdapter(listAdapter);
-                pageindex=0;
-                CategoryId=dataList.get(0).getId();
-                getVidioListData();
-            }
             if(TextUtils.equals("ClassifyFragment_itemShow",str)){
                 GetCategoryListRespData bean= (GetCategoryListRespData) object;
                 List<GetCategoryListRespData> dataList=listAdapter.getDataList();
@@ -230,7 +217,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                             Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    gridViewAdapter.notifyDataSetChanged();
+                    gridAdapter.notifyDataSetChanged();
                 }else {
                     Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
                 }
@@ -242,5 +229,30 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                 Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
             }
         }, CategoryId,"",pageindex, 10);
+    }
+    //获取分类列表
+    private void getGridData(){
+        LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
+                List<GetCategoryListRespData> dataList = responseResult.getData();
+                GetCategoryListRespData data1=new GetCategoryListRespData();
+                data1.setIschoose(true);
+                data1.setName("全部");
+                data1.setId("");
+                dataList.add(0,data1);
+                listAdapter=new ClassifyListAdapter(getActivity(),dataList);
+                mListView.setAdapter(listAdapter);
+                pageindex=0;
+                CategoryId=dataList.get(0).getId();
+                getVidioListData();
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                Toast.makeText(getActivity(), "分类列表获取失败", Toast.LENGTH_SHORT).show();
+            }
+        }, 1, 10);
     }
 }

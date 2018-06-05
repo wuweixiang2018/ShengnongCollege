@@ -124,8 +124,7 @@ public class MainFragment extends BaseFragment {
                         adapter=new MainCenterAdapter(getActivity(),data);
                         mGridView.setAdapter(adapter);
                         initToptab(data);
-                        ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
-                        Toast.makeText(getActivity(), "分类列表获取成功", Toast.LENGTH_SHORT).show();
+                        //ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
                     }
 
                     @Override

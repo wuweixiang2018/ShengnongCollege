@@ -141,27 +141,6 @@ public class MineFragment extends BaseFragment{
             }
         });
     }
-    //获取用户登录状态
-//    private void getUserLoginState(){
-//        UserApiManager.loginState(new GWResponseListener() {
-//            @Override
-//            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-//                Log.e("获取用户登录状态返回","");
-//                ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
-//                LoginRespData data = responseResult.getData();
-//                BaseUtil.UserId=data.getUserId();
-//                BaseUtil.Online=data.getOnline();
-//                exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
-//                registerTv.setVisibility(View.INVISIBLE);//登录按钮隐藏起来
-//            }
-//            @Override
-//            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-//                Toast.makeText(getActivity(),"获取用户登录状态失败",Toast.LENGTH_SHORT).show();
-//                BaseUtil.UserId="";
-//                BaseUtil.Online=0;
-//            }
-//        }, BaseUtil.UserId);
-//    }
     //获取个人信息
     private void getUserInfoById(){
         UserApiManager.getUserInfoById(new GWResponseListener() {
