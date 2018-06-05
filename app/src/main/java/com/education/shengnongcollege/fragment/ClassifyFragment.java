@@ -17,6 +17,7 @@ import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.adapter.ClassifyGridAdapter;
+import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.ClassifyListAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
@@ -27,8 +28,11 @@ import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.utils.Ilisten.IListener;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.widget.DialogUtil;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,11 +46,14 @@ public class ClassifyFragment extends BaseFragment implements IListener {
     private View mFragmentView;
     private TextView serchBar;
     private ListView mListView;
-    private GridView mGridView;
+    private PullToRefreshGridView mGridView;
     private ClassifyGridAdapter gridAdapter;
     private ClassifyListAdapter listAdapter;
     private ImageView topItem;
     private boolean isTopShow=false;//决定list列表展现出来没有
+    private int pageindex = 0;
+    private String CategoryId="";//当前页面的唯一id  什么都不传 就是查全部
+    private ClassifyGridViewAdapter gridViewAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,14 +71,22 @@ public class ClassifyFragment extends BaseFragment implements IListener {
             mFragmentView = inflater.inflate(R.layout.activity_classify_view, container, false);
             initView();
             initListener();
+            initData();
         }
         return mFragmentView;
     }
+
+    private void initData() {
+        gridViewAdapter = new ClassifyGridViewAdapter(getActivity(), videoListRespData);
+        mGridView.setAdapter(gridViewAdapter);
+    }
+
     private void initView() {
         serchBar=mFragmentView.findViewById(R.id.search_et);
         topItem=mFragmentView.findViewById(R.id.imageView_item);
         mGridView=mFragmentView.findViewById(R.id.classify_main_gridview);
         mListView=mFragmentView.findViewById(R.id.classify_main_listview);
+        mGridView.setMode(PullToRefreshBase.Mode.BOTH);//能下拉刷新和上拉加载
     }
     private void initListener() {
         serchBar.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +115,33 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                 relushListView(i,false);
             }
         });
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //在这里执行PullToRefreshGridView的点击item后要做的事
+            }
+        });
+        mGridView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener2<GridView>(){
+            @Override
+            public void onPullDownToRefresh(
+                    PullToRefreshBase<GridView> refreshView)
+            {
+//                 Log.e("TAG", "onPullDownToRefresh");//下拉刷新
+                pageindex = 0;
+                getVidioListData();
+            }
+
+            @Override
+            public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView)
+            {
+//                   Log.e("TAG", "onPullUpToRefresh"); // 上拉加载
+                pageindex++;
+                getVidioListData();
+
+            }
+        });
         ListenerManager.getInstance().registerListtener(this);
     }
     private void relushListView(int position,boolean isShow){
@@ -120,6 +162,9 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         }else {
             isTopShow=false;
             mListView.setVisibility(View.GONE);
+            pageindex=0;
+            CategoryId=bean.getId();
+            getVidioListData();
         }
 
 
@@ -129,8 +174,16 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         if(getActivity()!=null){
             if(TextUtils.equals("ClassifyFragment",str)){
                 List<GetCategoryListRespData> dataList= (List<GetCategoryListRespData>) object;
+                GetCategoryListRespData data=new GetCategoryListRespData();
+                data.setIschoose(true);
+                data.setName("全部");
+                data.setId("");
+                dataList.add(0,data);
                 listAdapter=new ClassifyListAdapter(getActivity(),dataList);
                 mListView.setAdapter(listAdapter);
+                pageindex=0;
+                CategoryId=dataList.get(0).getId();
+                getVidioListData();
             }
             if(TextUtils.equals("ClassifyFragment_itemShow",str)){
                 GetCategoryListRespData bean= (GetCategoryListRespData) object;
@@ -143,7 +196,9 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                     }
                 }
                 relushListView(position,true);
-                getVidioListData(bean.getId());
+                pageindex=0;
+                CategoryId=bean.getId();
+                getVidioListData();
 
             }
         }
@@ -155,7 +210,8 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         isTopShow=false;
         mListView.setVisibility(View.GONE);
     }
-    private void getVidioListData(String CategoryId){//首页传这个id
+    private List<GetVideoListRespData> videoListRespData=new ArrayList<>();
+    private void getVidioListData(){//首页传这个id
         DialogUtil.getInstance().showProgressDialog(getActivity());
         LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
             @Override
@@ -163,6 +219,21 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                 DialogUtil.getInstance().cancelProgressDialog();
                 ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
                 List<GetVideoListRespData> data=responseResult.getData();
+                if(pageindex==0){
+                    videoListRespData.clear();
+                }
+                if(data!=null){
+                    videoListRespData.addAll(data);
+                    if(data.size()<10){
+                        mGridView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                        if(data.size()==0){
+                            Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    gridViewAdapter.notifyDataSetChanged();
+                }else {
+                    Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -170,6 +241,6 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                 DialogUtil.getInstance().cancelProgressDialog();
                 Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
             }
-        }, CategoryId,"",0, 10);
+        }, CategoryId,"",pageindex, 10);
     }
 }

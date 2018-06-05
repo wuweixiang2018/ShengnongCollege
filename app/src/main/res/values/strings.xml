@@ -42,4 +42,20 @@
     <string name="wsgrxx_label_Mobile">电话号码：+86</string>
     <string name="wsgrxx_label_IDCard">身份证号码</string>
 
+    <!--关于我们页面-->
+    <string name="aboutme_label_title">关于我们</string>
+    <string name="aboutme_label_title1">软件开发商：山西米力信息技术有限公司</string>
+    <string name="aboutme_label_title2">地址：山西省高平市电子商务产业园</string>
+    <string name="aboutme_label_title3">联系方式：17803565206</string>
+
+    <!--意见反馈页面-->
+    <string name="feedback_label_title">意见反馈</string>
+    <string name="feedback_label_tips">请输入不少于10个字的描述...</string>
+    <string name="feedback_label_sure">提交</string>
+    <!--修改密码页面-->
+    <string name="updatepass_label_title">修改密码</string>
+    <string name="updatepass_label_code">短信验证码</string>
+    <string name="updatepass_label_newpass">设置新密码</string>
+    <string name="updatepass_label_getcode">获取验证码</string>
+
 </resources>

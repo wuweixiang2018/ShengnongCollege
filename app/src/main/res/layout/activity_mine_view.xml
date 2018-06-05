@@ -147,7 +147,6 @@
         android:layout_marginLeft="32dp"
         android:layout_marginRight="32dp"
         android:layout_marginTop="50dp"
-        android:visibility="invisible"
         android:gravity="center"
         android:background="@drawable/log_btn_pre"
         android:textSize="18sp"

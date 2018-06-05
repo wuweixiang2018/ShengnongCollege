@@ -1,5 +1,7 @@
 package com.education.shengnongcollege.utils;
 
+import com.education.shengnongcollege.model.UserInfoRespData;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class BaseUtil {
     public static String UserId = "108fddbd-cc72-4471-81b9-7391d61943e0";
-    public static int Online = 0;//登录状态
+    public static UserInfoRespData userData;//用户的所有信息
     /**
      * 国家号码段分配如下：
      *

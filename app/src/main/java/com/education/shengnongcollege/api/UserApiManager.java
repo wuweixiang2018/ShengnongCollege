@@ -41,6 +41,17 @@ public class UserApiManager {
         new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
                 UserApiPath.SEND_SMS_VERIFY_CODE_PATH, 0);
     }
+    /**
+     * 发送修改密码短信验证码
+     *
+     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     */
+    public static void sendmodifypwdvcode(GWResponseListener listener, String Tel) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("Tel", Tel);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.SEND_UPDATEPASS_SMS_VERIFY_CODE_PATH, 0);
+    }
 
     /**
      * 用户注册，参数含义详见接口文档
@@ -135,7 +146,26 @@ public class UserApiManager {
         new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
                 UserApiPath.WANSHAN_USERINFO, 0);
     }
+    /**
+     * 修改密码，参数含义详见接口文档
+     *
+     * @param listener   参数result的类型是ResponseResult<RegisterRespData,RespObjBase>  跟注册一样的返回参数
+     * @param UserId
+     * @param Mobile
+     * @param NewPassword
+     * @param VerificationCode    验证码
+     */
+    public static void modifypassword(GWResponseListener listener, String UserId, String Mobile,
+                                    String VerificationCode, String NewPassword) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        bodyMap.put("Mobile", Mobile);
+        bodyMap.put("VerificationCode", VerificationCode);
+        bodyMap.put("NewPassword", NewPassword);
+        new GWApiPresent(listener).commonPost(bodyMap, RegisterRespData.class, RespObjBase.class,
+                UserApiPath.MODIFYPASSWORD, 0);
 
+    }
 //    public static void feedback(GWResponseListener listener, String Tel) {
 //        HashMap<String, Object> bodyMap = new HashMap<>();
 //        bodyMap.put("Tel", Tel);

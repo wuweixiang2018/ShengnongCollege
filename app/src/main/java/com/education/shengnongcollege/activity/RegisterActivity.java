@@ -196,6 +196,7 @@ public class RegisterActivity extends BaseTopActivity {
                     public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                         ResponseResult<RegisterRespData, RespObjBase> responseResult = (ResponseResult<RegisterRespData, RespObjBase>) result;
                         RegisterRespData data = responseResult.getData();
+                        Toast.makeText(getApplicationContext(), "注册用户成功", Toast.LENGTH_SHORT).show();
                         if(data!=null&&!TextUtils.isEmpty(data.getUserId())){//判断数据不为空 userid不为空 那就是注册成功
                             //注册成功了 虽然字段都有 为确保万一 还是进行一遍登录
                             UserApiManager.login(new GWResponseListener() {
@@ -205,7 +206,6 @@ public class RegisterActivity extends BaseTopActivity {
                                     ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
                                     LoginRespData data = responseResult.getData();
                                     BaseUtil.UserId=data.getUserId();
-                                    BaseUtil.Online=data.getOnline();
                                     Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     if(LoginActivity.loginThis!=null){
@@ -217,7 +217,8 @@ public class RegisterActivity extends BaseTopActivity {
                                 @Override
                                 public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
                                     DialogUtil.getInstance().cancelProgressDialog();
-                                    Toast.makeText(getApplicationContext(), "登录用户失败", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "自动登录用户失败", Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }
                             }, telEdit.getText().toString(), passWordSet.getText().toString());
                         }

@@ -112,6 +112,34 @@ public class PerfectinfoActivity extends BaseTopActivity implements DatePicker.O
                 Birthday=birThDay.getText().toString();
                 Mobile=mobile.getText().toString();
                 IDCard=idCard.getText().toString();
+                if(TextUtils.isEmpty(UserName)){
+                    Toast.makeText(PerfectinfoActivity.this,"姓名必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(NickName)){
+                    Toast.makeText(PerfectinfoActivity.this,"昵称必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(Gender)){
+                    Toast.makeText(PerfectinfoActivity.this,"性别必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(Birthday)){
+                    Toast.makeText(PerfectinfoActivity.this,"生日必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(Mobile)){
+                    Toast.makeText(PerfectinfoActivity.this,"手机号必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(IDCard)){
+                    Toast.makeText(PerfectinfoActivity.this,"身份证必填",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(PhotoGraph)){
+                    Toast.makeText(PerfectinfoActivity.this,"请上传图片",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 perFectinfoData();
             }
         });

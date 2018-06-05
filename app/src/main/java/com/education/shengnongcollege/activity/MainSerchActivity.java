@@ -142,28 +142,30 @@ public class MainSerchActivity extends BaseTopActivity {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 DialogUtil.getInstance().cancelProgressDialog();
+                mListView.onRefreshComplete();
                 ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
                 List<GetVideoListRespData> data=responseResult.getData();
-                if(start==1){
+                if(start==0){
                     videoListRespData.clear();
                 }
-                videoListRespData.addAll(data);
                 if(data!=null){
+                    videoListRespData.addAll(data);
                     if(data.size()<10){
                         mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                         if(data.size()==0){
                             Toast.makeText(MainSerchActivity.this, "搜索无结果", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    serchListAdapter.notifyDataSetChanged();
                 }else {
                     Toast.makeText(MainSerchActivity.this, "搜索无结果", Toast.LENGTH_SHORT).show();
                 }
-                serchListAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
                 DialogUtil.getInstance().cancelProgressDialog();
+                mListView.onRefreshComplete();
                 Toast.makeText(MainSerchActivity.this, "分类列表获取失败", Toast.LENGTH_SHORT).show();
             }
         }, "",title,start, 10);

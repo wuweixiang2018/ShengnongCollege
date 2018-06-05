@@ -16,8 +16,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.activity.AboutMeActivity;
+import com.education.shengnongcollege.activity.FeedBackActivity;
 import com.education.shengnongcollege.activity.LoginActivity;
 import com.education.shengnongcollege.activity.PerfectinfoActivity;
+import com.education.shengnongcollege.activity.UpdatePassActivity;
 import com.education.shengnongcollege.api.UserApiManager;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.model.UserInfoRespData;
@@ -110,20 +113,24 @@ public class MineFragment extends BaseFragment{
             @Override
             public void onClick(View view) {
 
+                Intent intent=new Intent(getActivity(), UpdatePassActivity.class);
+                startActivity(intent);
             }
         });
         //意见反馈
         yjfkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(getActivity(), FeedBackActivity.class);
+                startActivity(intent);
             }
         });
         //关于我们
         aboutMeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(getActivity(), AboutMeActivity.class);
+                startActivity(intent);
             }
         });
         //退出登录
@@ -162,6 +169,7 @@ public class MineFragment extends BaseFragment{
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<UserInfoRespData, RespObjBase> responseResult = (ResponseResult<UserInfoRespData, RespObjBase>) result;
                 UserInfoRespData data = responseResult.getData();
+                BaseUtil.userData=data;
                 Glide.with(getActivity()).load(data.getPhotograph()).into(userImage);//设置头像
                 Log.e("获取个人信息返回",""+data.toString());
             }
@@ -178,7 +186,7 @@ public class MineFragment extends BaseFragment{
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 String data = responseResult.getData();
                 BaseUtil.UserId="";
-                BaseUtil.Online=0;
+                BaseUtil.userData=null;
                 Intent intent=new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();

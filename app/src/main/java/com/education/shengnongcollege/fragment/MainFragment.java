@@ -17,6 +17,7 @@ import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.activity.TestActivity;
+import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
@@ -42,7 +43,7 @@ import java.util.List;
  * @date 2018/4/12
  */
 public class MainFragment extends BaseFragment {
-    private CustomGridView mGridView;
+    private CustomGridView mGridView,mGridViewTj;
     private MainCenterAdapter adapter;
     private View mFragmentView;
     private TextView serchBar;
@@ -107,6 +108,7 @@ public class MainFragment extends BaseFragment {
     private void initView(){
         rightBtn=mFragmentView.findViewById(R.id.layou2);
         mGridView=mFragmentView.findViewById(R.id.main_gridview);
+        mGridViewTj=mFragmentView.findViewById(R.id.main_gridview_tuijian);
         serchBar=mFragmentView.findViewById(R.id.search_et);
         viewPager =mFragmentView.findViewById(R.id.morelist_viewpager);
         tabs = mFragmentView.findViewById(R.id.morelist_tabs);
@@ -162,6 +164,7 @@ public class MainFragment extends BaseFragment {
         });
         tabs.setScanScroll(true);
         tabs.setCurrentItem(0);
+        getVidioListData(data.get(0).getId());//默认进来先加载第一个tab
     }
     private void getVidioListData(String CategoryId){//首页传这个id
         DialogUtil.getInstance().showProgressDialog(getActivity());
@@ -171,6 +174,17 @@ public class MainFragment extends BaseFragment {
                 DialogUtil.getInstance().cancelProgressDialog();
                 ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
                 List<GetVideoListRespData> data=responseResult.getData();
+                if(data!=null){
+                    if(data.size()<10){
+                        if(data.size()==0){
+                            Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    ClassifyGridViewAdapter adapter=new ClassifyGridViewAdapter(getActivity(),data);
+                    mGridViewTj.setAdapter(adapter);
+                }else {
+                    Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

@@ -53,6 +53,17 @@
         <activity android:name=".activity.PerfectinfoActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activity.AboutMeActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.FeedBackActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.UpdatePassActivity"
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".play.NewVodPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

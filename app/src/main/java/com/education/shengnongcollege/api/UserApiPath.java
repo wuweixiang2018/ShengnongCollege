@@ -22,4 +22,8 @@ public class UserApiPath {
     public static final String LOGIN_STATE = "/api/user/islogin";
     //完善个人信息
     public static final String WANSHAN_USERINFO = "/api/user/perfectinfo";
+    //修改密码接口
+    public static final String MODIFYPASSWORD = "/api/user/modifypassword";
+    //发送修改密码的短信验证码
+    public static final String SEND_UPDATEPASS_SMS_VERIFY_CODE_PATH = "api/user/sendmodifypwdvcode";
 }

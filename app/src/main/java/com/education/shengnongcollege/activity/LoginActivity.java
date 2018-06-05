@@ -3,6 +3,7 @@ package com.education.shengnongcollege.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +53,14 @@ public class LoginActivity extends BaseTopActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(TextUtils.isEmpty(userName.getText().toString())){
+                    Toast.makeText(LoginActivity.this,"登录名不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(TextUtils.isEmpty(passWord.getText().toString())){
+                    Toast.makeText(LoginActivity.this,"密码不能为空",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Login(userName.getText().toString(),passWord.getText().toString());
             }
         });
@@ -72,7 +81,6 @@ public class LoginActivity extends BaseTopActivity {
                 ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
                 LoginRespData data = responseResult.getData();
                 BaseUtil.UserId=data.getUserId();
-                BaseUtil.Online=data.getOnline();
                 Intent intent=new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
