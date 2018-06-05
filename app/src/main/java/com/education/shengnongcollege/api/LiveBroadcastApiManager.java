@@ -3,6 +3,7 @@ package com.education.shengnongcollege.api;
 import android.text.TextUtils;
 
 import com.education.shengnongcollege.model.GetCategoryListRespData;
+import com.education.shengnongcollege.model.GetLvbListRespData;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
@@ -96,7 +97,7 @@ public class LiveBroadcastApiManager {
         HashMap<String, Object> bodyMap = new HashMap<>();
         bodyMap.put("PageIndex", PageIndex);
         bodyMap.put("PageSize", PageSize);
-        new GWApiPresent(listener).commonListPost(bodyMap, RespDataBase.class,
+        new GWApiPresent(listener).commonListPost(bodyMap, GetLvbListRespData.class,
                 ListRespObj.class,
                 LiveBroadcastApiPath.GET_LVB_LIST_PATH, 0);
     }

@@ -12,6 +12,7 @@ import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.api.UserApiManager;
+import com.education.shengnongcollege.model.GetLvbListRespData;
 import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
@@ -89,6 +90,25 @@ public class TestActivity extends BaseTopActivity {
             }
         });
 
+        findViewById(R.id.get_zhibo_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LiveBroadcastApiManager.getLVBList(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                        ListResponseResult<GetLvbListRespData, ListRespObj> responseResult = (ListResponseResult<GetLvbListRespData, ListRespObj>) result;
+                        List<GetLvbListRespData> data = responseResult.getData();
+                        Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                        Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
+                    }
+                }, 0, 10);
+            }
+        });
+
         findViewById(R.id.get_video_list_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,17 +140,7 @@ public class TestActivity extends BaseTopActivity {
                     }
                 }, id, null, 0, 10);
 
-                LiveBroadcastApiManager.getLVBList(new GWResponseListener() {
-                    @Override
-                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
 
-                    }
-
-                    @Override
-                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-
-                    }
-                }, 0, 10);
             }
         });
 

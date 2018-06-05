@@ -31,11 +31,11 @@
             android:text="直播播放器" />
 
         <Button
-            android:id="@+id/record_zhibo_btn"
+            android:id="@+id/get_zhibo_btn"
             android:layout_width="120dip"
             android:layout_height="50dip"
             android:layout_marginTop="20dip"
-            android:text="录制直播" />
+            android:text="获取直播列表" />
 
         <Button
             android:id="@+id/dianbo_btn"
