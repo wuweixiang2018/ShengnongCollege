@@ -2,7 +2,6 @@ package com.education.shengnongcollege.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,8 +12,8 @@ import android.widget.Toast;
 import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.UserApiManager;
+import com.education.shengnongcollege.model.RegisterRespData;
 import com.education.shengnongcollege.model.RespObjBase;
-import com.education.shengnongcollege.model.UserInfoRespData;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
@@ -62,7 +61,7 @@ public class UpdatePassActivity extends BaseTopActivity{
                     Toast.makeText(UpdatePassActivity.this,"请输入验证码",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(passEdt.getText().toString().trim().length()<10){
+                if(TextUtils.isEmpty(passEdt.getText().toString())){
                     Toast.makeText(UpdatePassActivity.this,"请输入新密码",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -90,9 +89,11 @@ public class UpdatePassActivity extends BaseTopActivity{
         UserApiManager.modifypassword(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                ResponseResult<UserInfoRespData, RespObjBase> responseResult = (ResponseResult<UserInfoRespData, RespObjBase>) result;
-                UserInfoRespData data = responseResult.getData();
-                Log.e("修改密码返回",""+data.toString());
+                ResponseResult<RegisterRespData, RespObjBase> responseResult = (ResponseResult<RegisterRespData, RespObjBase>) result;
+                RegisterRespData data = responseResult.getData();
+                BaseUtil.UserId=data.getUserId();//密码修改应该相当于换了个userID
+                Toast.makeText(UpdatePassActivity.this,"密码修改成功",Toast.LENGTH_SHORT).show();
+                finish();
             }
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
