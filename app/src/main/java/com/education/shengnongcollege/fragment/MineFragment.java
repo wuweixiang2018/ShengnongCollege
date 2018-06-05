@@ -17,15 +17,13 @@ import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.LoginActivity;
+import com.education.shengnongcollege.activity.PerfectinfoActivity;
 import com.education.shengnongcollege.api.UserApiManager;
-import com.education.shengnongcollege.model.LoginRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.model.UserInfoRespData;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
-import com.education.shengnongcollege.utils.Ilisten.IListener;
-import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 
 import java.io.Serializable;
 
@@ -35,7 +33,7 @@ import java.io.Serializable;
  * @author shihaoxian
  * @date 2018/4/12
  */
-public class MineFragment extends BaseFragment implements IListener {
+public class MineFragment extends BaseFragment{
 
     private View mFragmentView;
     private LinearLayout wsgrxxLayout,xgMmLayout,yjfkLayout,aboutMeLayout;
@@ -59,9 +57,10 @@ public class MineFragment extends BaseFragment implements IListener {
             mFragmentView = inflater.inflate(R.layout.activity_mine_view, container, false);
             initView();
             initListener();
-            if(!TextUtils.isEmpty(BaseUtil.UserId)){
-                getUserLoginState();
-            }
+//            if(!TextUtils.isEmpty(BaseUtil.UserId)){
+//                getUserLoginState();
+//            }
+            getUserInfoById();
 
         }
         return mFragmentView;
@@ -75,7 +74,8 @@ public class MineFragment extends BaseFragment implements IListener {
         yjfkLayout=mFragmentView.findViewById(R.id.root_mine_item_yjfk);
         aboutMeLayout=mFragmentView.findViewById(R.id.root_mine_item_aboutme);
         exitLogin=mFragmentView.findViewById(R.id.login_out_btn);
-        ListenerManager.getInstance().registerListtener(this);
+        registerTv.setVisibility(View.INVISIBLE);//登录按钮暂时就不要了
+        exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
     }
 
     private void initListener() {
@@ -96,7 +96,13 @@ public class MineFragment extends BaseFragment implements IListener {
         wsgrxxLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(TextUtils.isEmpty(BaseUtil.UserId)){
+                    Intent intent=new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }else{
+                    Intent intent=new Intent(getActivity(), PerfectinfoActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         //修改密码
@@ -120,6 +126,7 @@ public class MineFragment extends BaseFragment implements IListener {
 
             }
         });
+        //退出登录
         exitLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,24 +135,26 @@ public class MineFragment extends BaseFragment implements IListener {
         });
     }
     //获取用户登录状态
-    private void getUserLoginState(){
-        UserApiManager.loginState(new GWResponseListener() {
-            @Override
-            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                Log.e("获取用户登录状态返回","");
-                ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
-                LoginRespData data = responseResult.getData();
-                BaseUtil.UserId=data.getUserId();
-                BaseUtil.Online=data.getOnline();
-                exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
-                registerTv.setVisibility(View.INVISIBLE);//登录按钮隐藏起来
-            }
-            @Override
-            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                Toast.makeText(getActivity(),"获取用户登录状态失败",Toast.LENGTH_SHORT).show();
-            }
-        }, BaseUtil.UserId);
-    }
+//    private void getUserLoginState(){
+//        UserApiManager.loginState(new GWResponseListener() {
+//            @Override
+//            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                Log.e("获取用户登录状态返回","");
+//                ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
+//                LoginRespData data = responseResult.getData();
+//                BaseUtil.UserId=data.getUserId();
+//                BaseUtil.Online=data.getOnline();
+//                exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
+//                registerTv.setVisibility(View.INVISIBLE);//登录按钮隐藏起来
+//            }
+//            @Override
+//            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                Toast.makeText(getActivity(),"获取用户登录状态失败",Toast.LENGTH_SHORT).show();
+//                BaseUtil.UserId="";
+//                BaseUtil.Online=0;
+//            }
+//        }, BaseUtil.UserId);
+//    }
     //获取个人信息
     private void getUserInfoById(){
         UserApiManager.getUserInfoById(new GWResponseListener() {
@@ -153,10 +162,8 @@ public class MineFragment extends BaseFragment implements IListener {
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<UserInfoRespData, RespObjBase> responseResult = (ResponseResult<UserInfoRespData, RespObjBase>) result;
                 UserInfoRespData data = responseResult.getData();
-                exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
-                registerTv.setVisibility(View.INVISIBLE);//登录按钮隐藏起来
                 Glide.with(getActivity()).load(data.getPhotograph()).into(userImage);//设置头像
-                Log.e("获取个人信息返回","");
+                Log.e("获取个人信息返回",""+data.toString());
             }
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
@@ -172,8 +179,9 @@ public class MineFragment extends BaseFragment implements IListener {
                 String data = responseResult.getData();
                 BaseUtil.UserId="";
                 BaseUtil.Online=0;
-                exitLogin.setVisibility(View.INVISIBLE);//退出登录隐藏
-                registerTv.setVisibility(View.VISIBLE);//登录按钮显示
+                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+                getActivity().finish();
                 Log.e("退出登录",data);
             }
             @Override
@@ -181,13 +189,5 @@ public class MineFragment extends BaseFragment implements IListener {
                 Toast.makeText(getActivity(),"退出登录失败",Toast.LENGTH_SHORT).show();
             }
         }, BaseUtil.UserId);
-    }
-    @Override
-    public void notifyAllActivity(String str, Object object) {
-        if(getActivity()!=null){
-            if(TextUtils.equals(str,"MineFragmentReflush")){//登录或者注册登录之后 来刷新页面
-                getUserInfoById();
-            }
-        }
     }
 }

@@ -108,6 +108,33 @@ public class UserApiManager {
                 UserApiPath.LOGIN_STATE, 0);
 
     }
+    /**
+     * 完善个人信息
+     *{
+     "UserId": "string",
+     "UserName": "string",
+     "NickName": "string",
+     "Gender": "string",
+     "Birthday": "2018-06-04T08:20:08.029Z",
+     "Mobile": "string",
+     "IDCard": "string",
+     "PhotoGraph": "string"
+     }
+     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     */
+    public static void perfectinfo(GWResponseListener listener, String UserId, String UserName, String NickName, String Gender, String Birthday, String Mobile, String IDCard, String PhotoGraph) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        bodyMap.put("UserName", UserName);
+        bodyMap.put("NickName", NickName);
+        bodyMap.put("Gender", Gender);
+        bodyMap.put("Birthday", Birthday);
+        bodyMap.put("Mobile", Mobile);
+        bodyMap.put("IDCard", IDCard);
+        bodyMap.put("PhotoGraph", PhotoGraph);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.WANSHAN_USERINFO, 0);
+    }
 
 //    public static void feedback(GWResponseListener listener, String Tel) {
 //        HashMap<String, Object> bodyMap = new HashMap<>();

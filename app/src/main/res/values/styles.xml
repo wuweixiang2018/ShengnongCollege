@@ -62,4 +62,13 @@
         <item name="android:inputType">textPassword</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="ActionSheetDialog" parent="Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/BottomAnimation</item>
+    </style>
+    <style name="BottomAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_to_bottom</item>
+    </style>
 </resources>

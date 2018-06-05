@@ -1,5 +1,6 @@
 package com.education.shengnongcollege.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseTopActivity;
+import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.UserApiManager;
 import com.education.shengnongcollege.model.LoginRespData;
@@ -19,7 +21,6 @@ import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
-import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.view.VerifyCodeView;
 import com.education.shengnongcollege.widget.DialogUtil;
 
@@ -205,8 +206,12 @@ public class RegisterActivity extends BaseTopActivity {
                                     LoginRespData data = responseResult.getData();
                                     BaseUtil.UserId=data.getUserId();
                                     BaseUtil.Online=data.getOnline();
+                                    Intent intent=new Intent(RegisterActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    if(LoginActivity.loginThis!=null){
+                                        LoginActivity.loginThis.finish();
+                                    }
                                     finish();
-                                    ListenerManager.getInstance().sendBroadCast("MineFragmentReflush","");//通知分类页面也加载页面
                                 }
 
                                 @Override

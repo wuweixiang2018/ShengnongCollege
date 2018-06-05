@@ -1,5 +1,6 @@
 package com.education.shengnongcollege.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseTopActivity;
+import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.UserApiManager;
 import com.education.shengnongcollege.model.LoginRespData;
@@ -16,7 +18,6 @@ import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
-import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.widget.DialogUtil;
 
 import java.io.Serializable;
@@ -25,6 +26,7 @@ public class LoginActivity extends BaseTopActivity {
     private EditText userName,passWord;
     private Button login;
     private TextView register;
+    public static Activity loginThis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +34,7 @@ public class LoginActivity extends BaseTopActivity {
         initView();
         initListener();
         initData();
+        loginThis=this;
     }
 
     private void initData() {
@@ -44,7 +47,6 @@ public class LoginActivity extends BaseTopActivity {
             public void onClick(View view) {
                 Intent intent=new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -71,8 +73,9 @@ public class LoginActivity extends BaseTopActivity {
                 LoginRespData data = responseResult.getData();
                 BaseUtil.UserId=data.getUserId();
                 BaseUtil.Online=data.getOnline();
+                Intent intent=new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
-                ListenerManager.getInstance().sendBroadCast("MineFragmentReflush","");//通知分类页面也加载页面
             }
 
             @Override
@@ -82,5 +85,11 @@ public class LoginActivity extends BaseTopActivity {
 
             }
         }, userName, passWord);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAll();
+        finish();
     }
 }

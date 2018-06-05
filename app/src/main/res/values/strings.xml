@@ -33,5 +33,13 @@
     <string name="mine_label_xgmm">修改密码</string>
     <string name="mine_label_yjfk">意见反馈</string>
     <string name="mine_label_aboutme">关于我们</string>
+    <!--完善个人信息页面-->
+    <string name="wsgrxx_label_title">完善个人信息</string>
+    <string name="wsgrxx_label_NickName">昵称</string>
+    <string name="wsgrxx_label_UserName">姓名</string>
+    <string name="wsgrxx_label_Gender">性别</string>
+    <string name="wsgrxx_label_Birthday">出生日期</string>
+    <string name="wsgrxx_label_Mobile">电话号码：+86</string>
+    <string name="wsgrxx_label_IDCard">身份证号码</string>
 
 </resources>

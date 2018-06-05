@@ -17,8 +17,8 @@
         android:background="@color/top_text_bg"/>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="190dp"
-        android:background="@drawable/main_top_imagebanner">
+        android:layout_height="180dp"
+        android:background="@drawable/mine_top_layout_bg">
         <TextView
             android:id="@+id/mine_register_tv"
             android:layout_width="wrap_content"
@@ -41,20 +41,14 @@
                 android:id="@+id/mine_top_userImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_circle_wihte"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/mine_top_xiangji"/>
+                android:background="@drawable/mine_top_image_default"/>
         </RelativeLayout>
     </RelativeLayout>
     <LinearLayout
         android:id="@+id/root_mine_item_wsgexx"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="20dp"
         android:gravity="center|left"
         android:background="@color/withe">
         <ImageView
@@ -77,7 +71,7 @@
     <LinearLayout
         android:id="@+id/root_mine_item_xgmm"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
         android:layout_marginTop="2dp"
         android:gravity="center|left"
         android:background="@color/withe">
@@ -101,7 +95,7 @@
     <LinearLayout
         android:id="@+id/root_mine_item_yjfk"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
         android:layout_marginTop="2dp"
         android:gravity="center|left"
         android:background="@color/withe">
@@ -125,7 +119,7 @@
     <LinearLayout
         android:id="@+id/root_mine_item_aboutme"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="44dp"
         android:layout_marginTop="2dp"
         android:gravity="center|left"
         android:background="@color/withe">

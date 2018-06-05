@@ -20,4 +20,6 @@ public class UserApiPath {
     public static final String EXIT_LOGIN = "/api/user/signout";
     //获取登录状态
     public static final String LOGIN_STATE = "/api/user/islogin";
+    //完善个人信息
+    public static final String WANSHAN_USERINFO = "/api/user/perfectinfo";
 }
