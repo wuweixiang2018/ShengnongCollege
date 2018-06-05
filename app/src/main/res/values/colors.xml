@@ -98,5 +98,5 @@
     <color name="time_bg_normal">#0accac</color>
     <color name="time_bg_selected">#AA0ACCAC</color>
 
-
+    <color name="translucent_white">#61FFFFFF</color>
 </resources>

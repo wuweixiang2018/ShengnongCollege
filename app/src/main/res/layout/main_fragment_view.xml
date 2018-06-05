@@ -7,7 +7,6 @@
     android:background="@color/withe"
     android:gravity="center"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,20 +39,27 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
+            <View
+                android:layout_below="@+id/layou4"
+                android:layout_toRightOf="@+id/layou1"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_marginTop="-1.3dp"
+                android:background="@color/withe"
+                android:layout_height="1dp">
+            </View>
             <RelativeLayout
                 android:id="@+id/layou4"
                 android:layout_toRightOf="@+id/layou1"
                 android:layout_width="wrap_content"
                 android:gravity="center"
                 android:layout_toLeftOf="@+id/layou3"
+                android:layout_marginLeft="10dp"
                 android:layout_height="35dp">
-                <com.education.shengnongcollege.view.PagerSlidingTabStrip2
-                    android:id="@+id/sliding_tabs"
+                <com.education.shengnongcollege.view.PagerSlidingTabStrip
+                    android:id="@+id/morelist_tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    app:pstsIndicatorHeight="0dp"
-                    app:pstsShouldExpand="false"
-                    android:fillViewport="false" />
+                    android:layout_height="35dp" />
             </RelativeLayout>
 
             <View
@@ -62,7 +68,7 @@
                 android:background="@color/withe"
                 android:layout_toLeftOf="@+id/layou2"
                 android:layout_marginRight="5dp"
-                android:layout_height="35dp">
+                android:layout_height="33.5dp">
 
             </View>
             <LinearLayout
@@ -78,20 +84,11 @@
                     android:layout_marginRight="10dp"
                     android:background="@drawable/main_top_right" />
             </LinearLayout>
-            <View
-                android:layout_below="@+id/layou4"
-                android:layout_toRightOf="@+id/layou1"
-                android:layout_marginLeft="10dp"
-                android:layout_width="match_parent"
-                android:background="@color/withe"
-                android:layout_height="1dp">
-            </View>
             <com.education.shengnongcollege.view.CustomViewPager
-                android:id="@+id/viewpager"
+                android:id="@+id/morelist_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1.0"
-                android:visibility="invisible"
                 android:background="@android:color/white" />
         </RelativeLayout>
     </LinearLayout>
@@ -139,28 +136,22 @@
                     android:textSize="16sp" />
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:orientation="horizontal"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
                     android:weightSum="2">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="120dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/main_top_imagebanner"
-                        android:scaleType="fitXY"/>
-                    <View
-                        android:layout_width="10dp"
-                        android:layout_height="match_parent">
-
-                    </View>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="120dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/main_top_imagebanner"
-                        android:scaleType="fitXY"/>
+                    <com.education.shengnongcollege.view.CustomGridView
+                        android:id="@+id/main_gridview_tuijian"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:horizontalSpacing="10dp"
+                        android:verticalSpacing="10dp"
+                        android:layout_margin="5dp"
+                        android:numColumns="2"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

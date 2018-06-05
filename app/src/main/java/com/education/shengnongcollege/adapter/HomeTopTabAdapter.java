@@ -6,7 +6,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.fragment.TopTestFragment;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,16 +16,16 @@ import java.util.Map;
 public class HomeTopTabAdapter extends FragmentPagerAdapter {
 
     private Map<String,BaseFragment> mapFragment = new HashMap<>();
-    private final String[] titles;
+    private final List<String> titles;
 
-    public HomeTopTabAdapter(FragmentManager fm, String[] titles) {
+    public HomeTopTabAdapter(FragmentManager fm,List<String> titles) {
         super(fm);
         this.titles = titles;
     }
 
     public HomeTopTabAdapter(FragmentManager fm) {
         super(fm);
-        this.titles = new String[]{};
+        this.titles = new ArrayList<>();
     }
 
     @Override
@@ -37,8 +39,8 @@ public class HomeTopTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(titles != null && position < titles.length){
-            return titles[position];
+        if(titles != null && position < titles.size()){
+            return titles.get(position);
         }else{
             return position+"";
         }
@@ -46,8 +48,8 @@ public class HomeTopTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if(titles != null && titles.length > 0){
-            return titles.length;
+        if(titles != null && titles.size() > 0){
+            return titles.size();
         }
         return mapFragment.size();
     }

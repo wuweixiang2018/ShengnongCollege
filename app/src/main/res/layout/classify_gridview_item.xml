@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="109dp"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/gridview_image"
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:background="@drawable/image_defunt"
+        android:scaleType="fitXY"></ImageView>
+
+
+    <LinearLayout
+        android:id="@+id/gridview_onclick"
+        android:layout_width="match_parent"
+        android:layout_height="109dp"
+        android:gravity="center|left"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/gridview_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="国泰君安人"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sub_content" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/gridview_type_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/gridview_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="本地"
+                android:textColor="@color/white"
+                android:textSize="@dimen/trivial_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.handmark.pulltorefresh.library.PullToRefreshListView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pull="http://schemas.android.com/apk/res-auto"
+    android:id="@id/scroll_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    pull:ptrAnimationStyle="flip"
+    pull:ptrHeaderBackground="@android:color/transparent"
+    pull:ptrHeaderTextAppearance="@style/LoadingMoreTextAppearance"
+    pull:ptrSubHeaderTextAppearance="@style/LoadingMoreTextAppearance"
+    pull:ptrMode="pullFromEnd" >
+
+</com.handmark.pulltorefresh.library.PullToRefreshListView>

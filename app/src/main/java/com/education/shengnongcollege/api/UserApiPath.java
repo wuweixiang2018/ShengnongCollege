@@ -16,4 +16,16 @@ public class UserApiPath {
     //发送短信验证码
     public static final String SEND_SMS_VERIFY_CODE_PATH = "api/user/sendsmsverificationcode";
     public static final String FEEDBACK_PATH = "api/user/feedback";
+    //获取个人信息
+    public static final String GET_USERINFO = "/api/user/getuserinfobyuserid";
+    //退出登录
+    public static final String EXIT_LOGIN = "/api/user/signout";
+    //获取登录状态
+    public static final String LOGIN_STATE = "/api/user/islogin";
+    //完善个人信息
+    public static final String WANSHAN_USERINFO = "/api/user/perfectinfo";
+    //修改密码接口
+    public static final String MODIFYPASSWORD = "/api/user/modifypassword";
+    //发送修改密码的短信验证码
+    public static final String SEND_UPDATEPASS_SMS_VERIFY_CODE_PATH = "api/user/sendmodifypwdvcode";
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/top_text_bg"
+        android:layout_height="52dp">
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="数学"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="15dp" />
+        <TextView
+            android:id="@+id/textView_unber"
+            android:layout_width="50dp"
+            android:layout_height="1dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorRed"/>
+    </RelativeLayout>
+</RelativeLayout>

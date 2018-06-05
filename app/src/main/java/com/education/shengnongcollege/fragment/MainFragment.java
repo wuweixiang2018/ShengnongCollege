@@ -2,10 +2,14 @@ package com.education.shengnongcollege.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,19 +17,23 @@ import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.activity.TestActivity;
+import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
+import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
-import com.education.shengnongcollege.adapter.MainPagerAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
+import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.view.CustomGridView;
 import com.education.shengnongcollege.view.CustomViewPager;
-import com.education.shengnongcollege.view.PagerSlidingTabStrip2;
+import com.education.shengnongcollege.view.PagerSlidingTabStrip;
+import com.education.shengnongcollege.widget.DialogUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,14 +43,14 @@ import java.util.List;
  * @date 2018/4/12
  */
 public class MainFragment extends BaseFragment {
-    private CustomGridView mGridView;
+    private CustomGridView mGridView,mGridViewTj;
     private MainCenterAdapter adapter;
     private View mFragmentView;
     private TextView serchBar;
     private CustomViewPager viewPager;
-    private PagerSlidingTabStrip2 tabLayout;
-    private MainPagerAdapter mainPagerAdapter;
-
+    private HomeTopTabAdapter mHomeAdapter;
+    private PagerSlidingTabStrip tabs;
+    private LinearLayout rightBtn;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,8 +85,14 @@ public class MainFragment extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ListenerManager.getInstance().sendBroadCast("MainActivity_replace", "");//先切换
-                ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow", "");//展现出来
+                ListenerManager.getInstance().sendBroadCast("MainActivity_replace","");//先切换
+                ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow",adapter.getItem(i));//展现出来
+            }
+        });
+        rightBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ListenerManager.getInstance().sendBroadCast("MainActivity_replace","");//切换
             }
         });
 
@@ -91,29 +105,94 @@ public class MainFragment extends BaseFragment {
         });
     }
 
-    private void initView() {
-        mGridView = mFragmentView.findViewById(R.id.main_gridview);
-        serchBar = mFragmentView.findViewById(R.id.search_et);
+    private void initView(){
+        rightBtn=mFragmentView.findViewById(R.id.layou2);
+        mGridView=mFragmentView.findViewById(R.id.main_gridview);
+        mGridViewTj=mFragmentView.findViewById(R.id.main_gridview_tuijian);
+        serchBar=mFragmentView.findViewById(R.id.search_et);
+        viewPager =mFragmentView.findViewById(R.id.morelist_viewpager);
+        tabs = mFragmentView.findViewById(R.id.morelist_tabs);
+        tabs.setItemResId(R.layout.main_top_tab_item);
     }
+    private void getGridData(){
+                LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                        ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
+                        List<GetCategoryListRespData> data = responseResult.getData();
+                        ListRespObj obj = responseResult.getObj();
+                        adapter=new MainCenterAdapter(getActivity(),data);
+                        mGridView.setAdapter(adapter);
+                        initToptab(data);
+                        //ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
+                    }
 
-    private void getGridData() {
-        LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                        Toast.makeText(getActivity(), "分类列表获取失败", Toast.LENGTH_SHORT).show();
+                    }
+                }, 1, 10);
+    }
+    private void initToptab(final List<GetCategoryListRespData> data){
+        List<String> str = new ArrayList<>();
+        if(data==null||data.size()==0){
+            return;
+        }
+        for(int i=0;i<data.size();i++){
+            str.add(data.get(i).getName());
+        }
+        FragmentManager fragmentManager = getChildFragmentManager();
+        mHomeAdapter = new HomeTopTabAdapter(fragmentManager, str);
+        viewPager.setAdapter(mHomeAdapter);
+        tabs.setmItems(str);
+        tabs.setViewPager(viewPager);
+        tabs.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int arg0) {
+                Log.e("选中状态",data.get(arg0).getName());
+                getVidioListData(data.get(arg0).getId());
+            }
+
+            @Override
+            public void onPageScrolled(int arg0, float arg1, int arg2) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int arg0) {
+            }
+        });
+        tabs.setScanScroll(true);
+        tabs.setCurrentItem(0);
+        getVidioListData(data.get(0).getId());//默认进来先加载第一个tab
+    }
+    private void getVidioListData(String CategoryId){//首页传这个id
+        DialogUtil.getInstance().showProgressDialog(getActivity());
+        LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
-                List<GetCategoryListRespData> data = responseResult.getData();
-                ListRespObj obj = responseResult.getObj();
-                adapter = new MainCenterAdapter(getActivity(), data);
-                mGridView.setAdapter(adapter);
-                ListenerManager.getInstance().sendBroadCast("ClassifyFragment", data);//通知分类页面也加载页面
-                Toast.makeText(getActivity(), "分类列表获取成功", Toast.LENGTH_SHORT).show();
+                DialogUtil.getInstance().cancelProgressDialog();
+                ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
+                List<GetVideoListRespData> data=responseResult.getData();
+                if(data!=null){
+                    if(data.size()<10){
+                        if(data.size()==0){
+                            Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    ClassifyGridViewAdapter adapter=new ClassifyGridViewAdapter(getActivity(),data);
+                    mGridViewTj.setAdapter(adapter);
+                }else {
+                    Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                Toast.makeText(getActivity(), "分类列表获取失败", Toast.LENGTH_SHORT).show();
+                DialogUtil.getInstance().cancelProgressDialog();
+                Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
             }
-        }, 1, 10);
+        }, CategoryId,"",0, 10);
     }
+
 
 }

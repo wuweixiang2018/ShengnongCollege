@@ -256,4 +256,12 @@
     <dimen name="media_controller_resolution_text_width">300dp</dimen>
     <dimen name="media_panel_width">330dp</dimen>
 
+    <dimen name="indicator_right_padding">10dp</dimen>
+    <dimen name="indicator_corner_radius">12dp</dimen>
+    <dimen name="indicator_internal_padding">4dp</dimen>
+    <dimen name="header_footer_left_right_padding">24dp</dimen>
+    <dimen name="header_footer_top_bottom_padding">12dp</dimen>
+    <dimen name="text_size_24px">12sp</dimen>
+    <dimen name="menu_padding">0dp</dimen>
+
 </resources>

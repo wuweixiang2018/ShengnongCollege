@@ -24,7 +24,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.MainSerchActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,11 +41,27 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.MainSerchActivity"
+        <activity android:name=".activity.TestActivity"
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".activity.TestActivity"
+
+        <activity android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.PerfectinfoActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".activity.AboutMeActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.FeedBackActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activity.UpdatePassActivity"
             android:screenOrientation="portrait">
         </activity>
 
