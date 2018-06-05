@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -26,7 +27,10 @@ import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.common.adapter.CommentListAdapter;
+import com.education.shengnongcollege.common.model.CommentModel;
 import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.play.wkvideoplayer.util.DensityUtil;
 import com.education.shengnongcollege.play.wkvideoplayer.view.MediaController;
 import com.education.shengnongcollege.play.wkvideoplayer.view.SuperVideoPlayer;
@@ -46,6 +50,7 @@ import java.util.List;
 
 public class VodListPlayerActivity extends BaseTopActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "NewVodPlayerActivity";
+    private GetVideoDetailRespData videoDetail;
     //课程介绍
     private LinearLayout introduceLL;
     //课程介绍tab
@@ -64,8 +69,8 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
     private ImageView mPlayBtnView;
 
     private RecyclerView mRecyclerView;
-    private NewVodListAdapter mAdapter;
-//    private ImageView mIvAdd;
+    private CommentListAdapter mAdapter;
+    //    private ImageView mIvAdd;
 //    private Button mBtnScan;
     //    private ArrayList<TXPlayerAuthParam> mVodList;
     private TXPlayerAuthParam mCurrentFileIDParam;
@@ -77,11 +82,11 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
     private String titleFrom;
     private GetVideoInfoListListener mGetVideoInfoListListener;
 
-    private NewVodListAdapter.OnItemClickLitener mOnItemClickListener = new NewVodListAdapter.OnItemClickLitener() {
+    private CommentListAdapter.OnItemClickLitener mOnItemClickListener = new CommentListAdapter.OnItemClickLitener() {
         @Override
-        public void onItemClick(int position, String title, String url) {
-            playVideoWithUrl(url);
-            mSuperVideoPlayer.updateUI(title);
+        public void onItemClick(int position, CommentModel commentModel) {
+//            playVideoWithUrl(url);
+//            mSuperVideoPlayer.updateUI(title);
         }
     };
 
@@ -89,6 +94,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_void_list);
+        videoDetail = (GetVideoDetailRespData) getIntent().getSerializableExtra("videoDetail");
         initView();
         checkPermission();
         getWindow().addFlags(WindowManager.LayoutParams.
@@ -120,7 +126,9 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new NewVodListAdapter(this);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+
+        mAdapter = new CommentListAdapter(this);
         mAdapter.setOnItemClickLitener(mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -161,6 +169,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
                 mSwipeRefreshLayout.setVisibility(View.VISIBLE);
                 commentTabTV.setTextColor(getResources().getColor(R.color.orange));
                 underlineTwo.setVisibility(View.VISIBLE);
+                //获取评论
             }
         });
         commentTabTV = findViewById(R.id.comment_tab_tv);
@@ -172,9 +181,27 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
 //        mVodList = new ArrayList<TXPlayerAuthParam>();
-        getData();
+//        getData();
         playVideo();
         initData();
+
+        //add测试评论
+        CommentModel commentModel = new CommentModel();
+        commentModel.setContent("谢谢");
+        commentModel.setNickname("橘子");
+        mAdapter.addComment(commentModel);
+
+        CommentModel commentMode1 = new CommentModel();
+        commentMode1.setContent("你好");
+        commentMode1.setNickname("淘淘");
+        mAdapter.addComment(commentMode1);
+
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void addCommentList(List<CommentModel> list) {
+        mAdapter.addCommentList(list);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void getData() {
@@ -296,31 +323,32 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
     }
 
     private void initData() {
-        if (isPlayDefaultVideo) {
-            TXPlayerAuthParam param2 = new TXPlayerAuthParam();
-            param2.appId = "1252463788";
-            param2.fileId = "4564972819219071568";
-            mSuperVideoPlayer.addVodInfo(param2);
 
-            TXPlayerAuthParam param3 = new TXPlayerAuthParam();
-            param3.appId = "1252463788";
-            param3.fileId = "4564972819219071668";
-            mSuperVideoPlayer.addVodInfo(param3);
-
-            TXPlayerAuthParam param4 = new TXPlayerAuthParam();
-            param4.appId = "1252463788";
-            param4.fileId = "4564972819219071679";
-            mSuperVideoPlayer.addVodInfo(param4);
-
-            TXPlayerAuthParam param5 = new TXPlayerAuthParam();
-            param5.appId = "1252463788";
-            param5.fileId = "4564972819219081699";
-            mSuperVideoPlayer.addVodInfo(param5);
-
-        } else {
-            VideoDataMgr.getInstance().setGetVideoInfoListListener(mGetVideoInfoListListener);
-            VideoDataMgr.getInstance().getVideoList();
-        }
+//        if (isPlayDefaultVideo) {
+//            TXPlayerAuthParam param2 = new TXPlayerAuthParam();
+//            param2.appId = "1252463788";
+//            param2.fileId = "4564972819219071568";
+//            mSuperVideoPlayer.addVodInfo(param2);
+//
+//            TXPlayerAuthParam param3 = new TXPlayerAuthParam();
+//            param3.appId = "1252463788";
+//            param3.fileId = "4564972819219071668";
+//            mSuperVideoPlayer.addVodInfo(param3);
+//
+//            TXPlayerAuthParam param4 = new TXPlayerAuthParam();
+//            param4.appId = "1252463788";
+//            param4.fileId = "4564972819219071679";
+//            mSuperVideoPlayer.addVodInfo(param4);
+//
+//            TXPlayerAuthParam param5 = new TXPlayerAuthParam();
+//            param5.appId = "1252463788";
+//            param5.fileId = "4564972819219081699";
+//            mSuperVideoPlayer.addVodInfo(param5);
+//
+//        } else {
+//            VideoDataMgr.getInstance().setGetVideoInfoListListener(mGetVideoInfoListListener);
+//            VideoDataMgr.getInstance().getVideoList();
+//        }
     }
 
     @Override
@@ -379,7 +407,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
 
         @Override
         public void onLoadVideoInfo(VodRspData data) {
-            mAdapter.addVideoInfo(data);
+//            mAdapter.addVideoInfo(data);
         }
     };
 
@@ -491,19 +519,20 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
         mPlayBtnView.setVisibility(View.GONE);
         mSuperVideoPlayer.setVisibility(View.VISIBLE);
         mSuperVideoPlayer.setAutoHideController(false);
+        playVideoWithUrl(videoDetail.getVideoUrl());
 
-        TXPlayerAuthParam param = new TXPlayerAuthParam();
-        if (isPlayDefaultVideo) {
-            param.appId = "1252463788";
-            param.fileId = "4564972819220421305";
-            mSuperVideoPlayer.addVodInfo(param);
-            playVideoWithFileId(param);
-        } else if (!TextUtils.isEmpty(videoIdFrom)) {
-            param.appId = TCConstants.VOD_APPID;
-            param.fileId = videoIdFrom;
-            mSuperVideoPlayer.addVodInfo(param);
-            playVideoWithFileId(param);
-        }
+//        TXPlayerAuthParam param = new TXPlayerAuthParam();
+//        if (isPlayDefaultVideo) {
+//            param.appId = "1252463788";
+//            param.fileId = "4564972819220421305";
+//            mSuperVideoPlayer.addVodInfo(param);
+//            playVideoWithFileId(param);
+//        } else if (!TextUtils.isEmpty(videoIdFrom)) {
+//            param.appId = TCConstants.VOD_APPID;
+//            param.fileId = videoIdFrom;
+//            mSuperVideoPlayer.addVodInfo(param);
+//            playVideoWithFileId(param);
+//        }
     }
 
     @Override

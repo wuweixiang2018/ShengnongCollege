@@ -3,4 +3,17 @@
     <string name="main_toast_quit_warnning">再按一次退出程序</string>
     <string name="toast_keyword_empty">关键字不能为空</string>
     <string name="util_dialog_loading_please_waiting">正在加载，请稍后...</string>
+
+    <string name="music_empty">空空如也</string>
+    <string name="music_loading">正在加载本地音乐...</string>
+
+    <string name="delete">删除</string>
+
+    <string name="video_edit">编辑视频</string>
+
+    <string name="video_edit_segment">请拖拽两侧滑块选择剪裁区域</string>
+
+    <string name="video_editer_set_speed">设置慢速片段</string>
+    <string name="video_reverse">开启视频倒放</string>
+    <string name="video_repeate_segment">设置重复的片段</string>
 </resources>

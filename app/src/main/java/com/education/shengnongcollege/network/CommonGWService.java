@@ -87,9 +87,9 @@ public class CommonGWService {
                 }
 
             case POST:
-                if (bodyMap == null) {
-                    bodyMap = new HashMap<>();
-                }
+//                if (bodyMap == null) {
+//                    bodyMap = new HashMap<>();
+//                }
 
                 if (queryMap == null) {
                     queryMap = new HashMap<>();
@@ -111,9 +111,9 @@ public class CommonGWService {
                 }
 
             case PUT:
-                if (bodyMap == null) {
-                    bodyMap = new HashMap<>();
-                }
+//                if (bodyMap == null) {
+//                    bodyMap = new HashMap<>();
+//                }
                 if (queryMap == null) {
                     queryMap = new HashMap<>();
                 }

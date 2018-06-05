@@ -21,7 +21,7 @@
 //import me.dm7.barcodescanner.core.ViewFinderView;
 //import me.dm7.barcodescanner.zxing.ZXingScannerView;
 //
-//public class QRCodeScanActivity extends Activity implements ZXingScannerView.ResultHandler {
+//public class QRCodeScanActivity extends BaseTopActivity implements ZXingScannerView.ResultHandler {
 //
 //    private ZXingScannerView mScannerView;
 //

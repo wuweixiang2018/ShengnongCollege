@@ -11,14 +11,21 @@ import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
+import com.education.shengnongcollege.api.UserApiManager;
+import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
+import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ListResponseResult;
+import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
 import com.education.shengnongcollege.play.VodListPlayerActivity;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.JkysLog;
+import com.education.shengnongcollege.videorecord.TCVideoRecordActivity;
+import com.education.shengnongcollege.videorecord.TCVideoSettingActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.io.Serializable;
@@ -47,7 +54,24 @@ public class TestActivity extends BaseTopActivity {
         findViewById(R.id.dianbo_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(TestActivity.this, VodListPlayerActivity.class));
+                LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                        ResponseResult<GetVideoDetailRespData, RespObjBase> responseResult = (ResponseResult<GetVideoDetailRespData, RespObjBase>) result;
+                        if (responseResult != null && responseResult.getData() != null) {
+                            GetVideoDetailRespData data = responseResult.getData();
+                            Intent intent = new Intent(TestActivity.this, VodListPlayerActivity.class);
+                            intent.putExtra("videoDetail", data);
+                            startActivity(intent);
+                        }
+                    }
+
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                        JkysLog.d("wuwx", "error");
+                    }
+                }, "0e9e3d1f-4644-4444-bba8-91e577bb1a42");
+
             }
         });
 
@@ -55,6 +79,13 @@ public class TestActivity extends BaseTopActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(TestActivity.this, LivePublisherActivity.class));
+            }
+        });
+
+        findViewById(R.id.record_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(TestActivity.this, TCVideoRecordActivity.class));
             }
         });
 
@@ -68,7 +99,7 @@ public class TestActivity extends BaseTopActivity {
                     public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                         ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
                         List<GetVideoListRespData> data = responseResult.getData();
-                        if (data != null && data.size() > 1)
+                        if (data != null && data.size() > 0)
                             LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
                                 @Override
                                 public void successResult(Serializable result, String path, int requestCode, int resultCode) {
@@ -79,7 +110,7 @@ public class TestActivity extends BaseTopActivity {
                                 public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
                                     Toast.makeText(getApplicationContext(), "视频详情获取失败", Toast.LENGTH_SHORT).show();
                                 }
-                            }, "1");
+                            }, data.get(0).getId());
                         Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
                     }
 
@@ -88,39 +119,63 @@ public class TestActivity extends BaseTopActivity {
                         Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
                     }
                 }, id, null, 0, 10);
-            }
-        });
 
-        findViewById(R.id.hello_tv).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "点击hello", Toast.LENGTH_SHORT).show();
-
-                LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
+                LiveBroadcastApiManager.getLVBList(new GWResponseListener() {
                     @Override
                     public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                        ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
-                        List<GetVideoListRespData> data = responseResult.getData();
-                        if (data != null && data.size() > 1)
-                            LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
-                                @Override
-                                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                                    Toast.makeText(getApplicationContext(), "视频详情获取成功", Toast.LENGTH_SHORT).show();
-                                }
 
-                                @Override
-                                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                                    Toast.makeText(getApplicationContext(), "视频详情获取失败", Toast.LENGTH_SHORT).show();
-                                }
-                            }, "1");
-                        Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                        Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
+
                     }
-                }, null, null, 0, 10);
+                }, 0, 10);
+            }
+        });
+
+        findViewById(R.id.test_cl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "点击hello", Toast.LENGTH_SHORT).show();
+
+                UserApiManager.getDemandUserSign(new GWResponseListener() {
+                    @Override
+                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                    }
+
+                    @Override
+                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                    }
+                });
+
+//                LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
+//                    @Override
+//                    public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
+//                        List<GetVideoListRespData> data = responseResult.getData();
+//                        if (data != null && data.size() > 1)
+//                            LiveBroadcastApiManager.getVideoDetail(new GWResponseListener() {
+//                                @Override
+//                                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+//                                    Toast.makeText(getApplicationContext(), "视频详情获取成功", Toast.LENGTH_SHORT).show();
+//                                }
+//
+//                                @Override
+//                                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                                    Toast.makeText(getApplicationContext(), "视频详情获取失败", Toast.LENGTH_SHORT).show();
+//                                }
+//                            }, "1");
+//                        Toast.makeText(getApplicationContext(), "视频列表获取成功", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+//                        Toast.makeText(getApplicationContext(), "视频列表获取失败", Toast.LENGTH_SHORT).show();
+//                    }
+//                }, null, null, 0, 10);
 
 //                LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
 //                    @Override

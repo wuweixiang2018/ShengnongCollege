@@ -24,6 +24,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.common.utils.FileUtils;
 import com.education.shengnongcollege.common.utils.TCConstants;
@@ -44,7 +45,7 @@ import java.util.Locale;
  * Created by carolsuo on 2017/3/21.
  */
 
-public class TCVideoPreviewActivity extends Activity implements View.OnClickListener, ITXLivePlayListener {
+public class TCVideoPreviewActivity extends BaseTopActivity implements View.OnClickListener, ITXLivePlayListener {
     public static final String TAG = "TCVideoPreviewActivity";
 
     private int mVideoSource; // 视频来源
@@ -133,7 +134,7 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
         });
         mProgressTime = (TextView) findViewById(R.id.progress_time);
 
-        mIvPublish.setVisibility(View.GONE);
+        mIvPublish.setVisibility(View.VISIBLE);
 
         if (mVideoSource == TCConstants.VIDEO_RECORD_TYPE_UGC_RECORD) {
             mIvToEdit.setVisibility(View.VISIBLE);
@@ -221,6 +222,8 @@ public class TCVideoPreviewActivity extends Activity implements View.OnClickList
                 TXLog.d(TAG, "onPublishComplete [" + result.retCode + "/" + (result.retCode == 0? result.videoURL: result.descMsg) +"]");
 
             }
+
+
         });
 
         TXUGCPublishTypeDef.TXPublishParam param = new TXUGCPublishTypeDef.TXPublishParam();

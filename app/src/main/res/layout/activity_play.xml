@@ -3,7 +3,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bkg"
+    android:background="@color/black"
     android:orientation="vertical">
 
     <FrameLayout
@@ -18,6 +18,156 @@
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/top_one_rl"
+            android:layout_width="match_parent"
+            android:layout_height="60dip"
+            android:layout_marginTop="19dip">
+
+            <RelativeLayout
+                android:id="@+id/user_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dip"
+                android:layout_marginRight="15dip"
+                android:background="@drawable/gray_radius_bg"
+                android:paddingRight="12dip">
+
+                <ImageView
+                    android:id="@+id/avatar_iv"
+                    android:layout_width="25dip"
+                    android:layout_height="25dip"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dip"
+                    android:layout_marginRight="12dip"
+                    android:src="@drawable/default_avatar" />
+
+                <TextView
+                    android:id="@+id/name_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dip"
+                    android:layout_toRightOf="@id/avatar_iv"
+                    android:text="橘子"
+                    android:textColor="@color/white"
+                    android:textSize="9sp" />
+
+                <TextView
+                    android:id="@+id/room_num_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/name_tv"
+                    android:layout_toRightOf="@id/avatar_iv"
+                    android:text="997843475"
+                    android:textColor="@color/white"
+                    android:textSize="9sp" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/back_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:paddingBottom="5dip"
+                android:paddingLeft="0dip"
+                android:paddingRight="10dip"
+                android:paddingTop="5dip">
+
+                <ImageView
+                    android:id="@+id/back_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/btn_x_back_white" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/camera_switch_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/back_ll"
+                android:paddingLeft="10dip"
+                android:src="@drawable/camera_switch"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/record_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/camera_switch_iv"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:src="@drawable/start_record_logo"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/recording_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dip"
+                android:layout_toLeftOf="@id/record_iv"
+                android:background="@drawable/record_bg_frame"
+                android:drawableLeft="@drawable/recording_logo"
+                android:drawablePadding="13dip"
+                android:gravity="center_vertical"
+                android:paddingLeft="13dip"
+                android:text="00:00"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/danmuku_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/recording_tv"
+                android:paddingLeft="10dip"
+                android:src="@drawable/ic_danmuku_on"
+                android:visibility="visible" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/num_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dip"
+            android:layout_marginTop="79dip"
+            android:background="@drawable/gray_radius_bg_small"
+            android:gravity="center"
+            android:text="156人"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/comment_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="10dip"
+            android:paddingLeft="16dip"
+            android:paddingRight="16dip"
+            android:visibility="visible">
+
+            <com.education.shengnongcollege.common.widget.CommentListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true">
+
+            </com.education.shengnongcollege.common.widget.CommentListView>
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:id="@+id/play_pannel"
@@ -197,7 +347,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="30dp"
-                android:background="@drawable/start_record"
+                android:background="@drawable/start_record_logo"
                 android:onClick="onClick" />
 
             <ImageView
@@ -291,120 +441,6 @@
             </RadioGroup>
         </LinearLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/top_one_rl"
-            android:layout_width="match_parent"
-            android:layout_height="60dip"
-            android:layout_marginTop="19dip">
-
-            <RelativeLayout
-                android:id="@+id/user_rl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dip"
-                android:layout_marginRight="15dip"
-                android:background="@drawable/gray_radius_bg"
-                android:paddingRight="12dip">
-
-                <ImageView
-                    android:id="@+id/avatar_iv"
-                    android:layout_width="25dip"
-                    android:layout_height="25dip"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dip"
-                    android:layout_marginRight="12dip"
-                    android:src="@drawable/default_avatar" />
-
-                <TextView
-                    android:id="@+id/name_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dip"
-                    android:layout_toRightOf="@id/avatar_iv"
-                    android:text="橘子"
-                    android:textColor="@color/white"
-                    android:textSize="9sp" />
-
-                <TextView
-                    android:id="@+id/room_num_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/name_tv"
-                    android:layout_toRightOf="@id/avatar_iv"
-                    android:text="997843475"
-                    android:textColor="@color/white"
-                    android:textSize="9sp" />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/back_ll"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:paddingBottom="5dip"
-                android:paddingLeft="0dip"
-                android:paddingRight="15dip"
-                android:paddingTop="5dip">
-
-                <ImageView
-                    android:id="@+id/back_iv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/btn_x_back_white" />
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/camera_switch_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/back_ll"
-                android:paddingLeft="20dip"
-                android:paddingRight="20dip"
-                android:src="@drawable/camera_switch"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/record_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/camera_switch_iv"
-                android:paddingLeft="20dip"
-                android:src="@drawable/record"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/danmuku_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/record_iv"
-                android:paddingLeft="20dip"
-                android:src="@drawable/ic_danmuku_on"
-                android:visibility="visible" />
-
-
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/num_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="15dip"
-            android:layout_marginTop="79dip"
-            android:background="@drawable/gray_radius_bg_small"
-            android:gravity="center"
-            android:text="156人"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:visibility="visible" />
 
         <include
             layout="@layout/titlebar_new"

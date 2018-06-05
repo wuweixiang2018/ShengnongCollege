@@ -39,6 +39,27 @@
         <activity android:name=".activity.TestActivity"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity android:name=".videorecord.TCVideoSettingActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".videorecord.TCVideoRecordActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".videopublish.TCVideoPublishActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".shortvideo.editor.TCVideoEditerActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".shortvideo.editor.TCVideoPreprocessActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity
             android:name=".play.NewVodPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

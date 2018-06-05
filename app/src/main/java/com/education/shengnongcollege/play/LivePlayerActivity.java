@@ -28,7 +28,9 @@ import android.widget.Toast;
 //import com.tencent.liteav.demo.common.activity.QRCodeScanActivity;
 //import com.tencent.liteav.demo.common.activity.videopreview.TCVideoPreviewActivity;
 //import com.tencent.liteav.demo.common.utils.TCConstants;
+import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
 import com.education.shengnongcollege.push.LivePublisherActivity;
@@ -55,7 +57,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class LivePlayerActivity extends Activity implements ITXLivePlayListener, View.OnClickListener {
+public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXLivePlayListener, View.OnClickListener {
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
 
     private TXLivePlayer mLivePlayer = null;
@@ -75,6 +77,8 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
      * 录制
      */
     private ImageView recordIV;
+    //录制中
+    private TextView recordingTV;
 
     private static final int CACHE_STRATEGY_FAST = 1;  //极速
     private static final int CACHE_STRATEGY_SMOOTH = 2;  //流畅
@@ -242,14 +246,30 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
             }
         });
 
+        //开始录制
         recordIV = findViewById(R.id.record_iv);
         recordIV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent data = new Intent(LivePlayerActivity.this, LivePublisherActivity.class);
-                startActivity(data);
+//                Intent data = new Intent(LivePlayerActivity.this, LivePublisherActivity.class);
+//                startActivity(data);
+                streamRecord(!mRecordFlag);
+                recordIV.setVisibility(View.GONE);
+                recordingTV.setVisibility(View.VISIBLE);
             }
         });
+
+        //录制中
+        recordingTV = findViewById(R.id.recording_tv);
+        recordingTV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                streamRecord(!mRecordFlag);
+                recordIV.setVisibility(View.VISIBLE);
+                recordingTV.setVisibility(View.GONE);
+            }
+        });
+
 
         mBtnLog = (Button) findViewById(R.id.btnLog);
         mBtnLog.setOnClickListener(new OnClickListener() {
@@ -404,9 +424,11 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
                         return;
                     }
                     Log.d(TAG, "onRecordProgress:" + milliSecond);
-                    mRecordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
-                    int progress = (int) (milliSecond / 1000);
-                    if (progress < 60) {
+                    String time = String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60);
+                    recordingTV.setText(time);
+                    mRecordTimeTV.setText(time);
+                    int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
+                    if (progress < 100) {
                         mRecordProgressBar.setProgress(progress);
                     } else {
                         mLivePlayer.stopRecord();
@@ -427,15 +449,19 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
                         }
                     } else {
                         if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
-                            stopPlay();
-                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
-                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
-                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
-                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
-                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
-                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
-                            startActivity(intent);
-                            finish();
+                            recordingTV.setVisibility(View.GONE);
+                            recordIV.setVisibility(View.VISIBLE);
+                            publishVideo(result.videoPath, result.coverPath);
+
+//                            stopPlay();
+//                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
+//                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
+//                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
+//                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
+//                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
+//                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
+//                            startActivity(intent);
+//                            finish();
                         }
                     }
                 }
@@ -447,7 +473,7 @@ public class LivePlayerActivity extends Activity implements ITXLivePlayListener,
             mLivePlayer.stopRecord();
             mRecordTimeTV.setText("00:00");
             mRecordProgressBar.setProgress(0);
-            findViewById(R.id.record).setBackgroundResource(R.drawable.start_record);
+            findViewById(R.id.record).setBackgroundResource(R.drawable.record_live_broadcast);
         }
     }
 

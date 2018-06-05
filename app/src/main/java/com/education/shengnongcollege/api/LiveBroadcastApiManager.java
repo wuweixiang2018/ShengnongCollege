@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.education.shengnongcollege.model.GetCategoryListRespData;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
+import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
 import com.education.shengnongcollege.model.RespDataBase;
@@ -84,15 +85,55 @@ public class LiveBroadcastApiManager {
                 LiveBroadcastApiPath.GET_VIDEO_LIST_PATH, 0);
     }
 
+    /**
+     * 获取直播列表
+     *
+     * @param listener
+     * @param PageIndex
+     * @param PageSize
+     */
+    public static void getLVBList(GWResponseListener listener, int PageIndex, int PageSize) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("PageIndex", PageIndex);
+        bodyMap.put("PageSize", PageSize);
+        new GWApiPresent(listener).commonListPost(bodyMap, RespDataBase.class,
+                ListRespObj.class,
+                LiveBroadcastApiPath.GET_LVB_LIST_PATH, 0);
+    }
+
+    /**
+     * 获取视频详情
+     *
+     * @param listener
+     * @param Id
+     */
     public static void getVideoDetail(GWResponseListener listener, String Id) {
         HashMap<String, Object> bodyMap = new HashMap<>();
         if (!TextUtils.isEmpty(Id)) {
             bodyMap.put("Id", Id);
         }
-        new GWApiPresent(listener).commonListPost(bodyMap, RespDataBase.class,
+        new GWApiPresent(listener).commonPost(bodyMap, GetVideoDetailRespData.class,
                 RespObjBase.class,
                 LiveBroadcastApiPath.GET_VIDEO_DETAIL_PATH, 0);
     }
+
+    public static void storageVideo(GWResponseListener listener, String CategoryId, String Title,
+                                    String VideoUrl, String VideoId, String CoverUrl) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        if (CategoryId == null)
+            CategoryId = "";
+        if (Title == null)
+            Title = "";
+        bodyMap.put("CategoryId", CategoryId);
+        bodyMap.put("Title", Title);
+        bodyMap.put("VideoUrl", VideoUrl);
+        bodyMap.put("VideoId", VideoId);
+        bodyMap.put("CoverUrl", CoverUrl);
+        new GWApiPresent(listener).commonPost(bodyMap, RespDataBase.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.STORAGE_VIDEO_PATH, 0);
+    }
+
 
     public static void getPushFlowPlayUrl(GWResponseListener listener, String UserId, String Title,
                                           String CoverPhotoUrl) {

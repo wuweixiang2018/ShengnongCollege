@@ -2,6 +2,7 @@ package com.education.shengnongcollege.common.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -27,6 +28,41 @@ import java.util.List;
 public class FileUtils {
     private final static int MD5_FILE_BUFFER_LENGHT = 1 * 1024 * 1024; // 1MB
     private final static byte[] gSyncCode = new byte[0];
+
+    /**
+     * 优先外部存储空间,再手机存储空间
+     *
+     * @param context
+     * @return
+     */
+    public static File getFilesDir(Context context) {
+//        return getFilesDir(context, true);
+        File file = null;
+        if (checkExternalStorage()) {
+            //sdcard外部存储
+            //存储在sd卡上与包名相关的目录下,不需要申请读写权限
+            file = context.getExternalFilesDir(null);
+        } else {
+            //内部存储
+            file = context.getFilesDir();
+        }
+        return file;
+    }
+
+    /**
+     * 检验SDcard状态
+     *
+     * @return boolean
+     */
+    public static boolean checkExternalStorage() {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     public static InputStream getInputStream(File oFile) {
         InputStream oIn = null;

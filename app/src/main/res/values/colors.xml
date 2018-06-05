@@ -75,4 +75,28 @@
     <color name="bg_circle_zise">#A2B0FF</color>
     <color name="bg_circle_qianhuang">#F7C031</color>
 
+    <color name="record_speed_text_normal">#ffffff</color>
+    <color name="record_speed_text_select">#00f5ac</color>
+
+    <!--green-->
+    <color name="colorGreen">#0accac</color>
+
+    <color name="record_progress_bg">#66000000</color> <!-- 40%不透明度 -->
+    <color name="record_progress">#00f5ac</color>
+    <color name="record_progress_pending">#10acc0</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!--文字白色-->
+    <color name="colorTextWhite">#FFFFFF</color>
+
+    <color name="record_settings_tip">#999999</color>
+    <color name="input_text_color">#00f5ac</color>
+    <color name="paster_activity_background_color">#0d0d0d</color>
+    <color name="bubble_panel_background_color">#0d0d0d</color>
+
+    <color name="time_bg_normal">#0accac</color>
+    <color name="time_bg_selected">#AA0ACCAC</color>
+
+
 </resources>

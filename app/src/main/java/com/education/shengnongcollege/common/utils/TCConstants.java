@@ -49,10 +49,19 @@ public class TCConstants {
     public static final String PLAYER_VIDEO_NAME = "video_name";
 
     // 短视频licence名称
+    //正式
     public static final String UGC_LICENCE_NAME = "TXUgcSDK.licence";
+    //demo
+//    public static final String UGC_LICENCE_NAME = "TXUgcSDK.licence";
 
     // 点播的信息
-    public static final String VOD_APPID = "1256468886";
-    //1400093465
+    //demo
+//    public static final String VOD_APPID = "1256468886";
+//
+//    public static final String VOD_APPKEY = "5e6cc9f313c7c409f9121958cbcbe9f1";
+    // 点播的信息
+    //正式
+    public static final String VOD_APPID = "1254977157";
+    //API鉴权key
     public static final String VOD_APPKEY = "1973fcc2b70445af8b51053d4f9022bb";
 }

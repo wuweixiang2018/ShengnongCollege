@@ -3,7 +3,15 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bkg">
+    android:background="@color/background_gray1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="准备中"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
     <com.tencent.rtmp.ui.TXCloudVideoView
         android:id="@+id/video_view"
@@ -33,10 +41,203 @@
         android:visibility="gone" />
 
     <RelativeLayout
+        android:id="@+id/comment_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="10dip"
+        android:paddingLeft="16dip"
+        android:paddingRight="16dip"
+        android:visibility="visible">
+
+        <com.education.shengnongcollege.common.widget.CommentListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+        </com.education.shengnongcollege.common.widget.CommentListView>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/time_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/record_time_bg"
+        android:paddingLeft="15dip"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/record_time_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="00:00"
+            android:textSize="17sp"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dip"
+        android:layout_marginTop="16dip"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/user_rl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/gray_radius_bg">
+
+            <ImageView
+                android:id="@+id/avatar_iv"
+                android:layout_width="25dip"
+                android:layout_height="25dip"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="12dip"
+                android:layout_marginRight="12dip"
+                android:src="@drawable/default_avatar" />
+
+            <TextView
+                android:id="@+id/name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dip"
+                android:layout_toRightOf="@id/avatar_iv"
+                android:text="橘子"
+                android:textColor="@color/white"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/room_num_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/name_tv"
+                android:layout_toRightOf="@id/avatar_iv"
+                android:text="997843475"
+                android:textColor="@color/white"
+                android:textSize="9sp" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/back_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="30dip"
+            android:paddingRight="15dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:src="@drawable/btn_x_back_white" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/camera_change_iv"
+            android:layout_width="35dip"
+            android:layout_height="30dip"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@id/back_ll"
+            android:background="@drawable/camera_change" />
+
+        <ImageView
+            android:id="@+id/start_record_logo_iv"
+            android:layout_width="33dip"
+            android:layout_height="28dip"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="30dip"
+            android:layout_toLeftOf="@id/camera_change_iv"
+            android:background="@drawable/start_record_logo"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/start_publisher_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/start_publisher_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="27dip"
+            android:src="@drawable/start_publisher"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/record_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/record_live_broadcast_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="27dip"
+            android:drawablePadding="10dip"
+            android:drawableTop="@drawable/record_live_broadcast"
+            android:gravity="center"
+            android:text="点击录制"
+            android:textColor="#231815"
+            android:textSize="13sp"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/exit_record_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="38dip"
+            android:layout_marginRight="24dip"
+            android:drawablePadding="10dip"
+            android:drawableTop="@drawable/record_close"
+            android:gravity="center"
+            android:text="退出"
+            android:textColor="#231815"
+            android:textSize="13sp"
+            android:visibility="visible" />
+
+        <ProgressBar
+            android:id="@+id/record_progress"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_above="@id/record_live_broadcast_tv"
+            android:layout_marginBottom="32dip"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/record_progress"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
+
 
         <LinearLayout
             android:id="@+id/btns_tests"
@@ -44,7 +245,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,16 +264,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/btnCameraChange"
-                android:layout_width="35dip"
-                android:layout_height="35dip"
-                android:background="@drawable/camera_change" />
+            <!--<Button-->
+            <!--android:id="@+id/btnCameraChange"-->
+            <!--android:layout_width="35dip"-->
+            <!--android:layout_height="35dip"-->
+            <!--android:background="@drawable/camera_change" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1" />-->
 
             <Button
                 android:id="@+id/btnTouchFoucs"
@@ -151,89 +353,89 @@
     </RelativeLayout>
 
     <!--录制-->
-    <RelativeLayout
-        android:id="@+id/record_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="60dp"
-        android:visibility="gone">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/record_layout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:layout_marginBottom="60dp"-->
+    <!--android:visibility="gone">-->
 
-        <TextView
-            android:id="@+id/record_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="00:00"
-            android:textSize="14dp" />
+    <!--<TextView-->
+    <!--android:id="@+id/record_time"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:text="00:00"-->
+    <!--android:textSize="14dp" />-->
 
-        <ProgressBar
-            android:id="@+id/record_progress"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@id/record_time"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:max="100"
-            android:progress="0"
-            android:progressDrawable="@drawable/record_progress" />
+    <!--<ProgressBar-->
+    <!--android:id="@+id/record_progress"-->
+    <!--style="@android:style/Widget.ProgressBar.Horizontal"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_below="@id/record_time"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:max="100"-->
+    <!--android:progress="0"-->
+    <!--android:progressDrawable="@drawable/record_progress" />-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_below="@id/record_time"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal">
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_below="@id/record_time"-->
+    <!--android:layout_marginLeft="20dp"-->
+    <!--android:layout_marginRight="20dp"-->
+    <!--android:orientation="horizontal">-->
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_weight="11" />
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_weight="11" />-->
 
-            <FrameLayout
-                android:layout_width="5dp"
-                android:layout_height="2dp"
-                android:background="#FF0ACBAB" />
+    <!--<FrameLayout-->
+    <!--android:layout_width="5dp"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:background="#FF0ACBAB" />-->
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_weight="1" />
-        </LinearLayout>
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="2dp"-->
+    <!--android:layout_weight="1" />-->
+    <!--</LinearLayout>-->
 
-        <ImageView
-            android:id="@+id/close_record"
-            android:layout_width="@dimen/live_btn_size"
-            android:layout_height="@dimen/live_btn_size"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_close"
-            android:onClick="onClick" />
+    <!--<ImageView-->
+    <!--android:id="@+id/close_record"-->
+    <!--android:layout_width="@dimen/live_btn_size"-->
+    <!--android:layout_height="@dimen/live_btn_size"-->
+    <!--android:layout_marginLeft="50dp"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:background="@drawable/btn_close"-->
+    <!--android:onClick="onClick" />-->
 
-        <ImageView
-            android:id="@+id/record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/start_record"
-            android:onClick="onClick" />
+    <!--<ImageView-->
+    <!--android:id="@+id/record"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:background="@drawable/record_live_broadcast"-->
+    <!--android:onClick="onClick" />-->
 
-        <ImageView
-            android:id="@+id/retry_record"
-            android:layout_width="@dimen/live_btn_size"
-            android:layout_height="@dimen/live_btn_size"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/btn_again"
-            android:onClick="onClick" />
+    <!--<ImageView-->
+    <!--android:id="@+id/retry_record"-->
+    <!--android:layout_width="@dimen/live_btn_size"-->
+    <!--android:layout_height="@dimen/live_btn_size"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_marginRight="50dp"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:background="@drawable/btn_again"-->
+    <!--android:onClick="onClick" />-->
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <LinearLayout
         android:id="@+id/layoutBitrate"
@@ -381,45 +583,45 @@
         android:clickable="true"
         android:visibility="gone" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
+    <!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="40dp">-->
 
-        <LinearLayout
-            android:id="@+id/back_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="12dp">
+    <!--<LinearLayout-->
+    <!--android:id="@+id/back_ll"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_marginLeft="12dp">-->
 
-            <ImageView
-                android:layout_width="14dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:gravity="center"
-                android:src="@drawable/btn_back_gray" />
+    <!--<ImageView-->
+    <!--android:layout_width="14dp"-->
+    <!--android:layout_height="24dp"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:gravity="center"-->
+    <!--android:src="@drawable/btn_back_gray" />-->
 
-            <TextView
-                android:id="@+id/back_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="4dp"
-                android:gravity="center_vertical"
-                android:text="返回"
-                android:textColor="#ffffff"
-                android:textSize="14dp" />
-        </LinearLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/back_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center_vertical"-->
+    <!--android:layout_marginLeft="4dp"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:text="返回"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="14dp" />-->
+    <!--</LinearLayout>-->
 
-        <TextView
-            android:id="@+id/title_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="标题"
-            android:textColor="#ffffff"
-            android:textSize="18dp" />
-    </FrameLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/title_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="标题"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="18dp" />-->
+    <!--</FrameLayout>-->
 
     <include
         layout="@layout/titlebar_new"

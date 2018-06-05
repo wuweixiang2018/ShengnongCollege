@@ -16,6 +16,13 @@ import java.util.HashMap;
 
 public class UserApiManager {
 
+    public static void getDemandUserSign(GWResponseListener listener) {
+//        HashMap<String, Object> bodyMap = new HashMap<>();
+//        bodyMap.put("Identifier", Identifier);
+        new GWApiPresent(listener).commonPost(null, String.class, RespObjBase.class,
+                UserApiPath.GET_DEMAND_USER_SIGN_PATH, 0);
+    }
+
     /**
      * 获取获取云通信票据（签名）
      *
