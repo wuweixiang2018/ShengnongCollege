@@ -53,7 +53,7 @@ public class VideoPublishBaseActivity extends BaseTopActivity {
     protected String Title;
 
     //3分钟
-    protected static final int RECORD_MAX_TIME = 3*60;
+    protected static final int RECORD_MAX_TIME = 3 * 60;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,7 +119,7 @@ public class VideoPublishBaseActivity extends BaseTopActivity {
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
 
             }
-        }, CategoryId, Title, result.videoURL, result.videoId, result.coverURL);
+        }, CategoryId, Title, result.videoURL, result.videoId, result.coverURL, result.descMsg);
 //        VideoDataMgr.getInstance().reportVideoInfo(result.videoId, "腾讯云");
     }
 

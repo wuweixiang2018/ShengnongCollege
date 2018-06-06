@@ -119,14 +119,17 @@ public class LiveBroadcastApiManager {
     }
 
     public static void storageVideo(GWResponseListener listener, String CategoryId, String Title,
-                                    String VideoUrl, String VideoId, String CoverUrl) {
+                                    String Profile, String VideoUrl, String VideoId, String CoverUrl) {
         HashMap<String, Object> bodyMap = new HashMap<>();
         if (CategoryId == null)
             CategoryId = "";
         if (Title == null)
             Title = "";
+        if (Profile == null)
+            Profile = "";
         bodyMap.put("CategoryId", CategoryId);
         bodyMap.put("Title", Title);
+        bodyMap.put("Profile", Profile);
         bodyMap.put("VideoUrl", VideoUrl);
         bodyMap.put("VideoId", VideoId);
         bodyMap.put("CoverUrl", CoverUrl);

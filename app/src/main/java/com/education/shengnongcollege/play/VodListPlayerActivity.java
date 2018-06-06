@@ -126,7 +126,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         mAdapter = new CommentListAdapter(this);
         mAdapter.setOnItemClickLitener(mOnItemClickListener);
@@ -155,6 +155,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
             }
         });
         introduceTV = findViewById(R.id.introduce_tv);
+        introduceTV.setText(videoDetail.getProfile());
         introduceTabTV = findViewById(R.id.introduce_tab_tv);
         underlineOne = findViewById(R.id.underline_1);
 

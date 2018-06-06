@@ -14,6 +14,7 @@ public class GetVideoDetailRespData extends RespDataBase {
      * VideoId : 7447398156428336855
      * CoverUrl : http://1254977157.vod2.myqcloud.com/86e2410fvodgzp1254977157/0c8cf6777447398156428336855/7447398156428336856.jpg
      * CreateTime : 2018-06-05T16:02:22.44
+     * Profile:描述
      */
 
     private String Id;
@@ -23,6 +24,15 @@ public class GetVideoDetailRespData extends RespDataBase {
     private String VideoId;
     private String CoverUrl;
     private String CreateTime;
+    private String Profile;
+
+    public String getProfile() {
+        return Profile;
+    }
+
+    public void setProfile(String profile) {
+        Profile = profile;
+    }
 
     public String getId() {
         return Id;
