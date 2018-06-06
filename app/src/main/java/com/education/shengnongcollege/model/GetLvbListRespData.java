@@ -19,84 +19,84 @@ public class GetLvbListRespData extends RespDataBase {
      */
 
     private String UserId;
-    private Object Title;
-    private Object CoverPhotoUrl;
-    private Object PushUrl;
+    private String Title;
+    private String CoverPhotoUrl;
+    private String PushUrl;
     private int State;
     private int Audience;
     private int Fabulous;
     private int DeleteMark;
     private String CreateTime;
 
-    public Object getPushUrl() {
-        return PushUrl;
-    }
-
-    public void setPushUrl(Object pushUrl) {
-        PushUrl = pushUrl;
-    }
-
     public String getUserId() {
         return UserId;
     }
 
-    public void setUserId(String UserId) {
-        this.UserId = UserId;
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 
-    public Object getTitle() {
+    public String getTitle() {
         return Title;
     }
 
-    public void setTitle(Object Title) {
-        this.Title = Title;
+    public void setTitle(String title) {
+        Title = title;
     }
 
-    public Object getCoverPhotoUrl() {
+    public String getCoverPhotoUrl() {
         return CoverPhotoUrl;
     }
 
-    public void setCoverPhotoUrl(Object CoverPhotoUrl) {
-        this.CoverPhotoUrl = CoverPhotoUrl;
+    public void setCoverPhotoUrl(String coverPhotoUrl) {
+        CoverPhotoUrl = coverPhotoUrl;
+    }
+
+    public String getPushUrl() {
+        return PushUrl;
+    }
+
+    public void setPushUrl(String pushUrl) {
+        PushUrl = pushUrl;
     }
 
     public int getState() {
         return State;
     }
 
-    public void setState(int State) {
-        this.State = State;
+    public void setState(int state) {
+        State = state;
     }
 
     public int getAudience() {
         return Audience;
     }
 
-    public void setAudience(int Audience) {
-        this.Audience = Audience;
+    public void setAudience(int audience) {
+        Audience = audience;
     }
 
     public int getFabulous() {
         return Fabulous;
     }
 
-    public void setFabulous(int Fabulous) {
-        this.Fabulous = Fabulous;
+    public void setFabulous(int fabulous) {
+        Fabulous = fabulous;
     }
 
     public int getDeleteMark() {
         return DeleteMark;
     }
 
-    public void setDeleteMark(int DeleteMark) {
-        this.DeleteMark = DeleteMark;
+    public void setDeleteMark(int deleteMark) {
+        DeleteMark = deleteMark;
     }
 
     public String getCreateTime() {
         return CreateTime;
     }
 
-    public void setCreateTime(String CreateTime) {
-        this.CreateTime = CreateTime;
+    public void setCreateTime(String createTime) {
+        CreateTime = createTime;
     }
 }

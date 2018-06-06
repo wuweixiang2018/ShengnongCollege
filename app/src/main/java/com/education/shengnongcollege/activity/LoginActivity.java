@@ -52,12 +52,12 @@ public class LoginActivity extends BaseTopActivity {
 
     private void initListener() {
         //测试按钮
-        findViewById(R.id.test_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, TestActivity.class));
-            }
-        });
+//        findViewById(R.id.test_btn).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(LoginActivity.this, TestActivity.class));
+//            }
+//        });
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

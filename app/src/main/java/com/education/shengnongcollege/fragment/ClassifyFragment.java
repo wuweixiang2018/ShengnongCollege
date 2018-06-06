@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
-import com.education.shengnongcollege.activity.MainSerchActivity;
+import com.education.shengnongcollege.activity.MainSearchActivity;
 import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.ClassifyListAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
@@ -91,7 +91,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         serchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), MainSerchActivity.class);
+                Intent intent=new Intent(getActivity(), MainSearchActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_enter_from_top, R.anim.anim_exit_from_bottom);
             }

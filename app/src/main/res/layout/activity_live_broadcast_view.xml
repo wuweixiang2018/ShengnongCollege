@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/withe"
+    android:orientation="vertical"
     tools:context="com.education.shengnongcollege.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
@@ -19,12 +20,13 @@
             <LinearLayout
                 android:id="@+id/live_top_back"
                 android:layout_width="48dp"
-                android:gravity="center"
-                android:layout_height="48dp">
+                android:layout_height="48dp"
+                android:gravity="center">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/back"/>
+                    android:background="@drawable/back" />
             </LinearLayout>
 
             <TextView
@@ -33,58 +35,62 @@
                 android:background="@null"
                 android:drawablePadding="5dp"
                 android:gravity="center"
-                android:text="全部"
                 android:paddingLeft="5dp"
+                android:text="全部"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
         </RelativeLayout>
 
     </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/main_home_line">
-        <com.handmark.pulltorefresh.library.PullToRefreshGridView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+
+        <com.handmark.pulltorefresh.library.PullToRefreshGridView xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/live_main_gridview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:horizontalSpacing="5dp"
-            android:verticalSpacing="5dp"
+            android:layout_marginBottom="40dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="40dp"
-            android:numColumns="2" />
+            android:background="@android:color/transparent"
+            android:horizontalSpacing="5dp"
+            android:numColumns="2"
+            android:verticalSpacing="5dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:gravity="center"
             android:background="@drawable/live_list_bottom_bg"
+            android:gravity="center"
             android:orientation="vertical">
+
             <LinearLayout
                 android:id="@+id/live_bottom_ljzb_layout"
                 android:layout_width="wrap_content"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/live_list_bottom_ljzb"/>
+                    android:background="@drawable/live_list_bottom_ljzb" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="立即直播"
-                    android:textSize="14sp"
-                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:textColor="@color/withe"/>
+                    android:layout_marginTop="5dp"
+                    android:text="立即直播"
+                    android:textColor="@color/withe"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

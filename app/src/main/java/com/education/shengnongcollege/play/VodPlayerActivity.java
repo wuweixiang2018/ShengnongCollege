@@ -18,7 +18,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,7 +47,7 @@ import java.util.List;
  * Created by wuweixiang on 18/6/2.
  */
 
-public class VodListPlayerActivity extends BaseTopActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class VodPlayerActivity extends BaseTopActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     public static final String TAG = "NewVodPlayerActivity";
     private GetVideoDetailRespData videoDetail;
     //课程介绍
@@ -245,7 +244,7 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(VodListPlayerActivity.this, "获取已上传的视频列表失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VodPlayerActivity.this, "获取已上传的视频列表失败", Toast.LENGTH_SHORT).show();
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -480,17 +479,17 @@ public class VodListPlayerActivity extends BaseTopActivity implements View.OnCli
 
                         try {
                             if (TextUtils.isEmpty(param.appId)) {
-                                Toast.makeText(VodListPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VodPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                             int appid = Integer.parseInt(param.appId);
                             String fileId = param.fileId;
                             if (TextUtils.isEmpty(fileId)) {
-                                Toast.makeText(VodListPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VodPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } catch (NumberFormatException e) {
-                            Toast.makeText(VodListPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VodPlayerActivity.this, "请输入正确的AppId和FileId", Toast.LENGTH_SHORT).show();
                             return;
                         }
 //                        mVodList.add(param);

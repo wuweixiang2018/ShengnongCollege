@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseTopActivity;
-import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.api.UserApiManager;
@@ -21,12 +20,10 @@ import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ListResponseResult;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.LivePlayerActivity;
-import com.education.shengnongcollege.play.VodListPlayerActivity;
+import com.education.shengnongcollege.play.VodPlayerActivity;
 import com.education.shengnongcollege.push.LivePublisherActivity;
-import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.JkysLog;
 import com.education.shengnongcollege.videorecord.TCVideoRecordActivity;
-import com.education.shengnongcollege.videorecord.TCVideoSettingActivity;
 import com.tencent.rtmp.TXLiveBase;
 
 import java.io.Serializable;
@@ -61,7 +58,7 @@ public class TestActivity extends BaseTopActivity {
                         ResponseResult<GetVideoDetailRespData, RespObjBase> responseResult = (ResponseResult<GetVideoDetailRespData, RespObjBase>) result;
                         if (responseResult != null && responseResult.getData() != null) {
                             GetVideoDetailRespData data = responseResult.getData();
-                            Intent intent = new Intent(TestActivity.this, VodListPlayerActivity.class);
+                            Intent intent = new Intent(TestActivity.this, VodPlayerActivity.class);
                             intent.putExtra("videoDetail", data);
                             startActivity(intent);
                         }
