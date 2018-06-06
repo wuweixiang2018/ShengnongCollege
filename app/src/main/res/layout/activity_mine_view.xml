@@ -41,7 +41,7 @@
                 android:id="@+id/mine_top_userImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/mine_top_image_default"/>
+                android:src="@drawable/mine_top_image_default"/>
         </RelativeLayout>
     </RelativeLayout>
     <LinearLayout

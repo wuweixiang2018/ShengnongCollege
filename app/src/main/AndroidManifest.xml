@@ -65,6 +65,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name=".activity.LiveBroadcastActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
         <activity android:name=".videorecord.TCVideoSettingActivity"
             android:screenOrientation="portrait">
         </activity>

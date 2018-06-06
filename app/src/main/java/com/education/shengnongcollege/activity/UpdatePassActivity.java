@@ -17,6 +17,7 @@ import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.CacheUtil;
 import com.education.shengnongcollege.widget.DialogUtil;
 
 import java.io.Serializable;
@@ -91,6 +92,8 @@ public class UpdatePassActivity extends BaseTopActivity{
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<RegisterRespData, RespObjBase> responseResult = (ResponseResult<RegisterRespData, RespObjBase>) result;
                 RegisterRespData data = responseResult.getData();
+                CacheUtil.getInstance().setUserId(data.getUserId());
+                CacheUtil.getInstance().setUserPassword(passEdt.getText().toString());
                 BaseUtil.UserId=data.getUserId();//密码修改应该相当于换了个userID
                 Toast.makeText(UpdatePassActivity.this,"密码修改成功",Toast.LENGTH_SHORT).show();
                 finish();

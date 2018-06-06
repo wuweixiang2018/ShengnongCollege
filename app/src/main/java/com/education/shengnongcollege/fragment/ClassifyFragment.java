@@ -203,6 +203,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
         LiveBroadcastApiManager.getVideoList(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                mGridView.onRefreshComplete();
                 DialogUtil.getInstance().cancelProgressDialog();
                 ListResponseResult<GetVideoListRespData, ListRespObj> responseResult = (ListResponseResult<GetVideoListRespData, ListRespObj>) result;
                 List<GetVideoListRespData> data=responseResult.getData();
@@ -216,6 +217,8 @@ public class ClassifyFragment extends BaseFragment implements IListener {
                         if(data.size()==0){
                             Toast.makeText(getActivity(), "搜索无结果", Toast.LENGTH_SHORT).show();
                         }
+                    }else{
+                        mGridView.setMode(PullToRefreshBase.Mode.BOTH);//能下拉刷新和上拉加载
                     }
                     gridAdapter.notifyDataSetChanged();
                 }else {
@@ -226,6 +229,7 @@ public class ClassifyFragment extends BaseFragment implements IListener {
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
                 DialogUtil.getInstance().cancelProgressDialog();
+                mGridView.onRefreshComplete();
                 Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
             }
         }, CategoryId,"",pageindex, 10);
