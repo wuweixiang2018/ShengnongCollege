@@ -1,12 +1,9 @@
 package com.education.shengnongcollege.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,6 +28,7 @@ import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.Ilisten.ListenerManager;
 import com.education.shengnongcollege.widget.DialogUtil;
 
 import org.json.JSONException;
@@ -262,7 +260,7 @@ public class PerfectinfoActivity extends BaseTopActivity implements DatePicker.O
             //判断是哪一个的回调
             if (requestCode == REQUEST_CHOOSE_IMAGE) {
                 //返回的是content://的样式
-                filePath = getFilePathFromContentUri(data.getData(), this);
+                filePath = BaseUtil.getFilePathFromContentUri(data.getData(), this);
                 mCurrentPhotoPath=filePath;
             } else if (requestCode == REQUEST_TAKE_PHOTO) {//相机
                 if (mCurrentPhotoPath != null) {
@@ -272,7 +270,7 @@ public class PerfectinfoActivity extends BaseTopActivity implements DatePicker.O
             Log.e("图片照相或者选择图片返回来的",mCurrentPhotoPath);
             if (!TextUtils.isEmpty(filePath)) {
                 // 自定义大小，防止OOM
-                Bitmap bitmap = getSmallBitmap(filePath, 200, 200);
+                Bitmap bitmap = BaseUtil.getSmallBitmap(filePath, 200, 200);
                 userImage.setImageBitmap(bitmap);
                 DialogUtil.getInstance().showProgressDialog(PerfectinfoActivity.this);
                 new Thread(new Runnable() {
@@ -284,63 +282,6 @@ public class PerfectinfoActivity extends BaseTopActivity implements DatePicker.O
             }
         }
     }
-    /**
-     * 获取小图片，防止OOM
-     *
-     * @param filePath
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static Bitmap getSmallBitmap(String filePath, int reqWidth, int reqHeight) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        try {
-            BitmapFactory.decodeFile(filePath, options);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeFile(filePath, options);
-    }
-    /**
-     * 计算图片缩放比例
-     *
-     * @param options
-     * @param reqWidth
-     * @param reqHeight
-     * @return
-     */
-    public static int calculateInSampleSize(BitmapFactory.Options options,
-                                            int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-        if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
-        return inSampleSize;
-    }
-    /**
-     * @param uri     content:// 样式
-     * @param context
-     * @return real file path
-     */
-    public static String getFilePathFromContentUri(Uri uri, Context context) {
-        String filePath;
-        String[] filePathColumn = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = context.getContentResolver().query(uri, filePathColumn, null, null, null);
-        if (cursor == null) return null;
-        cursor.moveToFirst();
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        filePath = cursor.getString(columnIndex);
-        cursor.close();
-        return filePath;
-    }
-
     private void initView(){
         back=findViewById(R.id.wsgrxx_top_back);
         uploadImage=findViewById(R.id.wsgrxx_top_upload);
@@ -364,6 +305,7 @@ public class PerfectinfoActivity extends BaseTopActivity implements DatePicker.O
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 String data=responseResult.getData();
                 if(!TextUtils.isEmpty(data)&&TextUtils.equals(data,"1")){
+                    ListenerManager.getInstance().sendBroadCast("MineFragment","");//刷新我的页面信息
                     Toast.makeText(getApplicationContext(), "完善信息成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }else{

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.activity.LiveBroadcastActivity;
 import com.education.shengnongcollege.activity.MainSerchActivity;
 import com.education.shengnongcollege.activity.TestActivity;
 import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
@@ -85,8 +87,13 @@ public class MainFragment extends BaseFragment {
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ListenerManager.getInstance().sendBroadCast("MainActivity_replace","");//先切换
-                ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow",adapter.getItem(i));//展现出来
+                if(TextUtils.equals("直播",adapter.getItem(i).getName())){
+                    Intent intent=new Intent(getActivity(), LiveBroadcastActivity.class);//这里跳到直播列表
+                    startActivity(intent);
+                }else{
+                    ListenerManager.getInstance().sendBroadCast("MainActivity_replace","");//先切换
+                    ListenerManager.getInstance().sendBroadCast("ClassifyFragment_itemShow",adapter.getItem(i));//展现出来
+                }
             }
         });
         rightBtn.setOnClickListener(new View.OnClickListener() {
@@ -121,9 +128,24 @@ public class MainFragment extends BaseFragment {
                         ListResponseResult<GetCategoryListRespData, ListRespObj> responseResult = (ListResponseResult<GetCategoryListRespData, ListRespObj>) result;
                         List<GetCategoryListRespData> data = responseResult.getData();
                         ListRespObj obj = responseResult.getObj();
-                        adapter=new MainCenterAdapter(getActivity(),data);
-                        mGridView.setAdapter(adapter);
-                        initToptab(data);
+                        if(data!=null){
+                            //中间按钮加入直播选项
+                            GetCategoryListRespData data1=new GetCategoryListRespData();
+                            data1.setIschoose(true);
+                            data1.setName("直播");
+                            data1.setId("");
+                            if(data.size()==10){
+                                data.set(9,data1);//设置最后一个为直播
+                            }else{
+                                data.add(data1);
+                            }
+                            //先把头部加入最新10条数据
+                            initToptab(data);
+                            adapter=new MainCenterAdapter(getActivity(),data);
+                            mGridView.setAdapter(adapter);
+                        }else{
+                            Toast.makeText(getActivity(), "分类列表暂无数据", Toast.LENGTH_SHORT).show();
+                        }
                         //ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
                     }
 
@@ -150,7 +172,12 @@ public class MainFragment extends BaseFragment {
             @Override
             public void onPageSelected(int arg0) {
                 Log.e("选中状态",data.get(arg0).getName());
-                getVidioListData(data.get(arg0).getId());
+                if(TextUtils.equals("直播",data.get(arg0).getName())){
+                    Intent intent=new Intent(getActivity(), LiveBroadcastActivity.class);//这里跳到直播列表
+                    startActivity(intent);
+                }else{
+                    getVidioListData(data.get(arg0).getId());
+                }
             }
 
             @Override

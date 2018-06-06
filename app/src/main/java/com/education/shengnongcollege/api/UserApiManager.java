@@ -173,10 +173,19 @@ public class UserApiManager {
                 UserApiPath.MODIFYPASSWORD, 0);
 
     }
-//    public static void feedback(GWResponseListener listener, String Tel) {
-//        HashMap<String, Object> bodyMap = new HashMap<>();
-//        bodyMap.put("Tel", Tel);
-//        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
-//                UserApiPath.FEEDBACK_PATH, 0);
-//    }
+    /**
+     * 意见反馈，参数含义详见接口文档
+     *
+     * @param listener   参数result的类型是ResponseResult<String,RespObjBase>  跟注册一样的返回参数
+     * @param UserId
+     * @param Content//意见内容
+     */
+    public static void comitFeedBack(GWResponseListener listener, String UserId, String Content) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        bodyMap.put("Content", Content);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.FEEDBACK_PATH, 0);
+
+    }
 }
