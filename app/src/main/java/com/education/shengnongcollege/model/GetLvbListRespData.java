@@ -7,33 +7,33 @@ package com.education.shengnongcollege.model;
 public class GetLvbListRespData extends RespDataBase {
 
     /**
-     * Id : fc3bcbd3-561d-4721-b13b-efd11b030612
-     * UserId : 108fddbd-cc72-4471-81b9-7391d61943e0
-     * Title : null
-     * CoverPhotoUrl : null
-     * State : 2
-     * Audience : 0
-     * Fabulous : 0
-     * DeleteMark : 0
-     * CreateTime : 2018-06-04
+     {
+     "UserId": "108fddbd-cc72-4471-81b9-7391d61943e0",
+     "PushUrl": "rtmp://21696.livepush.myqcloud.com/live/21696_108fddbdcc?bizid=21696&txSecret=a07777d81dbfcb306169b1963d958a83&txTime=5B19890F",
+     "Title": null,
+     "CoverPhotoUrl": null,
+     "State": 2, 1 等待开播 2 直播中 3 直播已结束
+     "Audience": 0,
+     "Fabulous": 0
+     },
      */
 
-    private String Id;
     private String UserId;
     private Object Title;
     private Object CoverPhotoUrl;
+    private Object PushUrl;
     private int State;
     private int Audience;
     private int Fabulous;
     private int DeleteMark;
     private String CreateTime;
 
-    public String getId() {
-        return Id;
+    public Object getPushUrl() {
+        return PushUrl;
     }
 
-    public void setId(String Id) {
-        this.Id = Id;
+    public void setPushUrl(Object pushUrl) {
+        PushUrl = pushUrl;
     }
 
     public String getUserId() {
