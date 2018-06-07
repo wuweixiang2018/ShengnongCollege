@@ -28,7 +28,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".activity.MainSerchActivity"
+        <activity android:name=".activity.MainSearchActivity"
             android:screenOrientation="portrait">
         </activity>
 
@@ -108,7 +108,7 @@
             android:windowSoftInputMode="stateHidden"></activity>
 
         <activity
-            android:name=".play.VodListPlayerActivity"
+            android:name=".play.VodPlayerActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

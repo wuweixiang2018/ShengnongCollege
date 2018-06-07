@@ -61,6 +61,7 @@ import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.play.NewVodPlayerActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.ImageLoadManager;
 import com.education.shengnongcollege.videopublish.TCVideoPublishActivity;
 import com.education.shengnongcollege.videopublish.server.PublishSigListener;
 import com.education.shengnongcollege.videopublish.server.ReportVideoInfoListener;
@@ -325,6 +326,17 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         super.setContentView(R.layout.activity_publish);
 
         initView();
+
+        TextView nameTV = findViewById(R.id.name_tv);
+        nameTV.setText(BaseUtil.userData.getRealName());
+
+        String avatar = BaseUtil.userData.getPhotograph();
+        avatar="http://imgsrc.baidu.com/forum/w=580/sign=1588b7c5d739b6004dce0fbfd9503526/7bec54e736d12f2eb97e1a464dc2d56285356898.jpg";
+        if (!TextUtils.isEmpty(avatar)) {
+            ImageView avatarIV = findViewById(R.id.avatar_iv);
+            ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
+                    R.drawable.default_avatar, 360);
+        }
 
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);
         mCaptureView.setLogMargin(12, 12, 110, 60);

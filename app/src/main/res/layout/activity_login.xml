@@ -134,7 +134,8 @@
             android:gravity="center"
             android:text="进入测试页面"
             android:textColor="@color/top_text_bg"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

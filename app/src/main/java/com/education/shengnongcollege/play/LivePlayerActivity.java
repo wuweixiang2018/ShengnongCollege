@@ -28,12 +28,16 @@ import android.widget.Toast;
 //import com.tencent.liteav.demo.common.activity.QRCodeScanActivity;
 //import com.tencent.liteav.demo.common.activity.videopreview.TCVideoPreviewActivity;
 //import com.tencent.liteav.demo.common.utils.TCConstants;
+import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.model.GetLvbListRespData;
 import com.education.shengnongcollege.push.LivePublisherActivity;
+import com.education.shengnongcollege.utils.BaseUtil;
+import com.education.shengnongcollege.utils.ImageLoadManager;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
@@ -59,6 +63,8 @@ import okhttp3.Response;
 
 public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXLivePlayListener, View.OnClickListener {
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
+    //直播相关数据
+    private GetLvbListRespData lvbData;
 
     private TXLivePlayer mLivePlayer = null;
     private boolean mIsPlaying;
@@ -118,6 +124,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        lvbData = (GetLvbListRespData) getIntent().getSerializableExtra("lvbData");
         mCurrentRenderMode = TXLiveConstants.RENDER_MODE_ADJUST_RESOLUTION;
         mCurrentRenderRotation = TXLiveConstants.RENDER_ROTATION_PORTRAIT;
 
@@ -200,6 +207,19 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     public void setContentView() {
         super.setContentView(R.layout.activity_play);
         initView();
+
+        TextView nameTV = findViewById(R.id.name_tv);
+        nameTV.setText(BaseUtil.userData.getRealName());
+
+        String avatar = BaseUtil.userData.getPhotograph();
+        if (!TextUtils.isEmpty(avatar)) {
+            ImageView avatarIV = findViewById(R.id.avatar_iv);
+            ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
+                    R.drawable.default_avatar, 360);
+        }
+
+        TextView numTV = findViewById(R.id.num_tv);
+        numTV.setText(lvbData.getAudience() + "人");
 
         mRootView = (LinearLayout) findViewById(R.id.root);
         if (mLivePlayer == null) {
@@ -567,7 +587,9 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     }
 
     private boolean startPlay() {
-        String playUrl = mRtmpUrlView.getText().toString();
+        String playUrlTest = mRtmpUrlView.getText().toString();
+
+        String playUrl = lvbData.getPushUrl();
 
         if (!checkPlayUrl(playUrl)) {
             return false;
@@ -598,7 +620,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         int result = mLivePlayer.startPlay(playUrl, mPlayType); // result返回值：0 success;  -1 empty url; -2 invalid url; -3 invalid playType;
         if (result != 0) {
             mBtnPlay.setBackgroundResource(R.drawable.play_start);
-            mRootView.setBackgroundResource(R.drawable.main_bkg);
+//            mRootView.setBackgroundResource(R.drawable.main_bkg);
             return false;
         }
 
@@ -616,7 +638,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private void stopPlay() {
         enableQRCodeBtn(true);
         mBtnPlay.setBackgroundResource(R.drawable.play_start);
-        mRootView.setBackgroundResource(R.drawable.main_bkg);
+//        mRootView.setBackgroundResource(R.drawable.main_bkg);
         stopLoadingAnimation();
         if (mLivePlayer != null) {
             mLivePlayer.stopRecord();
