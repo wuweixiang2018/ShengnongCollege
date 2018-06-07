@@ -14,6 +14,7 @@ public class GetVideoListRespData extends RespDataBase {
      * VideoId : null
      * CoverUrl : null
      * CreateTime : 2018-04-23T18:01:26.273
+     * Profile : null 简介 描述
      */
 
     private String Id;
@@ -23,6 +24,15 @@ public class GetVideoListRespData extends RespDataBase {
     private String VideoId;
     private String CoverUrl;
     private String CreateTime;
+    private Object Profile;
+
+    public Object getProfile() {
+        return Profile;
+    }
+
+    public void setProfile(Object profile) {
+        Profile = profile;
+    }
 
     public String getId() {
         return Id;

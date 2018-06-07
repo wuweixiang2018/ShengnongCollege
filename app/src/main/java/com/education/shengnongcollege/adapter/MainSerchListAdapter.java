@@ -1,6 +1,7 @@
 package com.education.shengnongcollege.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,9 +66,11 @@ public class MainSerchListAdapter extends BaseAdapter {
         }
         GetVideoListRespData item = getItem(position);
 
-        holder.sq_context.setText("简介是啥，没有这个字段没有这个字段没有这个字段没有这个字段没有这个字段没有这个字段");
+        holder.sq_context.setText((CharSequence) item.getProfile());
         holder.sq_title.setText(item.getTitle());
-        Glide.with(context).load(item.getCoverUrl()).into(holder.sq_image);
+        if(!TextUtils.isEmpty(item.getCoverUrl())){
+            Glide.with(context).load(item.getCoverUrl()).into(holder.sq_image);
+        }
         return view;
     }
 
