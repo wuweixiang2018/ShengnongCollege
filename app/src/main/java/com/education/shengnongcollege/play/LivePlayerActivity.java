@@ -211,6 +211,9 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         TextView nameTV = findViewById(R.id.name_tv);
         nameTV.setText(BaseUtil.userData.getRealName());
 
+        TextView roomNameTV = findViewById(R.id.room_num_tv);
+        roomNameTV.setText(lvbData.getRoomNo());
+
         String avatar = BaseUtil.userData.getPhotograph();
         if (!TextUtils.isEmpty(avatar)) {
             ImageView avatarIV = findViewById(R.id.avatar_iv);
