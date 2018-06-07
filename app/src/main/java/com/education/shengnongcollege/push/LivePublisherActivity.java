@@ -54,6 +54,7 @@ import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
+import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
@@ -229,7 +230,32 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         backLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backprocess();
+                if (mVideoPublish) {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                            boolean closeResult = (Boolean) responseResult.getData();
+                            if (closeResult) {
+                                Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
+                                backprocess();
+                            } else
+                                Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    backprocess();
+                }
+
+
             }
         });
 //        TextView titleTV = (TextView) findViewById(R.id.title_tv);
@@ -307,17 +333,23 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         initView();
 
         TextView nameTV = findViewById(R.id.name_tv);
-        nameTV.setText(BaseUtil.userData.getRealName());
+        if (BaseUtil.userData != null)
+            nameTV.setText(BaseUtil.userData.getRealName());
+        else {
+            nameTV.setText("");
+        }
 
         roomNoTV = findViewById(R.id.room_num_tv);
         roomNoTV.setText("");
 
-        String avatar = BaseUtil.userData.getPhotograph();
+        if (BaseUtil.userData != null) {
+            String avatar = BaseUtil.userData.getPhotograph();
 //        avatar="http://imgsrc.baidu.com/forum/w=580/sign=1588b7c5d739b6004dce0fbfd9503526/7bec54e736d12f2eb97e1a464dc2d56285356898.jpg";
-        if (!TextUtils.isEmpty(avatar)) {
-            ImageView avatarIV = findViewById(R.id.avatar_iv);
-            ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
-                    R.drawable.default_avatar, 360);
+            if (!TextUtils.isEmpty(avatar)) {
+                ImageView avatarIV = findViewById(R.id.avatar_iv);
+                ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
+                        R.drawable.default_avatar, 360);
+            }
         }
 
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);

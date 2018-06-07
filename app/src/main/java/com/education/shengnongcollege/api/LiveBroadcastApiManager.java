@@ -12,6 +12,7 @@ import com.education.shengnongcollege.model.RespDataBase;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.present.GWApiPresent;
+import com.education.shengnongcollege.utils.BaseUtil;
 
 import java.util.HashMap;
 
@@ -155,4 +156,14 @@ public class LiveBroadcastApiManager {
                 RespObjBase.class,
                 LiveBroadcastApiPath.GET_PUSH_FLOW_PLAYURL_PATH, 0);
     }
+
+    public static void closeLVB(GWResponseListener listener) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", BaseUtil.UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.CLOSE_LVB_PATH, 0);
+    }
+
+
 }
