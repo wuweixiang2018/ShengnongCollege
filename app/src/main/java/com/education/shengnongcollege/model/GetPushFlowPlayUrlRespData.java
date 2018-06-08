@@ -11,6 +11,7 @@ public class GetPushFlowPlayUrlRespData extends RespDataBase {
      */
 
     private String PushUrl;
+    private String RoomNo;
 
     public String getPushUrl() {
         return PushUrl;
@@ -18,5 +19,13 @@ public class GetPushFlowPlayUrlRespData extends RespDataBase {
 
     public void setPushUrl(String PushUrl) {
         this.PushUrl = PushUrl;
+    }
+
+    public String getRoomNo() {
+        return RoomNo;
+    }
+
+    public void setRoomNo(String roomNo) {
+        RoomNo = roomNo;
     }
 }

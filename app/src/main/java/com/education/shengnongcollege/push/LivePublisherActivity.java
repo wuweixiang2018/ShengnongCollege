@@ -1,7 +1,6 @@
 package com.education.shengnongcollege.push;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.Service;
@@ -22,7 +21,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -46,37 +44,23 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
-import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
-import com.education.shengnongcollege.common.utils.FileUtils;
-import com.education.shengnongcollege.common.utils.TCConstants;
 import com.education.shengnongcollege.common.widget.BeautySettingPannel;
-import com.education.shengnongcollege.common.widget.VideoWorkProgressFragment;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
-import com.education.shengnongcollege.play.NewVodPlayerActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
-import com.education.shengnongcollege.videopublish.TCVideoPublishActivity;
-import com.education.shengnongcollege.videopublish.server.PublishSigListener;
-import com.education.shengnongcollege.videopublish.server.ReportVideoInfoListener;
-import com.education.shengnongcollege.videopublish.server.VideoDataMgr;
-import com.education.shengnongcollege.videoupload.TXUGCPublish;
-import com.education.shengnongcollege.videoupload.TXUGCPublishTypeDef;
-import com.tencent.liteav.basic.log.TXCLog;
+import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
-import com.tencent.rtmp.TXLog;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
-import com.tencent.ugc.TXVideoInfoReader;
 
 import org.json.JSONObject;
 
@@ -88,19 +72,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-
-import static com.education.shengnongcollege.videopublish.TCVideoPublishActivity.saveBitmap;
 
 /**
  * 自己的直播
@@ -136,6 +112,8 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
     //录制时间
     private TextView recordTimeTV;
+
+    private TextView roomNoTV;
 
     //顶部布局
     private RelativeLayout topRL;
@@ -252,7 +230,32 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         backLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backprocess();
+                if (mVideoPublish) {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                            boolean closeResult = (Boolean) responseResult.getData();
+                            if (closeResult) {
+                                Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
+                                backprocess();
+                            } else
+                                Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    backprocess();
+                }
+
+
             }
         });
 //        TextView titleTV = (TextView) findViewById(R.id.title_tv);
@@ -276,6 +279,8 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
                 GetPushFlowPlayUrlRespData data = responseResult.getData();
                 pushUrl = data.getPushUrl();
                 mRtmpUrlView.setText(pushUrl);
+
+                roomNoTV.setText(data.getRoomNo());
 
 //                mLivePusher.startScreenCapture();
 
@@ -328,14 +333,23 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         initView();
 
         TextView nameTV = findViewById(R.id.name_tv);
-        nameTV.setText(BaseUtil.userData.getRealName());
+        if (BaseUtil.userData != null)
+            nameTV.setText(BaseUtil.userData.getRealName());
+        else {
+            nameTV.setText("");
+        }
 
-        String avatar = BaseUtil.userData.getPhotograph();
-        avatar="http://imgsrc.baidu.com/forum/w=580/sign=1588b7c5d739b6004dce0fbfd9503526/7bec54e736d12f2eb97e1a464dc2d56285356898.jpg";
-        if (!TextUtils.isEmpty(avatar)) {
-            ImageView avatarIV = findViewById(R.id.avatar_iv);
-            ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
-                    R.drawable.default_avatar, 360);
+        roomNoTV = findViewById(R.id.room_num_tv);
+        roomNoTV.setText("");
+
+        if (BaseUtil.userData != null) {
+            String avatar = BaseUtil.userData.getPhotograph();
+//        avatar="http://imgsrc.baidu.com/forum/w=580/sign=1588b7c5d739b6004dce0fbfd9503526/7bec54e736d12f2eb97e1a464dc2d56285356898.jpg";
+            if (!TextUtils.isEmpty(avatar)) {
+                ImageView avatarIV = findViewById(R.id.avatar_iv);
+                ImageLoadManager.loadImageRounded(this, avatar, avatarIV,
+                        R.drawable.default_avatar, 360);
+            }
         }
 
         mCaptureView = (TXCloudVideoView) findViewById(R.id.video_view);

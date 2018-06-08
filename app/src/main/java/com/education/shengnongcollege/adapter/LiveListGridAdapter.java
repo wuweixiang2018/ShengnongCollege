@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseTopActivity;
@@ -94,6 +95,10 @@ public class LiveListGridAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(context,"在适配器里面写点击事件"+item.getCategoryId(),Toast.LENGTH_SHORT).show();
+                if (item.getState() != 2) {//非直播中，不进入
+                    Toast.makeText(context,"不再直播中",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Activity activity = BaseTopActivity.getTopActivity();
                 Intent data = new Intent(activity,
                         LivePlayerActivity.class);

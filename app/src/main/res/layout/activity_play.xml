@@ -116,9 +116,9 @@
                 android:layout_toLeftOf="@id/record_iv"
                 android:background="@drawable/record_bg_frame"
                 android:drawableLeft="@drawable/recording_logo"
-                android:drawablePadding="13dip"
+                android:drawablePadding="10dip"
                 android:gravity="center_vertical"
-                android:paddingLeft="13dip"
+                android:paddingLeft="10dip"
                 android:text="00:00"
                 android:textColor="@color/white"
                 android:visibility="gone" />

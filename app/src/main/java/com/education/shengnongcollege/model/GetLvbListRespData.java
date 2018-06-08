@@ -7,15 +7,16 @@ package com.education.shengnongcollege.model;
 public class GetLvbListRespData extends RespDataBase {
 
     /**
-     {
-     "UserId": "108fddbd-cc72-4471-81b9-7391d61943e0",
-     "PushUrl": "rtmp://21696.livepush.myqcloud.com/live/21696_108fddbdcc?bizid=21696&txSecret=a07777d81dbfcb306169b1963d958a83&txTime=5B19890F",
-     "Title": null,
-     "CoverPhotoUrl": null,
-     "State": 2, 1 等待开播 2 直播中 3 直播已结束
-     "Audience": 0,
-     "Fabulous": 0
-     },
+     * {
+     * "UserId": "108fddbd-cc72-4471-81b9-7391d61943e0",
+     * "PushUrl": "rtmp://21696.livepush.myqcloud.com/live/21696_108fddbdcc?bizid=21696&txSecret=a07777d81dbfcb306169b1963d958a83&txTime=5B19890F",
+     * "Title": null,
+     * "CoverPhotoUrl": null,
+     * "State": 2, 1 等待开播 2 直播中 3 直播已结束
+     * "Audience": 0,
+     * "Fabulous": 0
+     * "RoomNo":9867767
+     * },
      */
 
     private String UserId;
@@ -27,6 +28,15 @@ public class GetLvbListRespData extends RespDataBase {
     private int Fabulous;
     private int DeleteMark;
     private String CreateTime;
+    private String RoomNo;
+
+    public String getRoomNo() {
+        return RoomNo;
+    }
+
+    public void setRoomNo(String roomNo) {
+        RoomNo = roomNo;
+    }
 
     public String getUserId() {
         return UserId;
