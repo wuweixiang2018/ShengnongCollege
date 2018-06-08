@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.education.shengnongcollege.MainActivity;
 import com.education.shengnongcollege.R;
@@ -27,24 +29,26 @@ import java.io.Serializable;
  * 
  */
 public class SplashActivity extends Activity {
-
+	private Button openBtn;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
 		CacheUtil.getInstance().init(this);
+		openBtn=findViewById(R.id.open_btn);
 		if(!TextUtils.isEmpty(CacheUtil.getInstance().getUserId())) {
 			getUserLoginState();
 		}else {
-			new Handler().postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-					startActivity(intent);
-					finish();
-				}
-			}, 2000);
+			openBtn.setVisibility(View.VISIBLE);
 		}
+		openBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+				startActivity(intent);
+				finish();
+			}
+		});
 	}
 
 
