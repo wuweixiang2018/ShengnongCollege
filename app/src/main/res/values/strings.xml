@@ -73,4 +73,9 @@
     <string name="updatepass_label_newpass">设置新密码</string>
     <string name="updatepass_label_getcode">获取验证码</string>
 
+    <!--欢迎页面-->
+    <string name="init_splash_tips">课堂直播</string>
+    <string name="init_splash_tips1">海量老师直播，随时随地学习</string>
+    <string name="init_splash_btn">开始体验</string>
+
 </resources>
