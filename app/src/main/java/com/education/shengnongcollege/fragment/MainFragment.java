@@ -23,6 +23,8 @@ import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
+import com.education.shengnongcollege.im.GuestIMMgr;
+import com.education.shengnongcollege.im.IMMessageMgr;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
@@ -33,6 +35,7 @@ import com.education.shengnongcollege.view.CustomGridView;
 import com.education.shengnongcollege.view.CustomViewPager;
 import com.education.shengnongcollege.view.PagerSlidingTabStrip;
 import com.education.shengnongcollege.widget.DialogUtil;
+import com.tencent.imsdk.TIMConnListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -104,12 +107,73 @@ public class MainFragment extends BaseFragment {
         });
 
         //测试代码
-//        mFragmentView.findViewById(R.id.layou1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        mFragmentView.findViewById(R.id.layou1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GuestIMMgr.getInstance().guestLogin(getActivity().getApplicationContext(), new TIMConnListener() {
+                    @Override
+                    public void onConnected() {
+
+                    }
+
+                    @Override
+                    public void onDisconnected(int i, String s) {
+
+                    }
+
+                    @Override
+                    public void onWifiNeedAuth(String s) {
+
+                    }
+                });
+
+                GuestIMMgr.getInstance().imInit(getContext(), new IMMessageMgr.IMMessageListener() {
+                    @Override
+                    public void onConnected() {
+
+                    }
+
+                    @Override
+                    public void onDisconnected() {
+
+                    }
+
+                    @Override
+                    public void onPusherChanged() {
+
+                    }
+
+                    @Override
+                    public void onGroupTextMessage(String groupID, String senderID, String userName, String headPic, String message) {
+                        Toast.makeText(getContext(), "onGroupCustomMessage groupID=" + groupID
+                                        + " senderID=" + senderID + " message=" + message + " userName=" + userName,
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onGroupCustomMessage(String groupID, String senderID, String message) {
+                        Toast.makeText(getContext(), "onGroupCustomMessage groupID=" + groupID + " senderID=" + senderID + " message=" + message,
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onC2CCustomMessage(String sendID, String cmd, String message) {
+
+                    }
+
+                    @Override
+                    public void onGroupDestroyed(String groupID) {
+
+                    }
+
+                    @Override
+                    public void onDebugLog(String log) {
+
+                    }
+                });
 //                getActivity().startActivity(new Intent(getActivity(), TestActivity.class));
-//            }
-//        });
+            }
+        });
     }
 
     private void initView(){

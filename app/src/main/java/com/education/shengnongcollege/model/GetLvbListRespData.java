@@ -23,6 +23,7 @@ public class GetLvbListRespData extends RespDataBase {
     private String Title;
     private String CoverPhotoUrl;
     private String PushUrl;
+    private String PlayUrl;
     private int State;
     private int Audience;
     private int Fabulous;
@@ -60,6 +61,14 @@ public class GetLvbListRespData extends RespDataBase {
 
     public void setCoverPhotoUrl(String coverPhotoUrl) {
         CoverPhotoUrl = coverPhotoUrl;
+    }
+
+    public String getPlayUrl() {
+        return PlayUrl;
+    }
+
+    public void setPlayUrl(String playUrl) {
+        PlayUrl = playUrl;
     }
 
     public String getPushUrl() {

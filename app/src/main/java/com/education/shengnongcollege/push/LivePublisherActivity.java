@@ -48,6 +48,9 @@ import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.widget.BeautySettingPannel;
+import com.education.shengnongcollege.common.widget.CommentListView;
+import com.education.shengnongcollege.im.IMMessageMgr;
+import com.education.shengnongcollege.im.LiveIMMgr;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
@@ -57,6 +60,7 @@ import com.education.shengnongcollege.utils.ImageLoadManager;
 import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
+import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
@@ -87,7 +91,9 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
     private TXLivePushConfig mLivePushConfig;
     private TXLivePusher mLivePusher;
+    private TXLivePlayer mLivePlayer = null;
     private TXCloudVideoView mCaptureView;
+    private CommentListView mCommentListView;
 
     private LinearLayout mBitrateLayout;
     private BeautySettingPannel mBeautyPannelView;
@@ -197,8 +203,31 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     private void backprocess() {
         if (mVideoPublish) {
             stopPublishRtmp();
+            DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+            LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
+                @Override
+                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                    DialogUtil.getInstance().cancelProgressDialog();
+                    ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                    boolean closeResult = (Boolean) responseResult.getData();
+                    if (closeResult) {
+                        Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else
+                        Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                    DialogUtil.getInstance().cancelProgressDialog();
+                    Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            finish();
         }
-        finish();
+
+
     }
 
     @Override
@@ -212,6 +241,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         super.onCreate(savedInstanceState);
 
         mLivePusher = new TXLivePusher(this);
+
         mLivePushConfig = new TXLivePushConfig();
         mLivePushConfig.setVideoEncodeGop(5);
         mLivePushConfig.setBeautyFilter(mBeautyLevel, mWhiteningLevel, mRuddyLevel);
@@ -230,32 +260,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         backLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mVideoPublish) {
-                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
-                    LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
-                        @Override
-                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                            DialogUtil.getInstance().cancelProgressDialog();
-                            ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
-                            boolean closeResult = (Boolean) responseResult.getData();
-                            if (closeResult) {
-                                Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
-                                backprocess();
-                            } else
-                                Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                            DialogUtil.getInstance().cancelProgressDialog();
-                            Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    backprocess();
-                }
-
-
+                backprocess();
             }
         });
 //        TextView titleTV = (TextView) findViewById(R.id.title_tv);
@@ -282,11 +287,15 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
                 roomNoTV.setText(data.getRoomNo());
 
+                mCommentListView.setRoomId(data.getRoomNo());
+
 //                mLivePusher.startScreenCapture();
 
                 publishRtmpPrepare();
 //                startPublishRtmp();
 //                findViewById(R.id.record_layout).setVisibility(View.VISIBLE);
+
+                imProcess(data.getRoomNo());
             }
 
             @Override
@@ -294,6 +303,23 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
             }
         }, BaseUtil.UserId, "", "");
+    }
+
+    private void imProcess(String roomId) {
+        LiveIMMgr.getInstance().getIMMessageMgr().jionGroup(roomId, new IMMessageMgr.Callback() {
+            @Override
+            public void onError(int code, String errInfo) {
+                Toast.makeText(getApplicationContext(), "加入房间失败",
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object... args) {
+                Toast.makeText(getApplicationContext(), "加入房间成功",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
 
@@ -341,6 +367,9 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
         roomNoTV = findViewById(R.id.room_num_tv);
         roomNoTV.setText("");
+
+        mCommentListView = findViewById(R.id.comment_list);
+        mCommentListView.setLivePusher(mLivePusher);
 
         if (BaseUtil.userData != null) {
             String avatar = BaseUtil.userData.getPhotograph();

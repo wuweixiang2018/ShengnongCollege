@@ -24,15 +24,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
 
-        <activity android:name=".activity.MainSearchActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <!-- 消息收发service -->
+        <service
+            android:name="com.tencent.qalsdk.service.QalService"
+            android:exported="false"
+            android:process=":QALSERVICE" />
 
-        <activity android:name=".activity.SplashActivity"
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".activity.MainSearchActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,57 +49,57 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".activity.TestActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.TestActivity"
+            android:screenOrientation="portrait"></activity>
 
 
-        <activity android:name=".activity.RegisterActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.RegisterActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".activity.PerfectinfoActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity android:name=".activity.AboutMeActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.PerfectinfoActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.AboutMeActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".activity.FeedBackActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.FeedBackActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".activity.UpdatePassActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.UpdatePassActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".activity.LiveBroadcastActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".activity.LiveBroadcastActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".videorecord.TCVideoSettingActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".videorecord.TCVideoSettingActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".videorecord.TCVideoRecordActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".videorecord.TCVideoRecordActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".videopublish.TCVideoPublishActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".videopublish.TCVideoPublishActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".shortvideo.editor.TCVideoEditerActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".shortvideo.editor.TCVideoEditerActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".shortvideo.editor.TCVideoPreprocessActivity"
-            android:screenOrientation="portrait">
-        </activity>
+        <activity
+            android:name=".shortvideo.editor.TCVideoPreprocessActivity"
+            android:screenOrientation="portrait"></activity>
 
         <activity
             android:name=".play.NewVodPlayerActivity"

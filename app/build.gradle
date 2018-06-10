@@ -10,8 +10,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        multiDexEnabled true
+
         ndk {
-            abiFilters "armeabi", "armeabi-v7a"
+            abiFilters "armeabi"//, "armeabi-v7a"
         }
     }
     buildTypes {
@@ -23,46 +25,38 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compile fileTree(dir: 'libs/upload', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs')
+    implementation fileTree(include: ['*.jar'], dir: 'src/main/jniLibs/upload')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
-
-
-//    testImplementation 'junit:junit:4.12'
-//    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-//    androidTestImplementation 'com.android.support:support-annotations:26.1.0'
-
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
     implementation(name: 'LiteAVSDK_Professional_4.7.4395', ext: 'aar')
-
-
-
-    api 'com.google.code.gson:gson:2.8.0'
-    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    api 'io.reactivex.rxjava2:rxjava:2.1.12'
-    api 'org.greenrobot:eventbus:3.0.0'
-    api ('com.squareup.retrofit2:retrofit:2.3.0'){
+    implementation(name: 'liteimsdk-release', ext: 'aar')
+//    implementation(name: 'volley-1.0.0', ext: 'aar')
+    implementation 'com.google.code.gson:gson:2.8.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation ('com.squareup.retrofit2:retrofit:2.3.0'){
         transitive = false
     }
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
 //    api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'// 大神写的这个库可以支持到rxjava2.X
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.orhanobut:logger:2.1.0' // 打印日志
 
-    api 'com.squareup.okhttp3:logging-interceptor:3.9.0'
-    api 'com.orhanobut:logger:2.1.0' // 打印日志
-
-    api("com.github.bumptech.glide:glide:4.5.0") {
+    implementation("com.github.bumptech.glide:glide:4.5.0") {
         exclude group: "com.android.support"
     }
-    api 'com.github.bumptech.glide:annotations:4.5.0'
+    implementation 'com.github.bumptech.glide:annotations:4.5.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
 
-    api "com.squareup.okhttp3:okhttp:3.9.1"
-    api("com.github.bumptech.glide:okhttp-integration:4.5.0") {
+    implementation "com.squareup.okhttp3:okhttp:3.9.1"
+    implementation("com.github.bumptech.glide:okhttp-integration:4.5.0") {
         transitive = false
     }
 }

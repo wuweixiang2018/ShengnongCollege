@@ -38,6 +38,7 @@ import com.education.shengnongcollege.model.GetLvbListRespData;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
+import com.education.shengnongcollege.utils.JkysLog;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
@@ -49,6 +50,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -596,9 +598,9 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     }
 
     private boolean startPlay() {
-        String playUrlTest = mRtmpUrlView.getText().toString();
+//        String playUrl = mRtmpUrlView.getText().toString();
 
-        String playUrl = lvbData.getPushUrl();
+        String playUrl = lvbData.getPlayUrl();
 
         if (!checkPlayUrl(playUrl)) {
             return false;
@@ -623,6 +625,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Referer", "qcloud.com");
         mPlayConfig.setHeaders(headers);
+        mPlayConfig.setEnableMessage(true);
 
         mLivePlayer.setConfig(mPlayConfig);
 
@@ -675,6 +678,16 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
             streamRecord(false);
         } else if (event == TXLiveConstants.PLAY_EVT_CHANGE_ROTATION) {
             return;
+        } else if (event == TXLiveConstants.PLAY_EVT_GET_MESSAGE) {
+            String msg = null;
+            try {
+                msg = new String(param.getByteArray(TXLiveConstants.EVT_GET_MSG), "UTF-8");
+                JkysLog.e("wuwx", "接收到消息：" + msg);
+                Toast.makeText(getContext(), "接收到消息：" + msg, Toast.LENGTH_LONG).show();
+//                        roomListenerCallback.onRecvAnswerMsg(msg);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         if (event < 0) {
