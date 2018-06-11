@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +17,14 @@ import android.widget.Toast;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.common.adapter.SimpleCommentListAdapter;
 import com.education.shengnongcollege.common.model.SimpleCommentModel;
+//import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.common.widget.danmaku.TCDanmuMgr;
 import com.education.shengnongcollege.im.GuestIMMgr;
 import com.education.shengnongcollege.im.IMMessageMgr;
 import com.education.shengnongcollege.im.LiveIMMgr;
+import com.education.shengnongcollege.im.LiveRoom;
+import com.education.shengnongcollege.im.TCConstants;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.JkysLog;
 import com.tencent.rtmp.ITXLivePlayListener;
@@ -34,50 +40,45 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class CommentListView extends LinearLayout {
-    private TXLivePusher mLivePusher;
-    private TXLivePlayer mLivePlayer;
     private Button sendBtn;
     private EditText commentET;
     private RecyclerView mRecyclerView;
     private SimpleCommentListAdapter mAdapter;
-    private String roomId;
+//    private String groupId;
+    private boolean danmuOpen;
+    private TCDanmuMgr mDanmuMgr;
 
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
+    public void setDanmuMgr(TCDanmuMgr mDanmuMgr) {
+        this.mDanmuMgr = mDanmuMgr;
     }
 
-    public void setLivePusher(TXLivePusher mLivePusher) {
-        this.mLivePusher = mLivePusher;
+    public boolean isDanmuOpen() {
+        return danmuOpen;
     }
 
-    public void setLivePlayer(TXLivePlayer mLivePlayer) {
-        this.mLivePlayer = mLivePlayer;
-
-//        mLivePlayer.setPlayListener(new ITXLivePlayListener() {
-//
-//            @Override
-//            public void onPlayEvent(int event, Bundle param) {
-//                if (event == TXLiveConstants.PLAY_ERR_NET_DISCONNECT) {
-////                    roomListenerCallback.onDebugLog("[AnswerRoom] 拉流失败：网络断开");
-////                    roomListenerCallback.onError(-1, "网络断开，拉流失败");
-//                } else if (event == TXLiveConstants.PLAY_EVT_GET_MESSAGE) {
-//                    String msg = null;
-//                    try {
-//                        msg = new String(param.getByteArray(TXLiveConstants.EVT_GET_MSG), "UTF-8");
-//                        JkysLog.e("wuwx", "接收到消息：" + msg);
-////                        roomListenerCallback.onRecvAnswerMsg(msg);
-//                    } catch (UnsupportedEncodingException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onNetStatus(Bundle bundle) {
-//
-//            }
-//        });
+    public void setDanmuOpen(boolean danmuOpen) {
+        this.danmuOpen = danmuOpen;
     }
+
+    private Callback callback;
+
+    public Callback getCallback() {
+        return callback;
+    }
+
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    public interface Callback {
+        void onError(int code, String errInfo);
+
+        void onSuccess(Object... args);
+    }
+
+//    public void setGroupId(String groupId) {
+//        this.groupId = groupId;
+//    }
 
     public CommentListView(Context context) {
         super(context);
@@ -102,7 +103,7 @@ public class CommentListView extends LinearLayout {
             sendBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String comment = commentET.getText().toString();
+                    final String comment = commentET.getText().toString();
                     if (TextUtils.isEmpty(comment)) {
                         Toast.makeText(getContext(), "评论内容不能为空", Toast.LENGTH_SHORT).show();
                         return;
@@ -110,18 +111,54 @@ public class CommentListView extends LinearLayout {
 
                     String userName = BaseUtil.userData.getRealName();
                     String headPic = BaseUtil.userData.getPhotograph();
-                    LiveIMMgr.getInstance().getIMMessageMgr().sendGroupTextMessage(userName,
-                            headPic, comment, new IMMessageMgr.Callback() {
-                                @Override
-                                public void onError(int code, String errInfo) {
+                    LiveRoom mLiveRoom = TCLiveRoomMgr.getLiveRoom();
+                    if (danmuOpen) {
+                        if (mDanmuMgr != null) {
+                            mDanmuMgr.addDanmu(headPic, userName, comment);
+                        }
+                        mLiveRoom.sendRoomCustomMsg(String.valueOf(TCConstants.IMCMD_DANMU), comment,
+                                new LiveRoom.SendCustomMessageCallback() {
+                                    @Override
+                                    public void onError(int errCode, String errInfo) {
+                                        Log.w("wuwx", "sendRoomDanmuMsg error: " + errInfo);
+                                    }
 
-                                }
+                                    @Override
+                                    public void onSuccess() {
+                                        Log.d("wuwx", "sendRoomDanmuMsg success");
+                                        addComment(comment);
+                                    }
+                                });
+                    } else {
+                        mLiveRoom.sendRoomTextMsg(comment, new LiveRoom.SendTextMessageCallback() {
+                            @Override
+                            public void onError(int errCode, String errInfo) {
+                                Log.d("wuwx", "sendRoomTextMsg error:");
+                            }
 
-                                @Override
-                                public void onSuccess(Object... args) {
-                                    Toast.makeText(getContext(), "发送消息成功", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            @Override
+                            public void onSuccess() {
+                                Log.d("wuwx", "sendRoomTextMsg success:");
+                                addComment(comment);
+                            }
+                        });
+                    }
+
+//                    LiveIMMgr.getInstance().getIMMessageMgr().sendGroupTextMessage(userName,
+//                            headPic, comment, new IMMessageMgr.Callback() {
+//                                @Override
+//                                public void onError(int code, String errInfo) {
+//                                    if (callback != null)
+//                                        callback.onError(code, errInfo);
+//                                }
+//
+//                                @Override
+//                                public void onSuccess(Object... args) {
+//                                    if (callback != null)
+//                                        callback.onSuccess(args);
+//                                    Toast.makeText(getContext(), "发送消息成功", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
 
 //                    GuestIMMgr.getInstance().setCallback(new IMMessageMgr.Callback() {
 //                        @Override
@@ -170,9 +207,13 @@ public class CommentListView extends LinearLayout {
     }
 
     private void addComment(String content) {
+        addComment(BaseUtil.userData.getRealName(), content);
+    }
+
+    public void addComment(String nickname, String content) {
         SimpleCommentModel model = new SimpleCommentModel();
         model.content = content;
-        model.nickname = BaseUtil.userData.getRealName();
+        model.nickname = nickname;
         mAdapter.addComment(model);
         mAdapter.notifyDataSetChanged();
     }

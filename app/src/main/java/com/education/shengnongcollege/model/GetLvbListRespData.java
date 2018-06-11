@@ -16,6 +16,7 @@ public class GetLvbListRespData extends RespDataBase {
      * "Audience": 0,
      * "Fabulous": 0
      * "RoomNo":9867767
+     * "GroupId":"@TGS#aXZEHJIFJ"
      * },
      */
 
@@ -30,6 +31,7 @@ public class GetLvbListRespData extends RespDataBase {
     private int DeleteMark;
     private String CreateTime;
     private String RoomNo;
+    private String GroupId;
 
     public String getRoomNo() {
         return RoomNo;
@@ -117,5 +119,13 @@ public class GetLvbListRespData extends RespDataBase {
 
     public void setCreateTime(String createTime) {
         CreateTime = createTime;
+    }
+
+    public String getGroupId() {
+        return GroupId;
+    }
+
+    public void setGroupId(String groupId) {
+        GroupId = groupId;
     }
 }

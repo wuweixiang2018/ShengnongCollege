@@ -51,6 +51,7 @@ import com.education.shengnongcollege.common.widget.BeautySettingPannel;
 import com.education.shengnongcollege.common.widget.CommentListView;
 import com.education.shengnongcollege.im.IMMessageMgr;
 import com.education.shengnongcollege.im.LiveIMMgr;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
@@ -93,7 +94,6 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     private TXLivePusher mLivePusher;
     private TXLivePlayer mLivePlayer = null;
     private TXCloudVideoView mCaptureView;
-    private CommentListView mCommentListView;
 
     private LinearLayout mBitrateLayout;
     private BeautySettingPannel mBeautyPannelView;
@@ -240,6 +240,24 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LiveBroadcastApiManager.waitPlay(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                boolean closeResult = (Boolean) responseResult.getData();
+                if (closeResult) {
+
+                } else
+                    Toast.makeText(getApplicationContext(), "等待开播失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                Toast.makeText(getApplicationContext(), "等待开播失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mLivePusher = new TXLivePusher(this);
 
         mLivePushConfig = new TXLivePushConfig();
@@ -263,8 +281,6 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
                 backprocess();
             }
         });
-//        TextView titleTV = (TextView) findViewById(R.id.title_tv);
-//        titleTV.setText(getIntent().getStringExtra("TITLE"));
 
         mBottomLinear = (LinearLayout) findViewById(R.id.btns_tests);
 
@@ -277,51 +293,10 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Service.TELEPHONY_SERVICE);
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
-        LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
-            @Override
-            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase> responseResult = (ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase>) result;
-                GetPushFlowPlayUrlRespData data = responseResult.getData();
-                pushUrl = data.getPushUrl();
-                mRtmpUrlView.setText(pushUrl);
+        super.onCreateAfter();
 
-                roomNoTV.setText(data.getRoomNo());
-
-                mCommentListView.setRoomId(data.getRoomNo());
-
-//                mLivePusher.startScreenCapture();
-
-                publishRtmpPrepare();
-//                startPublishRtmp();
-//                findViewById(R.id.record_layout).setVisibility(View.VISIBLE);
-
-                imProcess(data.getRoomNo());
-            }
-
-            @Override
-            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-
-            }
-        }, BaseUtil.UserId, "", "");
+        publishRtmpPrepare();
     }
-
-    private void imProcess(String roomId) {
-        LiveIMMgr.getInstance().getIMMessageMgr().jionGroup(roomId, new IMMessageMgr.Callback() {
-            @Override
-            public void onError(int code, String errInfo) {
-                Toast.makeText(getApplicationContext(), "加入房间失败",
-                        Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onSuccess(Object... args) {
-                Toast.makeText(getApplicationContext(), "加入房间成功",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
-
 
     protected void initView() {
         mRtmpUrlView = (EditText) findViewById(R.id.roomid);
@@ -368,8 +343,8 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         roomNoTV = findViewById(R.id.room_num_tv);
         roomNoTV.setText("");
 
-        mCommentListView = findViewById(R.id.comment_list);
-        mCommentListView.setLivePusher(mLivePusher);
+//        mCommentListView = findViewById(R.id.comment_list);
+//        mCommentListView.setLivePusher(mLivePusher);
 
         if (BaseUtil.userData != null) {
             String avatar = BaseUtil.userData.getPhotograph();
@@ -488,16 +463,52 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
                 startPublisherIV.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (mVideoPublish) {
-                            stopPublishRtmp();
-                        } else {
-                            if (mVideoSrc == VIDEO_SRC_CAMERA) {
-                                FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
-                            } else {
-                                //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+                        LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
+                            @Override
+                            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                                ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase> responseResult = (ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase>) result;
+                                GetPushFlowPlayUrlRespData data = responseResult.getData();
+                                pushUrl = data.getPushUrl();
+                                mRtmpUrlView.setText(pushUrl);
+
+                                roomNoTV.setText(data.getRoomNo());
+
+                                TCLiveRoomMgr.getLiveRoom().jionGroup(data.getGroupId(), new IMMessageMgr.Callback() {
+                                    @Override
+                                    public void onError(int code, String errInfo) {
+                                        Toast.makeText(getApplicationContext(), "加入群组失败", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Object... args) {
+                                        Toast.makeText(getApplicationContext(), "加入群组成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                if (mVideoSrc == VIDEO_SRC_CAMERA) {
+                                    FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
+                                } else {
+                                    //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+                                }
+                                mVideoPublish = startPublishRtmp();
                             }
-                            mVideoPublish = startPublishRtmp();
-                        }
+
+                            @Override
+                            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                            }
+                        }, BaseUtil.UserId, "", "");
+
+//                        if (mVideoPublish) {
+//                            stopPublishRtmp();
+//                        } else {
+//                            if (mVideoSrc == VIDEO_SRC_CAMERA) {
+//                                FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
+//                            } else {
+//                                //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+//                            }
+//                            mVideoPublish = startPublishRtmp();
+//                        }
                     }
                 });
             }
@@ -1007,10 +1018,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     }
 
     private boolean publishRtmpPrepare() {
-        if (TextUtils.isEmpty(pushUrl) || (!pushUrl.trim().toLowerCase().startsWith("rtmp://"))) {
-            Toast.makeText(getApplicationContext(), "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+
 
         if (mVideoSrc != VIDEO_SRC_SCREEN) {
             mCaptureView.setVisibility(View.VISIBLE);
@@ -1043,6 +1051,10 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
     private boolean startPublishRtmp() {
 //        publishRtmpPrepare();
+        if (TextUtils.isEmpty(pushUrl) || (!pushUrl.trim().toLowerCase().startsWith("rtmp://"))) {
+            Toast.makeText(getApplicationContext(), "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         mLivePusher.startPusher(pushUrl.trim());
 
         enableQRCodeBtn(false);

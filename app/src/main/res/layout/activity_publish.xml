@@ -41,6 +41,18 @@
         android:visibility="gone" />
 
     <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--弹幕-->
+        <master.flame.danmaku.ui.widget.DanmakuView
+            android:id="@+id/danmakuView"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/comment_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -152,15 +164,27 @@
             android:layout_toLeftOf="@id/back_ll"
             android:background="@drawable/camera_change" />
 
+
         <ImageView
             android:id="@+id/start_record_logo_iv"
             android:layout_width="33dip"
             android:layout_height="28dip"
             android:layout_centerHorizontal="true"
-            android:layout_marginRight="30dip"
+            android:layout_marginRight="10dip"
             android:layout_toLeftOf="@id/camera_change_iv"
             android:background="@drawable/start_record_logo"
-            android:visibility="gone" />
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/danmuku_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/start_record_logo_iv"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:src="@drawable/ic_danmuku_off"
+            android:visibility="visible" />
     </RelativeLayout>
 
     <RelativeLayout

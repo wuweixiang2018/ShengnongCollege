@@ -99,4 +99,6 @@
     <color name="time_bg_selected">#AA0ACCAC</color>
 
     <color name="translucent_white">#61FFFFFF</color>
+
+    <color name="colorDanmuMsg">#30e7d5</color>
 </resources>

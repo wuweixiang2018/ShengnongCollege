@@ -31,7 +31,8 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
+//    implementation 'com.github.ctiao:DanmakuFlameMaster:0.5.3'
+    implementation 'com.github.ctiao:dfm:0.4.4'
     implementation(name: 'LiteAVSDK_Professional_4.7.4395', ext: 'aar')
     implementation(name: 'liteimsdk-release', ext: 'aar')
 //    implementation(name: 'volley-1.0.0', ext: 'aar')

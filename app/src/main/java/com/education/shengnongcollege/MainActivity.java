@@ -12,10 +12,12 @@ import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.activity.LoginActivity;
 import com.education.shengnongcollege.activity.RegisterActivity;
 import com.education.shengnongcollege.adapter.MainPagerAdapter;
+import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.api.UserApiManager;
 import com.education.shengnongcollege.im.GuestIMMgr;
 import com.education.shengnongcollege.im.IMMessageMgr;
 import com.education.shengnongcollege.im.LiveIMMgr;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.LoginRespData;
 import com.education.shengnongcollege.model.RegisterRespData;
 import com.education.shengnongcollege.model.RespObjBase;
@@ -66,18 +68,31 @@ public class MainActivity extends BaseTopActivity implements IListener {
                 //云通信票据获取了 进行注册
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 BaseUtil.userSig = responseResult.getData();
-                LiveIMMgr.getInstance().getIMMessageMgr().initialize(
-                        BaseUtil.userData.getMobile(), BaseUtil.userSig, 1400086725, new IMMessageMgr.Callback() {
-                            @Override
-                            public void onError(int code, String errInfo) {
-                                Toast.makeText(getApplicationContext(), "初始化失败", Toast.LENGTH_SHORT).show();
-                            }
 
-                            @Override
-                            public void onSuccess(Object... args) {
-                                Toast.makeText(getApplicationContext(), "初始化成功", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                TCLiveRoomMgr.getLiveRoom(getApplicationContext()).login(new IMMessageMgr.Callback() {
+                    @Override
+                    public void onError(int code, String errInfo) {
+                        Toast.makeText(getApplicationContext(), "初始化失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onSuccess(Object... args) {
+                        Toast.makeText(getApplicationContext(), "初始化成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+//                LiveIMMgr.getInstance().getIMMessageMgr().initialize(
+//                        BaseUtil.userData.getMobile(), BaseUtil.userSig, (int)BaseUtil.IM_APP_ID,
+//                        new IMMessageMgr.Callback() {
+//                            @Override
+//                            public void onError(int code, String errInfo) {
+//                                Toast.makeText(getApplicationContext(), "初始化失败", Toast.LENGTH_SHORT).show();
+//                            }
+//
+//                            @Override
+//                            public void onSuccess(Object... args) {
+//                                Toast.makeText(getApplicationContext(), "初始化成功", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
             }
 
             @Override

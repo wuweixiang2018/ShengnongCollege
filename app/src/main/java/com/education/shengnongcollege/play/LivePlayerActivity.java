@@ -34,6 +34,9 @@ import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.common.widget.CommentListView;
+import com.education.shengnongcollege.im.IMMessageMgr;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.GetLvbListRespData;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
@@ -67,7 +70,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
     //直播相关数据
     private GetLvbListRespData lvbData;
-
+    private RelativeLayout commentRL;
     private TXLivePlayer mLivePlayer = null;
     private boolean mIsPlaying;
     private TXCloudVideoView mPlayerView;
@@ -157,6 +160,20 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
                 FLAG_KEEP_SCREEN_ON);
 
         mIsPlaying = startPlay();
+
+        TCLiveRoomMgr.getLiveRoom().jionGroup(lvbData.getGroupId(), new IMMessageMgr.Callback() {
+            @Override
+            public void onError(int code, String errInfo) {
+                Toast.makeText(getApplicationContext(), "加入群组失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object... args) {
+                Toast.makeText(getApplicationContext(), "加入群组成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        super.onCreateAfter();
     }
 
     @Override
@@ -209,6 +226,8 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     public void setContentView() {
         super.setContentView(R.layout.activity_play);
         initView();
+
+        commentRL = findViewById(R.id.comment_rl);
 
         TextView nameTV = findViewById(R.id.name_tv);
         if (BaseUtil.userData != null)

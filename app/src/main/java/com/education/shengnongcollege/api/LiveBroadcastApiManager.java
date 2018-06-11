@@ -165,5 +165,13 @@ public class LiveBroadcastApiManager {
                 LiveBroadcastApiPath.CLOSE_LVB_PATH, 0);
     }
 
+    public static void waitPlay(GWResponseListener listener) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", BaseUtil.UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.WAIT_PLAY_PATH, 0);
+    }
+
 
 }

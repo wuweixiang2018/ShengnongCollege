@@ -20,6 +20,8 @@ public class BaseUtil {
     public static String userSig;
     public static String UserId = CacheUtil.getInstance().getUserId();
     public static UserInfoRespData userData;//用户的所有信息
+    public static long IM_APP_ID = 1400086725;
+    public static String IM_ACCOUNT_TYPE = "25637";
 
     /**
      * 国家号码段分配如下：
