@@ -173,7 +173,7 @@
             android:layout_marginRight="10dip"
             android:layout_toLeftOf="@id/camera_change_iv"
             android:background="@drawable/start_record_logo"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/danmuku_iv"

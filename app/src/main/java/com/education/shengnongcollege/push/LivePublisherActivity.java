@@ -58,6 +58,7 @@ import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
+import com.education.shengnongcollege.widget.CommonDialog;
 import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
@@ -66,6 +67,7 @@ import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
+import com.tencent.ugc.TXRecordCommon.ITXVideoRecordListener;
 
 import org.json.JSONObject;
 
@@ -328,6 +330,8 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         scroll.scrollTo(0, offset);
     }
 
+    private CommonDialog exitRecordDialog;
+
     public void setContentView() {
         super.setContentView(R.layout.activity_publish);
 
@@ -552,8 +556,41 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         exitRecordTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                stopRecordUIProcess();
-                mLivePusher.stopRecord();
+                if (mStartRecord) {
+                    exitRecordDialog = new CommonDialog.Builder()
+                            .setDes("是否上传视频？")
+                            .setTwobutton(true)
+                            .setCheckable(false)
+                            .setButtonText("取消", "上传")
+                            .setHasTitle(false)
+                            .setImportantPosLeftOrRight(false)
+                            .setLy(600)
+                            .setClickListenerfirtst(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (exitRecordDialog != null)
+                                        exitRecordDialog.dissmiss();
+                                    exitRecordDialog = null;
+                                    if (listener != null)
+                                        listener.setPublish(false);
+                                    mLivePusher.stopRecord();
+                                }
+                            }).setClickListenersecond(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (exitRecordDialog != null)
+                                        exitRecordDialog.dissmiss();
+                                    exitRecordDialog = null;
+                                    if (listener != null)
+                                        listener.setPublish(true);
+                                    mLivePusher.stopRecord();
+                                }
+                            }).build(LivePublisherActivity.this);
+                    exitRecordDialog.show();
+                } else {
+                    stopRecordUIProcess();
+                }
+
             }
         });
 
@@ -788,59 +825,65 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         }
     }
 
+    protected static class ITXVideoRecordListenerImpl implements ITXVideoRecordListener {
+        private WeakReference<LivePublisherActivity> activityWR;
+        private boolean isPublish = true;
+
+        public void setPublish(boolean publish) {
+            isPublish = publish;
+        }
+
+        public ITXVideoRecordListenerImpl(LivePublisherActivity activity) {
+            activityWR = new WeakReference<LivePublisherActivity>(activity);
+        }
+
+        @Override
+        public void onRecordEvent(int event, Bundle param) {
+
+        }
+
+        @Override
+        public void onRecordProgress(long milliSecond) {
+            LivePublisherActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            Log.d(TAG, "onRecordProgress:" + milliSecond);
+            activity.recordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
+            //注释不用
+//                        mRecordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
+            int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
+            if (progress < 100) {
+                activity.mRecordProgressBar.setProgress(progress);
+            } else {
+                activity.mLivePusher.stopRecord();
+            }
+        }
+
+        @Override
+        public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
+            Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
+            LivePublisherActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
+                activity.mRecordProgressBar.setProgress(0);
+                activity.recordTimeTV.setText("00:00");
+
+                activity.stopRecordUIProcess();
+                if (isPublish)
+                    activity.publishVideo(result.videoPath, result.coverPath);
+            }
+        }
+    }
+
+    private ITXVideoRecordListenerImpl listener;
+
     private void startOrStopRecord() {
         mStartRecord = !mStartRecord;
         if (mLivePusher != null) {
             if (mStartRecord) {
-                mLivePusher.setVideoRecordListener(new TXRecordCommon.ITXVideoRecordListener() {
-                    @Override
-                    public void onRecordEvent(int event, Bundle param) {
-
-                    }
-
-                    @Override
-                    public void onRecordProgress(long milliSecond) {
-                        Log.d(TAG, "onRecordProgress:" + milliSecond);
-                        recordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
-                        //注释不用
-//                        mRecordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
-                        int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
-                        if (progress < 100) {
-                            mRecordProgressBar.setProgress(progress);
-                        } else {
-                            mLivePusher.stopRecord();
-                        }
-                    }
-
-                    @Override
-                    public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
-                        Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
-
-                        if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
-                            mRecordProgressBar.setProgress(0);
-                            recordTimeTV.setText("00:00");
-
-                            stopRecordUIProcess();
-                            //TCVideoPublishActivity短视频发布
-//                            mVideoPath = result.videoPath;
-//                            mCoverImagePath = result.coverPath;
-
-                            publishVideo(result.videoPath, result.coverPath);
-
-//                            mRecordTimeTV.setText("00:00");
-//                            findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
-//                            findViewById(R.id.record_layout).setVisibility(View.GONE);
-
-//                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
-//                            startActivity(intent);
-                        }
-                    }
-                });
+                listener = new ITXVideoRecordListenerImpl(this);
+                mLivePusher.setVideoRecordListener(listener);
                 String videoPath = getDefaultDir() + "TXUGC.mp4";
                 int result = mLivePusher.startRecord(videoPath);
                 mStartRecord = result == 0;

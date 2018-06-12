@@ -459,63 +459,76 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         view.setOnClickListener(this);
     }
 
+    private ITXVideoRecordListenerImpl listener;
+
+    private static class ITXVideoRecordListenerImpl implements TXRecordCommon.ITXVideoRecordListener {
+        private WeakReference<LivePlayerActivity> activityWR;
+        private boolean isPublish = true;
+
+        public void setPublish(boolean publish) {
+            isPublish = publish;
+        }
+
+        public ITXVideoRecordListenerImpl(LivePlayerActivity activity) {
+            activityWR = new WeakReference<LivePlayerActivity>(activity);
+        }
+
+        @Override
+        public void onRecordEvent(int event, Bundle param) {
+
+        }
+
+        @Override
+        public void onRecordProgress(long milliSecond) {
+            LivePlayerActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (activity.mCancelRecordFlag) {
+                return;
+            }
+            Log.d(TAG, "onRecordProgress:" + milliSecond);
+            String time = String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60);
+            activity.recordingTV.setText(time);
+            activity.mRecordTimeTV.setText(time);
+            int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
+            if (progress < 100) {
+                activity.mRecordProgressBar.setProgress(progress);
+            } else {
+                activity.mLivePlayer.stopRecord();
+            }
+        }
+
+        @Override
+        public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
+            Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
+            LivePlayerActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (activity.mCancelRecordFlag) {
+                if (result.videoPath != null) {
+                    File f = new File(result.videoPath);
+                    if (f.exists()) f.delete();
+                }
+                if (result.coverPath != null) {
+                    File f = new File(result.coverPath);
+                    if (f.exists()) f.delete();
+                }
+            } else {
+                if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
+                    activity.recordingTV.setVisibility(View.GONE);
+                    activity.recordIV.setVisibility(View.VISIBLE);
+                    if (isPublish)
+                        activity.publishVideo(result.videoPath, result.coverPath);
+                }
+            }
+        }
+    }
+
     private void streamRecord(boolean runFlag) {
         mRecordFlag = runFlag;
         if (runFlag) {
-            mLivePlayer.setVideoRecordListener(new TXRecordCommon.ITXVideoRecordListener() {
-                @Override
-                public void onRecordEvent(int event, Bundle param) {
-
-                }
-
-                @Override
-                public void onRecordProgress(long milliSecond) {
-                    if (mCancelRecordFlag) {
-                        return;
-                    }
-                    Log.d(TAG, "onRecordProgress:" + milliSecond);
-                    String time = String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60);
-                    recordingTV.setText(time);
-                    mRecordTimeTV.setText(time);
-                    int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
-                    if (progress < 100) {
-                        mRecordProgressBar.setProgress(progress);
-                    } else {
-                        mLivePlayer.stopRecord();
-                    }
-                }
-
-                @Override
-                public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
-                    Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
-                    if (mCancelRecordFlag) {
-                        if (result.videoPath != null) {
-                            File f = new File(result.videoPath);
-                            if (f.exists()) f.delete();
-                        }
-                        if (result.coverPath != null) {
-                            File f = new File(result.coverPath);
-                            if (f.exists()) f.delete();
-                        }
-                    } else {
-                        if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
-                            recordingTV.setVisibility(View.GONE);
-                            recordIV.setVisibility(View.VISIBLE);
-                            publishVideo(result.videoPath, result.coverPath);
-
-//                            stopPlay();
-//                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
-//                            startActivity(intent);
-//                            finish();
-                        }
-                    }
-                }
-            });
+            listener = new ITXVideoRecordListenerImpl(this);
+            mLivePlayer.setVideoRecordListener(listener);
             mCancelRecordFlag = false;
             mLivePlayer.startRecord(TXRecordCommon.RECORD_TYPE_STREAM_SOURCE);
             findViewById(R.id.record).setBackgroundResource(R.drawable.stop_record);

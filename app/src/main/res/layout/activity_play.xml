@@ -35,8 +35,8 @@
         <RelativeLayout
             android:id="@+id/top_one_rl"
             android:layout_width="match_parent"
-            android:layout_height="60dip"
-            android:layout_marginTop="19dip">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dip">
 
             <RelativeLayout
                 android:id="@+id/user_rl"
