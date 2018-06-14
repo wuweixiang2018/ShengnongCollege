@@ -18,7 +18,7 @@ public class GetVideoDetailRespData extends RespDataBase {
      */
 
     private String Id;
-    private Object Title;
+    private String Title;
     private String CategoryId;
     private String VideoUrl;
     private String VideoId;
@@ -42,12 +42,12 @@ public class GetVideoDetailRespData extends RespDataBase {
         this.Id = Id;
     }
 
-    public Object getTitle() {
+    public String getTitle() {
         return Title;
     }
 
-    public void setTitle(Object Title) {
-        this.Title = Title;
+    public void setTitle(String title) {
+        Title = title;
     }
 
     public String getCategoryId() {

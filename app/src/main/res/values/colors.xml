@@ -99,4 +99,19 @@
     <color name="time_bg_selected">#AA0ACCAC</color>
 
     <color name="translucent_white">#61FFFFFF</color>
+
+    <color name="colorDanmuMsg">#30e7d5</color>
+
+    <color name="health_grayE6">#E6E6E6</color>
+    <color name="text_333333">#333333</color>
+    <color name="text_999999">#999999</color>
+    <color name="text_666666">#666666</color>
+    <color name="blue">#4991FD</color>
+    <color name="food_text_blue">#4991Fd</color>
+    <color name="social_button_blue">#2474ED</color>
+
+    <drawable name="common_btn_blue_normal">#4991FD</drawable>
+    <drawable name="common_btn_blue_pressed">#2474ED</drawable>
+    <drawable name="common_btn_blue_disable">#999999</drawable>
+    <drawable name="common_btn_gray_disable">#f7f7f7</drawable>
 </resources>

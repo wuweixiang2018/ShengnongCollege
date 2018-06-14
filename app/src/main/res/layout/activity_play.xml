@@ -20,10 +20,23 @@
             android:visibility="visible" />
 
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--弹幕-->
+            <master.flame.danmaku.ui.widget.DanmakuView
+                android:id="@+id/danmakuView"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:id="@+id/top_one_rl"
             android:layout_width="match_parent"
-            android:layout_height="60dip"
-            android:layout_marginTop="19dip">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dip">
 
             <RelativeLayout
                 android:id="@+id/user_rl"
@@ -130,7 +143,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/recording_tv"
                 android:paddingLeft="10dip"
-                android:src="@drawable/ic_danmuku_on"
+                android:src="@drawable/ic_danmuku_off"
                 android:visibility="visible" />
 
 
@@ -160,11 +173,30 @@
             android:visibility="visible">
 
             <com.education.shengnongcollege.common.widget.CommentListView
+                android:id="@+id/comment_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true">
 
             </com.education.shengnongcollege.common.widget.CommentListView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/zan_rl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="60dip"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/zan_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:padding="16dip"
+                android:src="@drawable/zan_white" />
 
         </RelativeLayout>
 

@@ -48,19 +48,26 @@ import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.widget.BeautySettingPannel;
+import com.education.shengnongcollege.common.widget.CommentListView;
+import com.education.shengnongcollege.im.IMMessageMgr;
+import com.education.shengnongcollege.im.LiveIMMgr;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.RespObjBase;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.network.model.ResponseResult;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
+import com.education.shengnongcollege.widget.CommonDialog;
 import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePushListener;
 import com.tencent.rtmp.TXLiveConstants;
+import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.TXLivePushConfig;
 import com.tencent.rtmp.TXLivePusher;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.ugc.TXRecordCommon;
+import com.tencent.ugc.TXRecordCommon.ITXVideoRecordListener;
 
 import org.json.JSONObject;
 
@@ -87,6 +94,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
     private TXLivePushConfig mLivePushConfig;
     private TXLivePusher mLivePusher;
+    private TXLivePlayer mLivePlayer = null;
     private TXCloudVideoView mCaptureView;
 
     private LinearLayout mBitrateLayout;
@@ -197,8 +205,31 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     private void backprocess() {
         if (mVideoPublish) {
             stopPublishRtmp();
+            DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+            LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
+                @Override
+                public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                    DialogUtil.getInstance().cancelProgressDialog();
+                    ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                    boolean closeResult = (Boolean) responseResult.getData();
+                    if (closeResult) {
+                        Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else
+                        Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                    DialogUtil.getInstance().cancelProgressDialog();
+                    Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            finish();
         }
-        finish();
+
+
     }
 
     @Override
@@ -211,7 +242,26 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        LiveBroadcastApiManager.waitPlay(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
+                boolean closeResult = (Boolean) responseResult.getData();
+                if (closeResult) {
+
+                } else
+                    Toast.makeText(getApplicationContext(), "等待开播失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                Toast.makeText(getApplicationContext(), "等待开播失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mLivePusher = new TXLivePusher(this);
+
         mLivePushConfig = new TXLivePushConfig();
         mLivePushConfig.setVideoEncodeGop(5);
         mLivePushConfig.setBeautyFilter(mBeautyLevel, mWhiteningLevel, mRuddyLevel);
@@ -230,36 +280,9 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         backLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mVideoPublish) {
-                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
-                    LiveBroadcastApiManager.closeLVB(new GWResponseListener() {
-                        @Override
-                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                            DialogUtil.getInstance().cancelProgressDialog();
-                            ResponseResult<Boolean, RespObjBase> responseResult = (ResponseResult<Boolean, RespObjBase>) result;
-                            boolean closeResult = (Boolean) responseResult.getData();
-                            if (closeResult) {
-                                Toast.makeText(getApplicationContext(), "关闭直播间成功", Toast.LENGTH_SHORT).show();
-                                backprocess();
-                            } else
-                                Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                            DialogUtil.getInstance().cancelProgressDialog();
-                            Toast.makeText(getApplicationContext(), "关闭直播间失败", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    backprocess();
-                }
-
-
+                backprocess();
             }
         });
-//        TextView titleTV = (TextView) findViewById(R.id.title_tv);
-//        titleTV.setText(getIntent().getStringExtra("TITLE"));
 
         mBottomLinear = (LinearLayout) findViewById(R.id.btns_tests);
 
@@ -272,30 +295,10 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         TelephonyManager tm = (TelephonyManager) getApplicationContext().getSystemService(Service.TELEPHONY_SERVICE);
         tm.listen(mPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
 
-        LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
-            @Override
-            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
-                ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase> responseResult = (ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase>) result;
-                GetPushFlowPlayUrlRespData data = responseResult.getData();
-                pushUrl = data.getPushUrl();
-                mRtmpUrlView.setText(pushUrl);
+        super.onCreateAfter();
 
-                roomNoTV.setText(data.getRoomNo());
-
-//                mLivePusher.startScreenCapture();
-
-                publishRtmpPrepare();
-//                startPublishRtmp();
-//                findViewById(R.id.record_layout).setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-
-            }
-        }, BaseUtil.UserId, "", "");
+        publishRtmpPrepare();
     }
-
 
     protected void initView() {
         mRtmpUrlView = (EditText) findViewById(R.id.roomid);
@@ -327,6 +330,8 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         scroll.scrollTo(0, offset);
     }
 
+    private CommonDialog exitRecordDialog;
+
     public void setContentView() {
         super.setContentView(R.layout.activity_publish);
 
@@ -341,6 +346,9 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
         roomNoTV = findViewById(R.id.room_num_tv);
         roomNoTV.setText("");
+
+//        mCommentListView = findViewById(R.id.comment_list);
+//        mCommentListView.setLivePusher(mLivePusher);
 
         if (BaseUtil.userData != null) {
             String avatar = BaseUtil.userData.getPhotograph();
@@ -459,16 +467,52 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
                 startPublisherIV.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (mVideoPublish) {
-                            stopPublishRtmp();
-                        } else {
-                            if (mVideoSrc == VIDEO_SRC_CAMERA) {
-                                FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
-                            } else {
-                                //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+                        LiveBroadcastApiManager.getPushFlowPlayUrl(new GWResponseListener() {
+                            @Override
+                            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                                ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase> responseResult = (ResponseResult<GetPushFlowPlayUrlRespData, RespObjBase>) result;
+                                GetPushFlowPlayUrlRespData data = responseResult.getData();
+                                pushUrl = data.getPushUrl();
+                                mRtmpUrlView.setText(pushUrl);
+
+                                roomNoTV.setText(data.getRoomNo());
+
+                                TCLiveRoomMgr.getLiveRoom().jionGroup(data.getGroupId(), new IMMessageMgr.Callback() {
+                                    @Override
+                                    public void onError(int code, String errInfo) {
+                                        Toast.makeText(getApplicationContext(), "加入群组失败", Toast.LENGTH_SHORT).show();
+                                    }
+
+                                    @Override
+                                    public void onSuccess(Object... args) {
+                                        Toast.makeText(getApplicationContext(), "加入群组成功", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                                if (mVideoSrc == VIDEO_SRC_CAMERA) {
+                                    FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
+                                } else {
+                                    //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+                                }
+                                mVideoPublish = startPublishRtmp();
                             }
-                            mVideoPublish = startPublishRtmp();
-                        }
+
+                            @Override
+                            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+
+                            }
+                        }, BaseUtil.UserId, "", "");
+
+//                        if (mVideoPublish) {
+//                            stopPublishRtmp();
+//                        } else {
+//                            if (mVideoSrc == VIDEO_SRC_CAMERA) {
+//                                FixOrAdjustBitrate();  //根据设置确定是“固定”还是“自动”码率
+//                            } else {
+//                                //录屏横竖屏采用两种分辨率，和摄像头推流逻辑不一样
+//                            }
+//                            mVideoPublish = startPublishRtmp();
+//                        }
                     }
                 });
             }
@@ -512,8 +556,41 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         exitRecordTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                stopRecordUIProcess();
-                mLivePusher.stopRecord();
+                if (mStartRecord) {
+                    exitRecordDialog = new CommonDialog.Builder()
+                            .setDes("是否上传视频？")
+                            .setTwobutton(true)
+                            .setCheckable(false)
+                            .setButtonText("取消", "上传")
+                            .setHasTitle(false)
+                            .setImportantPosLeftOrRight(false)
+                            .setLy(600)
+                            .setClickListenerfirtst(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (exitRecordDialog != null)
+                                        exitRecordDialog.dissmiss();
+                                    exitRecordDialog = null;
+                                    if (listener != null)
+                                        listener.setPublish(false);
+                                    mLivePusher.stopRecord();
+                                }
+                            }).setClickListenersecond(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (exitRecordDialog != null)
+                                        exitRecordDialog.dissmiss();
+                                    exitRecordDialog = null;
+                                    if (listener != null)
+                                        listener.setPublish(true);
+                                    mLivePusher.stopRecord();
+                                }
+                            }).build(LivePublisherActivity.this);
+                    exitRecordDialog.show();
+                } else {
+                    stopRecordUIProcess();
+                }
+
             }
         });
 
@@ -748,59 +825,65 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
         }
     }
 
+    protected static class ITXVideoRecordListenerImpl implements ITXVideoRecordListener {
+        private WeakReference<LivePublisherActivity> activityWR;
+        private boolean isPublish = true;
+
+        public void setPublish(boolean publish) {
+            isPublish = publish;
+        }
+
+        public ITXVideoRecordListenerImpl(LivePublisherActivity activity) {
+            activityWR = new WeakReference<LivePublisherActivity>(activity);
+        }
+
+        @Override
+        public void onRecordEvent(int event, Bundle param) {
+
+        }
+
+        @Override
+        public void onRecordProgress(long milliSecond) {
+            LivePublisherActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            Log.d(TAG, "onRecordProgress:" + milliSecond);
+            activity.recordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
+            //注释不用
+//                        mRecordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
+            int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
+            if (progress < 100) {
+                activity.mRecordProgressBar.setProgress(progress);
+            } else {
+                activity.mLivePusher.stopRecord();
+            }
+        }
+
+        @Override
+        public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
+            Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
+            LivePublisherActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
+                activity.mRecordProgressBar.setProgress(0);
+                activity.recordTimeTV.setText("00:00");
+
+                activity.stopRecordUIProcess();
+                if (isPublish)
+                    activity.publishVideo(result.videoPath, result.coverPath);
+            }
+        }
+    }
+
+    private ITXVideoRecordListenerImpl listener;
+
     private void startOrStopRecord() {
         mStartRecord = !mStartRecord;
         if (mLivePusher != null) {
             if (mStartRecord) {
-                mLivePusher.setVideoRecordListener(new TXRecordCommon.ITXVideoRecordListener() {
-                    @Override
-                    public void onRecordEvent(int event, Bundle param) {
-
-                    }
-
-                    @Override
-                    public void onRecordProgress(long milliSecond) {
-                        Log.d(TAG, "onRecordProgress:" + milliSecond);
-                        recordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
-                        //注释不用
-//                        mRecordTimeTV.setText(String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60));
-                        int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
-                        if (progress < 100) {
-                            mRecordProgressBar.setProgress(progress);
-                        } else {
-                            mLivePusher.stopRecord();
-                        }
-                    }
-
-                    @Override
-                    public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
-                        Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
-
-                        if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
-                            mRecordProgressBar.setProgress(0);
-                            recordTimeTV.setText("00:00");
-
-                            stopRecordUIProcess();
-                            //TCVideoPublishActivity短视频发布
-//                            mVideoPath = result.videoPath;
-//                            mCoverImagePath = result.coverPath;
-
-                            publishVideo(result.videoPath, result.coverPath);
-
-//                            mRecordTimeTV.setText("00:00");
-//                            findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
-//                            findViewById(R.id.record_layout).setVisibility(View.GONE);
-
-//                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
-//                            startActivity(intent);
-                        }
-                    }
-                });
+                listener = new ITXVideoRecordListenerImpl(this);
+                mLivePusher.setVideoRecordListener(listener);
                 String videoPath = getDefaultDir() + "TXUGC.mp4";
                 int result = mLivePusher.startRecord(videoPath);
                 mStartRecord = result == 0;
@@ -978,10 +1061,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
     }
 
     private boolean publishRtmpPrepare() {
-        if (TextUtils.isEmpty(pushUrl) || (!pushUrl.trim().toLowerCase().startsWith("rtmp://"))) {
-            Toast.makeText(getApplicationContext(), "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+
 
         if (mVideoSrc != VIDEO_SRC_SCREEN) {
             mCaptureView.setVisibility(View.VISIBLE);
@@ -1014,6 +1094,10 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
 
     private boolean startPublishRtmp() {
 //        publishRtmpPrepare();
+        if (TextUtils.isEmpty(pushUrl) || (!pushUrl.trim().toLowerCase().startsWith("rtmp://"))) {
+            Toast.makeText(getApplicationContext(), "推流地址不合法，目前支持rtmp推流!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         mLivePusher.startPusher(pushUrl.trim());
 
         enableQRCodeBtn(false);

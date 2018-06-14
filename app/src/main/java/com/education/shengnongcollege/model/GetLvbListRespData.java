@@ -6,107 +6,118 @@ package com.education.shengnongcollege.model;
 
 public class GetLvbListRespData extends RespDataBase {
 
+
     /**
-     * {
-     * "UserId": "108fddbd-cc72-4471-81b9-7391d61943e0",
-     * "PushUrl": "rtmp://21696.livepush.myqcloud.com/live/21696_108fddbdcc?bizid=21696&txSecret=a07777d81dbfcb306169b1963d958a83&txTime=5B19890F",
-     * "Title": null,
-     * "CoverPhotoUrl": null,
-     * "State": 2, 1 等待开播 2 直播中 3 直播已结束
-     * "Audience": 0,
-     * "Fabulous": 0
-     * "RoomNo":9867767
-     * },
+     * Id : 8bba27ff-8961-4667-b58b-f393e1698a6f
+     * UserId : d80221c0-adff-453f-81f9-2d02b97a175f
+     * PushUrl : rtmp://21696.livepush.myqcloud.com/live/21696_d80221c0ad?bizid=21696&txSecret=2c23982690d2055efc119ccff097ec42&txTime=5B23DF7E
+     * PlayUrl : rtmp://21696.liveplay.myqcloud.com/live/21696_d80221c0ad
+     * RoomNo : 6752212
+     * Title : null
+     * CoverPhotoUrl : null
+     * State : 2
+     * Audience : 0
+     * Fabulous : 0
+     * GroupId : @TGS#aJQHRLIFB
      */
 
+    private String Id;
     private String UserId;
-    private String Title;
-    private String CoverPhotoUrl;
     private String PushUrl;
+    private String PlayUrl;
+    private String RoomNo;
+    private Object Title;
+    private Object CoverPhotoUrl;
     private int State;
     private int Audience;
     private int Fabulous;
-    private int DeleteMark;
-    private String CreateTime;
-    private String RoomNo;
+    private String GroupId;
 
-    public String getRoomNo() {
-        return RoomNo;
+    public String getId() {
+        return Id;
     }
 
-    public void setRoomNo(String roomNo) {
-        RoomNo = roomNo;
+    public void setId(String Id) {
+        this.Id = Id;
     }
 
     public String getUserId() {
         return UserId;
     }
 
-    public void setUserId(String userId) {
-        UserId = userId;
-    }
-
-    public String getTitle() {
-        return Title;
-    }
-
-    public void setTitle(String title) {
-        Title = title;
-    }
-
-    public String getCoverPhotoUrl() {
-        return CoverPhotoUrl;
-    }
-
-    public void setCoverPhotoUrl(String coverPhotoUrl) {
-        CoverPhotoUrl = coverPhotoUrl;
+    public void setUserId(String UserId) {
+        this.UserId = UserId;
     }
 
     public String getPushUrl() {
         return PushUrl;
     }
 
-    public void setPushUrl(String pushUrl) {
-        PushUrl = pushUrl;
+    public void setPushUrl(String PushUrl) {
+        this.PushUrl = PushUrl;
+    }
+
+    public String getPlayUrl() {
+        return PlayUrl;
+    }
+
+    public void setPlayUrl(String PlayUrl) {
+        this.PlayUrl = PlayUrl;
+    }
+
+    public String getRoomNo() {
+        return RoomNo;
+    }
+
+    public void setRoomNo(String RoomNo) {
+        this.RoomNo = RoomNo;
+    }
+
+    public Object getTitle() {
+        return Title;
+    }
+
+    public void setTitle(Object Title) {
+        this.Title = Title;
+    }
+
+    public Object getCoverPhotoUrl() {
+        return CoverPhotoUrl;
+    }
+
+    public void setCoverPhotoUrl(Object CoverPhotoUrl) {
+        this.CoverPhotoUrl = CoverPhotoUrl;
     }
 
     public int getState() {
         return State;
     }
 
-    public void setState(int state) {
-        State = state;
+    public void setState(int State) {
+        this.State = State;
     }
 
     public int getAudience() {
         return Audience;
     }
 
-    public void setAudience(int audience) {
-        Audience = audience;
+    public void setAudience(int Audience) {
+        this.Audience = Audience;
     }
 
     public int getFabulous() {
         return Fabulous;
     }
 
-    public void setFabulous(int fabulous) {
-        Fabulous = fabulous;
+    public void setFabulous(int Fabulous) {
+        this.Fabulous = Fabulous;
     }
 
-    public int getDeleteMark() {
-        return DeleteMark;
+    public String getGroupId() {
+        return GroupId;
     }
 
-    public void setDeleteMark(int deleteMark) {
-        DeleteMark = deleteMark;
-    }
-
-    public String getCreateTime() {
-        return CreateTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        CreateTime = createTime;
+    public void setGroupId(String GroupId) {
+        this.GroupId = GroupId;
     }
 }

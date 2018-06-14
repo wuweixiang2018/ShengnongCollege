@@ -31,13 +31,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
+import com.education.shengnongcollege.common.widget.CommentListView;
+import com.education.shengnongcollege.im.IMMessageMgr;
+import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.GetLvbListRespData;
+import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
+import com.education.shengnongcollege.utils.JkysLog;
+import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
@@ -49,6 +56,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,13 +74,15 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private static final String TAG = LivePlayerActivity.class.getSimpleName();
     //直播相关数据
     private GetLvbListRespData lvbData;
-
+    private RelativeLayout commentRL;
     private TXLivePlayer mLivePlayer = null;
     private boolean mIsPlaying;
     private TXCloudVideoView mPlayerView;
     private ImageView mLoadingView;
     private boolean mHWDecode = false;
     private LinearLayout mRootView;
+
+    private ImageView zanIV;
 
     private Button mBtnLog;
     private Button mBtnPlay;
@@ -121,6 +132,8 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private boolean mCancelRecordFlag = false;
     private boolean mIsLogShow = false;
 
+    private boolean isZan = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +168,20 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
                 FLAG_KEEP_SCREEN_ON);
 
         mIsPlaying = startPlay();
+
+        TCLiveRoomMgr.getLiveRoom().jionGroup(lvbData.getGroupId(), new IMMessageMgr.Callback() {
+            @Override
+            public void onError(int code, String errInfo) {
+                Toast.makeText(getApplicationContext(), "加入群组失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(Object... args) {
+                Toast.makeText(getApplicationContext(), "加入群组成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        super.onCreateAfter();
     }
 
     @Override
@@ -207,6 +234,51 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     public void setContentView() {
         super.setContentView(R.layout.activity_play);
         initView();
+
+        commentRL = findViewById(R.id.comment_rl);
+
+        zanIV = findViewById(R.id.zan_iv);
+        if (isZan) {
+            zanIV.setImageResource(R.drawable.zan_red);
+        } else {
+            zanIV.setImageResource(R.drawable.zan_white);
+        }
+        zanIV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isZan) {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.cancalZan(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            zanIV.setImageResource(R.drawable.zan_white);
+                            isZan = false;
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                        }
+                    }, lvbData.getId());
+                } else {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.zan(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            zanIV.setImageResource(R.drawable.zan_red);
+                            isZan = true;
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                        }
+                    }, lvbData.getId());
+                }
+            }
+        });
 
         TextView nameTV = findViewById(R.id.name_tv);
         if (BaseUtil.userData != null)
@@ -438,63 +510,76 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         view.setOnClickListener(this);
     }
 
+    private ITXVideoRecordListenerImpl listener;
+
+    private static class ITXVideoRecordListenerImpl implements TXRecordCommon.ITXVideoRecordListener {
+        private WeakReference<LivePlayerActivity> activityWR;
+        private boolean isPublish = true;
+
+        public void setPublish(boolean publish) {
+            isPublish = publish;
+        }
+
+        public ITXVideoRecordListenerImpl(LivePlayerActivity activity) {
+            activityWR = new WeakReference<LivePlayerActivity>(activity);
+        }
+
+        @Override
+        public void onRecordEvent(int event, Bundle param) {
+
+        }
+
+        @Override
+        public void onRecordProgress(long milliSecond) {
+            LivePlayerActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (activity.mCancelRecordFlag) {
+                return;
+            }
+            Log.d(TAG, "onRecordProgress:" + milliSecond);
+            String time = String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60);
+            activity.recordingTV.setText(time);
+            activity.mRecordTimeTV.setText(time);
+            int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
+            if (progress < 100) {
+                activity.mRecordProgressBar.setProgress(progress);
+            } else {
+                activity.mLivePlayer.stopRecord();
+            }
+        }
+
+        @Override
+        public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
+            Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
+            LivePlayerActivity activity = activityWR.get();
+            if (activity == null)
+                return;
+            if (activity.mCancelRecordFlag) {
+                if (result.videoPath != null) {
+                    File f = new File(result.videoPath);
+                    if (f.exists()) f.delete();
+                }
+                if (result.coverPath != null) {
+                    File f = new File(result.coverPath);
+                    if (f.exists()) f.delete();
+                }
+            } else {
+                if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
+                    activity.recordingTV.setVisibility(View.GONE);
+                    activity.recordIV.setVisibility(View.VISIBLE);
+                    if (isPublish)
+                        activity.publishVideo(result.videoPath, result.coverPath);
+                }
+            }
+        }
+    }
+
     private void streamRecord(boolean runFlag) {
         mRecordFlag = runFlag;
         if (runFlag) {
-            mLivePlayer.setVideoRecordListener(new TXRecordCommon.ITXVideoRecordListener() {
-                @Override
-                public void onRecordEvent(int event, Bundle param) {
-
-                }
-
-                @Override
-                public void onRecordProgress(long milliSecond) {
-                    if (mCancelRecordFlag) {
-                        return;
-                    }
-                    Log.d(TAG, "onRecordProgress:" + milliSecond);
-                    String time = String.format("%02d:%02d", milliSecond / 1000 / 60, milliSecond / 1000 % 60);
-                    recordingTV.setText(time);
-                    mRecordTimeTV.setText(time);
-                    int progress = (int) (milliSecond * 100 / (RECORD_MAX_TIME * 1000));
-                    if (progress < 100) {
-                        mRecordProgressBar.setProgress(progress);
-                    } else {
-                        mLivePlayer.stopRecord();
-                    }
-                }
-
-                @Override
-                public void onRecordComplete(TXRecordCommon.TXRecordResult result) {
-                    Log.d(TAG, "onRecordComplete. errcode = " + result.retCode + ", errmsg = " + result.descMsg + ", output = " + result.videoPath + ", cover = " + result.coverPath);
-                    if (mCancelRecordFlag) {
-                        if (result.videoPath != null) {
-                            File f = new File(result.videoPath);
-                            if (f.exists()) f.delete();
-                        }
-                        if (result.coverPath != null) {
-                            File f = new File(result.coverPath);
-                            if (f.exists()) f.delete();
-                        }
-                    } else {
-                        if (result.retCode == TXRecordCommon.RECORD_RESULT_OK) {
-                            recordingTV.setVisibility(View.GONE);
-                            recordIV.setVisibility(View.VISIBLE);
-                            publishVideo(result.videoPath, result.coverPath);
-
-//                            stopPlay();
-//                            Intent intent = new Intent(getApplicationContext(), TCVideoPreviewActivity.class);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_TYPE, TCConstants.VIDEO_RECORD_TYPE_PUBLISH);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_RESULT, result.retCode);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_DESCMSG, result.descMsg);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_VIDEPATH, result.videoPath);
-//                            intent.putExtra(TCConstants.VIDEO_RECORD_COVERPATH, result.coverPath);
-//                            startActivity(intent);
-//                            finish();
-                        }
-                    }
-                }
-            });
+            listener = new ITXVideoRecordListenerImpl(this);
+            mLivePlayer.setVideoRecordListener(listener);
             mCancelRecordFlag = false;
             mLivePlayer.startRecord(TXRecordCommon.RECORD_TYPE_STREAM_SOURCE);
             findViewById(R.id.record).setBackgroundResource(R.drawable.stop_record);
@@ -596,9 +681,9 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     }
 
     private boolean startPlay() {
-        String playUrlTest = mRtmpUrlView.getText().toString();
+//        String playUrl = mRtmpUrlView.getText().toString();
 
-        String playUrl = lvbData.getPushUrl();
+        String playUrl = lvbData.getPlayUrl();
 
         if (!checkPlayUrl(playUrl)) {
             return false;
@@ -623,6 +708,7 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Referer", "qcloud.com");
         mPlayConfig.setHeaders(headers);
+        mPlayConfig.setEnableMessage(true);
 
         mLivePlayer.setConfig(mPlayConfig);
 
@@ -675,6 +761,16 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
             streamRecord(false);
         } else if (event == TXLiveConstants.PLAY_EVT_CHANGE_ROTATION) {
             return;
+        } else if (event == TXLiveConstants.PLAY_EVT_GET_MESSAGE) {
+            String msg = null;
+            try {
+                msg = new String(param.getByteArray(TXLiveConstants.EVT_GET_MSG), "UTF-8");
+                JkysLog.e("wuwx", "接收到消息：" + msg);
+                Toast.makeText(getContext(), "接收到消息：" + msg, Toast.LENGTH_LONG).show();
+//                        roomListenerCallback.onRecvAnswerMsg(msg);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
         if (event < 0) {

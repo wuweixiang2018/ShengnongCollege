@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_retangle_dialog_bg"
+        android:orientation="vertical"
+        android:paddingBottom="22dp"
+        android:paddingLeft="28dp"
+        android:paddingRight="28dp"
+        android:paddingTop="33dp">
+        
+        <ImageView
+            android:id="@+id/dialog_icon"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="40dp"
+            android:layout_marginBottom="12dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:text="非wifi连接"
+            android:textColor="@color/text_333333"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_des"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            android:gravity="center"
+            android:text="专题教学会使用较多流量，推荐您在wifi状态下使用"
+            android:textColor="@color/text_999999"
+            android:textSize="14dp" />
+
+        <RelativeLayout
+            android:id="@+id/rl_nothint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_not_hint"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/checkboxdialog"
+                android:scaleType="fitXY" />
+
+            <TextView
+                android:id="@+id/tv_hinttitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/iv_not_hint"
+                android:layout_marginLeft="9dp"
+                android:layout_marginTop="-2dp"
+                android:layout_toRightOf="@+id/iv_not_hint"
+                android:text="不再提示"
+                android:textColor="@color/text_666666"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_twobtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="21dp"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/tv_btnleft_2"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginRight="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/hollow_blue_btn_bg"
+                android:gravity="center"
+                android:text="继续使用"
+                android:textColor="@color/selector_blue_color"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_btnright_2"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:background="@drawable/blue_retangle_ok"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_btnleft"
+            android:layout_width="107dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/solid_blue_btn_bg"
+            android:gravity="center_horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:text="取消"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</RelativeLayout>

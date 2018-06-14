@@ -184,5 +184,28 @@ public class LiveBroadcastApiManager {
                 LiveBroadcastApiPath.GET_INFONOTICE_LIST_PATH, 0);
     }
 
+    public static void waitPlay(GWResponseListener listener) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", BaseUtil.UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.WAIT_PLAY_PATH, 0);
+    }
+
+    public static void zan(GWResponseListener listener, String LiveRoomId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("LiveRoomId", LiveRoomId);
+        new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.ZAN_PATH, 0);
+    }
+
+    public static void cancalZan(GWResponseListener listener, String LiveRoomId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("LiveRoomId", LiveRoomId);
+        new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
+                RespObjBase.class,
+                LiveBroadcastApiPath.CANCEL_ZAN_PATH, 0);
+    }
 
 }

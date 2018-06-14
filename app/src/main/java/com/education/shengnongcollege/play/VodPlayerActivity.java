@@ -116,6 +116,13 @@ public class VodPlayerActivity extends BaseTopActivity implements View.OnClickLi
     }
 
     private void initView() {
+        TextView titleTV = findViewById(R.id.title_tv);
+        String title = videoDetail.getTitle();
+        if (!TextUtils.isEmpty(title))
+            titleTV.setText(title);
+        else {
+            titleTV.setText("录播");
+        }
         mLyTop = (LinearLayout) findViewById(R.id.layout_top);
         mSuperVideoPlayer = (SuperVideoPlayer) findViewById(R.id.video_player_item_1);
         mSuperVideoPlayer.setVideoPlayCallback(mVideoPlayCallback);

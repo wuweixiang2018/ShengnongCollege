@@ -24,6 +24,9 @@ allprojects {
         flatDir {
             dirs 'libs'
         }
+        flatDir {
+            dirs 'src/main/jniLibs'
+        }
     }
 }
 

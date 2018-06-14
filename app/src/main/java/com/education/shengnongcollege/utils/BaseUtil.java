@@ -17,24 +17,27 @@ import java.util.regex.Pattern;
  */
 
 public class BaseUtil {
+    public static String userSig;
     public static String UserId = CacheUtil.getInstance().getUserId();
     public static UserInfoRespData userData;//用户的所有信息
+    public static long IM_APP_ID = 1400086725;
+    public static String IM_ACCOUNT_TYPE = "25637";
+
     /**
      * 国家号码段分配如下：
-     *
+     * <p>
      * 　　 移动：134、135、136、137、138、139、150、151、157(TD)、158、159、187、188
-     *
+     * <p>
      * 　 　联通：130、131、132、152、155、156、185、186
-     *
+     * <p>
      * 　 　电信：133、153、180、189、（1349卫通）
-     *
+     * <p>
      * 此方法描述的是：验证是否为手机号码
      *
+     * @param mobiles
+     * @return boolean
      * @author:Auser
      * @since: 2013-10-26 下午6:26:50
-     * @param mobiles
-     * @return
-     * @return boolean
      */
     public static boolean isMobileNO(String mobiles) {
         Pattern p = Pattern
@@ -42,6 +45,7 @@ public class BaseUtil {
         Matcher m = p.matcher(mobiles);
         return m.matches();
     }
+
     /**
      * 获取小图片，防止OOM
      *
@@ -62,6 +66,7 @@ public class BaseUtil {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(filePath, options);
     }
+
     /**
      * 计算图片缩放比例
      *
@@ -82,6 +87,7 @@ public class BaseUtil {
         }
         return inSampleSize;
     }
+
     /**
      * @param uri     content:// 样式
      * @param context
