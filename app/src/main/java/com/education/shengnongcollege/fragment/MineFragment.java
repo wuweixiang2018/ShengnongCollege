@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -70,7 +71,8 @@ public class MineFragment extends BaseFragment implements IListener {
     private LinearLayout wsgrxxLayout,xgMmLayout,yjfkLayout,aboutMeLayout;
     private ImageView userImage;
     private TextView registerTv;
-    private Button exitLogin;
+    private Button exitLogin,signIn;
+    private boolean isSignIn=false;//是否已经签到过 根据接口判断
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,7 @@ public class MineFragment extends BaseFragment implements IListener {
 //                getUserLoginState();
 //            }
             getUserInfoById();
+            getCurdaySignin();//获取签到状态
 
         }
         return mFragmentView;
@@ -105,6 +108,7 @@ public class MineFragment extends BaseFragment implements IListener {
         yjfkLayout=mFragmentView.findViewById(R.id.root_mine_item_yjfk);
         aboutMeLayout=mFragmentView.findViewById(R.id.root_mine_item_aboutme);
         exitLogin=mFragmentView.findViewById(R.id.login_out_btn);
+        signIn=mFragmentView.findViewById(R.id.mine_sign_in_btn);
         registerTv.setVisibility(View.INVISIBLE);//登录按钮暂时就不要了
         exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
         CacheUtil.getInstance().init(getActivity());
@@ -168,6 +172,15 @@ public class MineFragment extends BaseFragment implements IListener {
             @Override
             public void onClick(View view) {
                 exitLoginVoid();
+            }
+        });
+        //签到按钮
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isSignIn==false){//一直等于false 就调用签到
+                    getSignIn();
+                }
             }
         });
     }
@@ -411,4 +424,51 @@ public class MineFragment extends BaseFragment implements IListener {
         }
         return FAILURE;
     }
+    //签到
+    private void getSignIn(){
+        DialogUtil.getInstance().showProgressDialog(getActivity());
+        UserApiManager.getSignIn(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
+                String data = responseResult.getData();
+                getCurdaySignin();
+                Toast.makeText(getActivity(),"签到成功。",Toast.LENGTH_SHORT).show();
+                Log.e("签到信息返回",""+data);
+            }
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                DialogUtil.getInstance().cancelProgressDialog();
+                Toast.makeText(getActivity(),"签到失败",Toast.LENGTH_SHORT).show();
+            }
+        }, BaseUtil.UserId);
+    }
+    //获取签到状态
+    private void getCurdaySignin(){
+        UserApiManager.getCurdaySignin(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
+                String data = responseResult.getData();
+                if(TextUtils.equals(data+"","true")){
+                    isSignIn=true;
+                    signIn.setBackgroundResource(R.drawable.sign_in_nor);
+                    signIn.setTextColor(Color.parseColor("#000000"));
+                }else{
+                    isSignIn=false;
+                    signIn.setTextColor(Color.parseColor("#FFFFFF"));
+                    signIn.setBackgroundResource(R.drawable.log_btn_pre);
+                }
+                signIn.setVisibility(View.VISIBLE);
+                Log.e("签到信息返回",""+data);
+            }
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                isSignIn=false;
+                Toast.makeText(getActivity(),"签到信息获取失败",Toast.LENGTH_SHORT).show();
+            }
+        }, BaseUtil.UserId);
+    }
+
 }

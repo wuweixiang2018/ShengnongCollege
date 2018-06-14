@@ -113,5 +113,30 @@ public class CacheUtil {
 		String value = sp.getString("UserPassword", "");
 		return value;
 	}
+	/**
+	 * 保存用户是否有直播权限
+	 *
+	 * @param AllowLiveBroadcast
+	 */
+	public void setAllowLiveBroadcast(int AllowLiveBroadcast) {
+		if (null == context) {
+			return;
+		}
+		SharedPreferences sp = context.getSharedPreferences(ICOLLEAGUE2_CACHE_SN, Context.MODE_PRIVATE);
+		sp.edit().putInt("AllowLiveBroadcast", AllowLiveBroadcast).commit();
+	}
+
+
+	/**
+	 * 获取用户是否有直播权限 默认0 没有
+	 */
+	public int getAllowLiveBroadcast() {
+		if (null == context) {
+			return 0;
+		}
+		SharedPreferences sp = context.getSharedPreferences(ICOLLEAGUE2_CACHE_SN, Context.MODE_PRIVATE);
+		int value = sp.getInt("AllowLiveBroadcast", 0);
+		return value;
+	}
 
 }

@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.education.shengnongcollege.model.GetCategoryListRespData;
 import com.education.shengnongcollege.model.GetLvbListRespData;
+import com.education.shengnongcollege.model.GetNoticeListRespData;
 import com.education.shengnongcollege.model.GetPushFlowPlayUrlRespData;
 import com.education.shengnongcollege.model.GetVideoDetailRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
@@ -163,6 +164,24 @@ public class LiveBroadcastApiManager {
         new GWApiPresent(listener).commonPost(bodyMap, Boolean.class,
                 RespObjBase.class,
                 LiveBroadcastApiPath.CLOSE_LVB_PATH, 0);
+    }
+    /**
+     * 获取公告列表
+     *
+     * @param listener   参数result的类型是ListResponseResult<GetNoticeListRespData,ListRespObj>
+     * @param Title      搜索获取视频列表
+     * @param PageIndex
+     * @param PageSize
+     */
+    public static void getInfonoticelist(GWResponseListener listener,String Title,
+                                    int PageIndex, int PageSize) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("Title", Title);
+        bodyMap.put("PageIndex", PageIndex);
+        bodyMap.put("PageSize", PageSize);
+        new GWApiPresent(listener).commonListPost(bodyMap, GetNoticeListRespData.class,
+                ListRespObj.class,
+                LiveBroadcastApiPath.GET_INFONOTICE_LIST_PATH, 0);
     }
 
 

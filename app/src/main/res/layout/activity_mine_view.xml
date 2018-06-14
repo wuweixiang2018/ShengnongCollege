@@ -15,142 +15,175 @@
         android:gravity="center"
         android:text="@string/mine_label_title"
         android:background="@color/top_text_bg"/>
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@drawable/mine_top_layout_bg">
-        <TextView
-            android:id="@+id/mine_register_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="right"
-            android:text="@string/init_label_loginorregister"
-            android:clickable="true"
-            android:autoLink="all"
-            android:textColor="@color/top_text_bg"
-            android:padding="10dp"
-            android:textSize="@dimen/sub_content"
-            />
-        <RelativeLayout
-            android:layout_width="69dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="85dp"
-            android:layout_height="69dp">
-            <ImageView
-                android:id="@+id/mine_top_userImage"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/mine_top_image_default"/>
-        </RelativeLayout>
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/root_mine_item_wsgexx"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center|left"
-        android:background="@color/withe">
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/mine_default_wsgrxx" />
+                android:layout_height="180dp"
+                android:background="@drawable/mine_top_layout_bg">
+                <TextView
+                    android:id="@+id/mine_register_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="right"
+                    android:text="@string/init_label_loginorregister"
+                    android:clickable="true"
+                    android:autoLink="all"
+                    android:textColor="@color/top_text_bg"
+                    android:padding="10dp"
+                    android:textSize="@dimen/sub_content"
+                    />
+                <RelativeLayout
+                    android:layout_width="69dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="85dp"
+                    android:layout_height="69dp">
+                    <ImageView
+                        android:id="@+id/mine_top_userImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/mine_top_image_default"/>
+                </RelativeLayout>
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/root_mine_item_wsgexx"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center|left"
+                android:background="@color/withe">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/mine_default_wsgrxx" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mine_label_wsgrxx"
-            android:layout_toRightOf="@+id/mine_item_image_rel"
-            android:textColor="@color/colorGray8"
-            android:textSize="@dimen/subtitle" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/root_mine_item_xgmm"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="2dp"
-        android:gravity="center|left"
-        android:background="@color/withe">
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/mine_default_xgmm" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_label_wsgrxx"
+                    android:layout_toRightOf="@+id/mine_item_image_rel"
+                    android:textColor="@color/colorGray8"
+                    android:textSize="@dimen/subtitle" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/root_mine_item_xgmm"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="2dp"
+                android:gravity="center|left"
+                android:background="@color/withe">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/mine_default_xgmm" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mine_label_xgmm"
-            android:layout_toRightOf="@+id/mine_item_image_rel"
-            android:textColor="@color/colorGray8"
-            android:textSize="@dimen/subtitle" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/root_mine_item_yjfk"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="2dp"
-        android:gravity="center|left"
-        android:background="@color/withe">
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/mine_default_yjfk" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_label_xgmm"
+                    android:layout_toRightOf="@+id/mine_item_image_rel"
+                    android:textColor="@color/colorGray8"
+                    android:textSize="@dimen/subtitle" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/root_mine_item_yjfk"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="2dp"
+                android:gravity="center|left"
+                android:background="@color/withe">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/mine_default_yjfk" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mine_label_yjfk"
-            android:layout_toRightOf="@+id/mine_item_image_rel"
-            android:textColor="@color/colorGray8"
-            android:textSize="@dimen/subtitle" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/root_mine_item_aboutme"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginTop="2dp"
-        android:gravity="center|left"
-        android:background="@color/withe">
-        <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginLeft="20dp"
-            android:contentDescription="@null"
-            android:src="@drawable/mine_default_aboutme" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_label_yjfk"
+                    android:layout_toRightOf="@+id/mine_item_image_rel"
+                    android:textColor="@color/colorGray8"
+                    android:textSize="@dimen/subtitle" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/root_mine_item_aboutme"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="2dp"
+                android:gravity="center|left"
+                android:background="@color/withe">
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="20dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/mine_default_aboutme" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="@string/mine_label_aboutme"
-            android:layout_toRightOf="@+id/mine_item_image_rel"
-            android:textColor="@color/colorGray8"
-            android:textSize="@dimen/subtitle" />
-    </LinearLayout>
-    <Button
-        android:id="@+id/login_out_btn"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:background="@drawable/log_btn_pre"
-        android:textSize="18sp"
-        android:focusable="true"
-        android:text="@string/init_label_login_out"
-        android:textColor="@color/withe" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/mine_label_aboutme"
+                    android:layout_toRightOf="@+id/mine_item_image_rel"
+                    android:textColor="@color/colorGray8"
+                    android:textSize="@dimen/subtitle" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="50dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/mine_sign_in_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:gravity="center"
+                    android:background="@drawable/log_btn_pre"
+                    android:textSize="18sp"
+                    android:focusable="true"
+                    android:visibility="gone"
+                    android:text="@string/mine_label_signin"
+                    android:textColor="@color/withe" />
+                <Button
+                    android:id="@+id/login_out_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/log_btn_pre"
+                    android:textSize="18sp"
+                    android:focusable="true"
+                    android:text="@string/init_label_login_out"
+                    android:textColor="@color/withe" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

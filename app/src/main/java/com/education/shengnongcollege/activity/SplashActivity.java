@@ -61,6 +61,7 @@ public class SplashActivity extends Activity {
 				ResponseResult<LoginRespData, RespObjBase> responseResult = (ResponseResult<LoginRespData, RespObjBase>) result;
 				LoginRespData data = responseResult.getData();
 				CacheUtil.getInstance().setUserId(data.getUserId());
+				CacheUtil.getInstance().setAllowLiveBroadcast(data.getAllowLiveBroadcast());
 				BaseUtil.UserId = data.getUserId();
 				new Handler().postDelayed(new Runnable() {
 					@Override

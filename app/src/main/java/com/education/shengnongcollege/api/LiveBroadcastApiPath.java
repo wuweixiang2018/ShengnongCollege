@@ -23,4 +23,6 @@ public class LiveBroadcastApiPath {
     public static final String GET_LVB_LIST_PATH = "/api/livebroadcast/getlvblist";
     //关闭直播间接口
     public static final String CLOSE_LVB_PATH = "/api/livebroadcast/closelvb";
+    //获取公告列表
+    public static final String GET_INFONOTICE_LIST_PATH = "/api/common/infonoticelist";
 }

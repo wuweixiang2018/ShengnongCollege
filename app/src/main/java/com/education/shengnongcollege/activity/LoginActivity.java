@@ -98,6 +98,7 @@ public class LoginActivity extends BaseTopActivity {
                 CacheUtil.getInstance().setUserId(data.getUserId());
                 CacheUtil.getInstance().setUserName(userName);
                 CacheUtil.getInstance().setUserPassword(passWord);
+                CacheUtil.getInstance().setAllowLiveBroadcast(data.getAllowLiveBroadcast());
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();

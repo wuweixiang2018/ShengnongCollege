@@ -28,4 +28,8 @@ public class UserApiPath {
     public static final String MODIFYPASSWORD = "/api/user/modifypassword";
     //发送修改密码的短信验证码
     public static final String SEND_UPDATEPASS_SMS_VERIFY_CODE_PATH = "api/user/sendmodifypwdvcode";
+    //签到
+    public static final String SIGNIN_PATH = "/api/user/signin";
+    //获取签到状态
+    public static final String GET_SIGNIN_PATH = "/api/user/getcurdaysignin";
 }

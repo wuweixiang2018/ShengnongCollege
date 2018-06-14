@@ -188,4 +188,26 @@ public class UserApiManager {
                 UserApiPath.FEEDBACK_PATH, 0);
 
     }
+    /**
+     * 签到
+     *
+     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     */
+    public static void getSignIn(GWResponseListener listener, String UserId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.SIGNIN_PATH, 0);
+    }
+    /**
+     * 获取签到状态
+     *
+     * @param listener 参数result的类型是ResponseResult<String,RespObjBase>
+     */
+    public static void getCurdaySignin(GWResponseListener listener, String UserId) {
+        HashMap<String, Object> bodyMap = new HashMap<>();
+        bodyMap.put("UserId", UserId);
+        new GWApiPresent(listener).commonPost(bodyMap, String.class, RespObjBase.class,
+                UserApiPath.GET_SIGNIN_PATH, 0);
+    }
 }

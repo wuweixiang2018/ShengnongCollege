@@ -110,6 +110,38 @@
                 android:layout_marginTop="-30dp"
                 android:background="@drawable/main_top_imagebanner"
                 android:scaleType="fitXY"/>
+                <LinearLayout
+                    android:id="@+id/filpper_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="50dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:gravity="center"
+                        android:text="最新"
+                        android:textSize="@dimen/sub_content"
+                        android:textColor="@color/withe"
+                        android:background="@drawable/shape_viewflipper_listitem"
+                        />
+                    <ViewFlipper
+                        android:id="@+id/filpper"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:autoStart="true"
+                        android:flipInterval="3000"
+                        android:inAnimation="@anim/anim_come_in"
+                        android:outAnimation="@anim/anim_get_out"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/divide_line" />
                 <com.education.shengnongcollege.view.CustomGridView
                     android:id="@+id/main_gridview"
                     android:layout_width="match_parent"

@@ -48,6 +48,7 @@
     <string name="mine_label_xgmm">修改密码</string>
     <string name="mine_label_yjfk">意见反馈</string>
     <string name="mine_label_aboutme">关于我们</string>
+    <string name="mine_label_signin">签到</string>
     <!--完善个人信息页面-->
     <string name="wsgrxx_label_title">完善个人信息</string>
     <string name="wsgrxx_label_NickName">昵称</string>

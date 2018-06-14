@@ -13,17 +13,18 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.education.shengnongcollege.BaseFragment;
 import com.education.shengnongcollege.R;
 import com.education.shengnongcollege.activity.LiveBroadcastActivity;
 import com.education.shengnongcollege.activity.MainSearchActivity;
-import com.education.shengnongcollege.activity.TestActivity;
 import com.education.shengnongcollege.adapter.ClassifyGridViewAdapter;
 import com.education.shengnongcollege.adapter.HomeTopTabAdapter;
 import com.education.shengnongcollege.adapter.MainCenterAdapter;
 import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.model.GetCategoryListRespData;
+import com.education.shengnongcollege.model.GetNoticeListRespData;
 import com.education.shengnongcollege.model.GetVideoListRespData;
 import com.education.shengnongcollege.model.ListRespObj;
 import com.education.shengnongcollege.network.listener.GWResponseListener;
@@ -53,6 +54,9 @@ public class MainFragment extends BaseFragment {
     private HomeTopTabAdapter mHomeAdapter;
     private PagerSlidingTabStrip tabs;
     private LinearLayout rightBtn;
+    //广播滚动消息
+    private ViewFlipper viewFlipper;
+    private LinearLayout viewFliperLayout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +75,7 @@ public class MainFragment extends BaseFragment {
             initView();
             initListener();
             getGridData();
+            getInfonoticelist();
         }
         return mFragmentView;
     }
@@ -120,6 +125,8 @@ public class MainFragment extends BaseFragment {
         viewPager =mFragmentView.findViewById(R.id.morelist_viewpager);
         tabs = mFragmentView.findViewById(R.id.morelist_tabs);
         tabs.setItemResId(R.layout.main_top_tab_item);
+        viewFlipper=mFragmentView.findViewById(R.id.filpper);
+        viewFliperLayout=mFragmentView.findViewById(R.id.filpper_layout);
     }
     private void getGridData(){
                 LiveBroadcastApiManager.getCategoryList(new GWResponseListener() {
@@ -219,6 +226,50 @@ public class MainFragment extends BaseFragment {
                 Toast.makeText(getActivity(), "直播列表获取失败", Toast.LENGTH_SHORT).show();
             }
         }, CategoryId,"",0, 10);
+    }
+    //获取公告列表
+    private void getInfonoticelist(){
+        LiveBroadcastApiManager.getInfonoticelist(new GWResponseListener() {
+            @Override
+            public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                ListResponseResult<GetNoticeListRespData, ListRespObj> responseResult = (ListResponseResult<GetNoticeListRespData, ListRespObj>) result;
+                List<GetNoticeListRespData> data = responseResult.getData();
+                if(data!=null){
+                    initViewFlipper(data);
+                }/*else{
+                    Toast.makeText(getActivity(), "列表暂无数据", Toast.LENGTH_SHORT).show();
+                }*/
+                //ListenerManager.getInstance().sendBroadCast("ClassifyFragment",data);//通知分类页面也加载页面
+            }
+
+            @Override
+            public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                Toast.makeText(getActivity(), "公告列表获取失败", Toast.LENGTH_SHORT).show();
+            }
+        },"", 0, 10);
+    }
+    private void initViewFlipper(final List<GetNoticeListRespData> noticeDataList){
+        if(noticeDataList.size()==1){
+            noticeDataList.add(noticeDataList.get(0));
+        }
+        viewFliperLayout.setVisibility(View.VISIBLE);
+        for (int i = 0; i < noticeDataList.size(); i++) {
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.activity_home_notice_tz, null);
+            viewFlipper.addView(view);
+            TextView title=view.findViewById(R.id.menu_name_tv);
+            title.setText(noticeDataList.get(i).getTitle()+"");
+            final int finalI = i;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Log.e("通知详情",""+noticeDataList.get(finalI).getId());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
 

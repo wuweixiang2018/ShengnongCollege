@@ -17,6 +17,15 @@ public class LoginRespData extends RespDataBase {
     private String Account;
     private Object RealName;
     private int Online;
+    private int AllowLiveBroadcast;
+
+    public int getAllowLiveBroadcast() {
+        return AllowLiveBroadcast;
+    }
+
+    public void setAllowLiveBroadcast(int allowLiveBroadcast) {
+        AllowLiveBroadcast = allowLiveBroadcast;
+    }
 
     public String getUserId() {
         return UserId;
