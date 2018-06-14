@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.education.shengnongcollege.BaseTopActivity;
 import com.education.shengnongcollege.R;
+import com.education.shengnongcollege.api.LiveBroadcastApiManager;
 import com.education.shengnongcollege.common.activity.VideoPublishBaseActivity;
 import com.education.shengnongcollege.common.activity.videopreview.TCVideoPreviewActivity;
 import com.education.shengnongcollege.common.utils.TCConstants;
@@ -38,10 +39,12 @@ import com.education.shengnongcollege.common.widget.CommentListView;
 import com.education.shengnongcollege.im.IMMessageMgr;
 import com.education.shengnongcollege.im.TCLiveRoomMgr;
 import com.education.shengnongcollege.model.GetLvbListRespData;
+import com.education.shengnongcollege.network.listener.GWResponseListener;
 import com.education.shengnongcollege.push.LivePublisherActivity;
 import com.education.shengnongcollege.utils.BaseUtil;
 import com.education.shengnongcollege.utils.ImageLoadManager;
 import com.education.shengnongcollege.utils.JkysLog;
+import com.education.shengnongcollege.widget.DialogUtil;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLiveConstants;
 import com.tencent.rtmp.TXLivePlayConfig;
@@ -53,6 +56,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -77,6 +81,8 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private ImageView mLoadingView;
     private boolean mHWDecode = false;
     private LinearLayout mRootView;
+
+    private ImageView zanIV;
 
     private Button mBtnLog;
     private Button mBtnPlay;
@@ -125,6 +131,8 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
     private boolean mRecordFlag = false;
     private boolean mCancelRecordFlag = false;
     private boolean mIsLogShow = false;
+
+    private boolean isZan = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -228,6 +236,49 @@ public class LivePlayerActivity extends VideoPublishBaseActivity implements ITXL
         initView();
 
         commentRL = findViewById(R.id.comment_rl);
+
+        zanIV = findViewById(R.id.zan_iv);
+        if (isZan) {
+            zanIV.setImageResource(R.drawable.zan_red);
+        } else {
+            zanIV.setImageResource(R.drawable.zan_white);
+        }
+        zanIV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isZan) {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.cancalZan(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            zanIV.setImageResource(R.drawable.zan_white);
+                            isZan = false;
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                        }
+                    }, lvbData.getId());
+                } else {
+                    DialogUtil.getInstance().showProgressDialog(getApplicationContext());
+                    LiveBroadcastApiManager.zan(new GWResponseListener() {
+                        @Override
+                        public void successResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                            zanIV.setImageResource(R.drawable.zan_red);
+                            isZan = true;
+                        }
+
+                        @Override
+                        public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
+                            DialogUtil.getInstance().cancelProgressDialog();
+                        }
+                    }, lvbData.getId());
+                }
+            }
+        });
 
         TextView nameTV = findViewById(R.id.name_tv);
         if (BaseUtil.userData != null)

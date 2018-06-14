@@ -25,4 +25,8 @@ public class LiveBroadcastApiPath {
     public static final String CLOSE_LVB_PATH = "/api/livebroadcast/closelvb";
     //等待开播 接口
     public static final String WAIT_PLAY_PATH = "/api/livebroadcast/waitplay";
+    //点赞接口
+    public static final String ZAN_PATH = "/api/livebroadcast/fabulous";
+    //取消点赞接口
+    public static final String CANCEL_ZAN_PATH = "/api/livebroadcast/cancelfabulous";
 }
