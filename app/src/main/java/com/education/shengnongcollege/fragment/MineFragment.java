@@ -68,11 +68,12 @@ import static android.app.Activity.RESULT_OK;
 public class MineFragment extends BaseFragment implements IListener {
 
     private View mFragmentView;
-    private LinearLayout wsgrxxLayout,xgMmLayout,yjfkLayout,aboutMeLayout;
+    private LinearLayout wsgrxxLayout, xgMmLayout, yjfkLayout, aboutMeLayout;
     private ImageView userImage;
     private TextView registerTv;
-    private Button exitLogin,signIn;
-    private boolean isSignIn=false;//是否已经签到过 根据接口判断
+    private Button exitLogin, signIn;
+    private boolean isSignIn = false;//是否已经签到过 根据接口判断
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,14 +102,14 @@ public class MineFragment extends BaseFragment implements IListener {
     }
 
     private void initView() {
-        userImage=mFragmentView.findViewById(R.id.mine_top_userImage);
-        registerTv=mFragmentView.findViewById(R.id.mine_register_tv);
-        wsgrxxLayout=mFragmentView.findViewById(R.id.root_mine_item_wsgexx);
-        xgMmLayout=mFragmentView.findViewById(R.id.root_mine_item_xgmm);
-        yjfkLayout=mFragmentView.findViewById(R.id.root_mine_item_yjfk);
-        aboutMeLayout=mFragmentView.findViewById(R.id.root_mine_item_aboutme);
-        exitLogin=mFragmentView.findViewById(R.id.login_out_btn);
-        signIn=mFragmentView.findViewById(R.id.mine_sign_in_btn);
+        userImage = mFragmentView.findViewById(R.id.mine_top_userImage);
+        registerTv = mFragmentView.findViewById(R.id.mine_register_tv);
+        wsgrxxLayout = mFragmentView.findViewById(R.id.root_mine_item_wsgexx);
+        xgMmLayout = mFragmentView.findViewById(R.id.root_mine_item_xgmm);
+        yjfkLayout = mFragmentView.findViewById(R.id.root_mine_item_yjfk);
+        aboutMeLayout = mFragmentView.findViewById(R.id.root_mine_item_aboutme);
+        exitLogin = mFragmentView.findViewById(R.id.login_out_btn);
+        signIn = mFragmentView.findViewById(R.id.mine_sign_in_btn);
         registerTv.setVisibility(View.INVISIBLE);//登录按钮暂时就不要了
         exitLogin.setVisibility(View.VISIBLE);//退出登录显示出来
         CacheUtil.getInstance().init(getActivity());
@@ -125,7 +126,7 @@ public class MineFragment extends BaseFragment implements IListener {
         registerTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
         });
@@ -133,11 +134,11 @@ public class MineFragment extends BaseFragment implements IListener {
         wsgrxxLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(BaseUtil.UserId)){
-                    Intent intent=new Intent(getActivity(), LoginActivity.class);
+                if (TextUtils.isEmpty(BaseUtil.UserId)) {
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
                     startActivity(intent);
-                }else{
-                    Intent intent=new Intent(getActivity(), PerfectinfoActivity.class);
+                } else {
+                    Intent intent = new Intent(getActivity(), PerfectinfoActivity.class);
                     startActivity(intent);
                 }
             }
@@ -147,7 +148,7 @@ public class MineFragment extends BaseFragment implements IListener {
             @Override
             public void onClick(View view) {
 
-                Intent intent=new Intent(getActivity(), UpdatePassActivity.class);
+                Intent intent = new Intent(getActivity(), UpdatePassActivity.class);
                 startActivity(intent);
             }
         });
@@ -155,7 +156,7 @@ public class MineFragment extends BaseFragment implements IListener {
         yjfkLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), FeedBackActivity.class);
+                Intent intent = new Intent(getActivity(), FeedBackActivity.class);
                 startActivity(intent);
             }
         });
@@ -163,7 +164,7 @@ public class MineFragment extends BaseFragment implements IListener {
         aboutMeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getActivity(), AboutMeActivity.class);
+                Intent intent = new Intent(getActivity(), AboutMeActivity.class);
                 startActivity(intent);
             }
         });
@@ -178,54 +179,58 @@ public class MineFragment extends BaseFragment implements IListener {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isSignIn==false){//一直等于false 就调用签到
+                if (isSignIn == false) {//一直等于false 就调用签到
                     getSignIn();
                 }
             }
         });
     }
+
     //获取个人信息
-    private void getUserInfoById(){
+    private void getUserInfoById() {
         UserApiManager.getUserInfoById(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<UserInfoRespData, RespObjBase> responseResult = (ResponseResult<UserInfoRespData, RespObjBase>) result;
                 UserInfoRespData data = responseResult.getData();
-                BaseUtil.userData=data;
+                BaseUtil.userData = data;
                 Glide.with(getActivity()).load(data.getPhotograph()).into(userImage);//设置头像
-                Log.e("获取个人信息返回",""+data.toString());
+                Log.e("获取个人信息返回", "" + data.toString());
             }
+
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                Toast.makeText(getActivity(),"获取个人信息失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "获取个人信息失败", Toast.LENGTH_SHORT).show();
             }
         }, BaseUtil.UserId);
     }
-    private void exitLoginVoid(){
+
+    private void exitLoginVoid() {
         UserApiManager.exitLogin(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 String data = responseResult.getData();
-                BaseUtil.UserId="";
-                BaseUtil.userData=null;
+                BaseUtil.UserId = "";
+                BaseUtil.userData = null;
                 CacheUtil.getInstance().clearData();
-                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
                 getActivity().finish();
-                Log.e("退出登录",data);
+                Log.e("退出登录", data);
             }
+
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                Toast.makeText(getActivity(),"退出登录失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "退出登录失败", Toast.LENGTH_SHORT).show();
             }
         }, BaseUtil.UserId);
     }
 
     @Override
     public void notifyAllActivity(String str, Object object) {
-        if(getActivity()!=null){
-            if(TextUtils.equals(str,"MineFragment")){
+        if (getActivity() != null) {
+            if (TextUtils.equals(str, "MineFragment")) {
                 getUserInfoById();
             }
         }
@@ -233,32 +238,30 @@ public class MineFragment extends BaseFragment implements IListener {
 
     public static final int REQUEST_CHOOSE_IMAGE = 50;
     public static final int REQUEST_TAKE_PHOTO = 51;
-    private String mCurrentPhotoPath="";//图片本地路径
+    private String mCurrentPhotoPath = "";//图片本地路径
+
     //选择相册还是相机
-    private void ShowChoisePhoto()
-    {
+    private void ShowChoisePhoto() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("选择");
         //    指定下拉列表的显示数据
         final String[] cities = {"相机", "媒体库"};
         //    设置一个下拉的列表选择项
-        builder.setItems(cities, new DialogInterface.OnClickListener()
-        {
+        builder.setItems(cities, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-                switch (which){
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
                     case 0:
                         String picName = System.currentTimeMillis() + ".jpg";
                         Intent intent = new Intent();
                         intent.setAction(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
-                            File image=new File(getImagePath(), picName);
+                        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                            File image = new File(getImagePath(), picName);
                             mCurrentPhotoPath = image.getAbsolutePath();
                             intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri
                                     .fromFile(image));
-                            startActivityForResult(intent,REQUEST_TAKE_PHOTO);
-                        }else{
+                            startActivityForResult(intent, REQUEST_TAKE_PHOTO);
+                        } else {
                             DialogUtil.showCustomToast(getActivity(), "没有相机权限", Gravity.CENTER);
                         }
                         break;
@@ -275,17 +278,20 @@ public class MineFragment extends BaseFragment implements IListener {
         });
         builder.create().show();
     }
+
     /**
      * 获取图片文件本地路径
+     *
      * @return
      */
-    public String getImagePath(){
+    public String getImagePath() {
         File file = new File(DIRPATH_IMAGE);
         if (!file.exists()) {
             file.mkdirs();
         }
         return DIRPATH_IMAGE;
     }
+
     public static final String DIRPATH_IMAGE = Environment
             .getExternalStorageDirectory().getPath()
             + "/"
@@ -302,13 +308,13 @@ public class MineFragment extends BaseFragment implements IListener {
             if (requestCode == REQUEST_CHOOSE_IMAGE) {
                 //返回的是content://的样式
                 filePath = BaseUtil.getFilePathFromContentUri(data.getData(), getActivity());
-                mCurrentPhotoPath=filePath;
+                mCurrentPhotoPath = filePath;
             } else if (requestCode == REQUEST_TAKE_PHOTO) {//相机
                 if (mCurrentPhotoPath != null) {
                     filePath = mCurrentPhotoPath;
                 }
             }
-            Log.e("图片照相或者选择图片返回来的",mCurrentPhotoPath);
+            Log.e("图片照相或者选择图片返回来的", mCurrentPhotoPath);
             if (!TextUtils.isEmpty(filePath)) {
                 // 自定义大小，防止OOM
                 Bitmap bitmap = BaseUtil.getSmallBitmap(filePath, 200, 200);
@@ -323,6 +329,7 @@ public class MineFragment extends BaseFragment implements IListener {
             }
         }
     }
+
     private static final int TIME_OUT = 10 * 10000000; // 超时时间
     private static final String CHARSET = "utf-8"; // 设置编码
     public static final String SUCCESS = "1";
@@ -332,7 +339,7 @@ public class MineFragment extends BaseFragment implements IListener {
         String BOUNDARY = UUID.randomUUID().toString(); // 边界标识 随机生成
         String PREFIX = "--", LINE_END = "\r\n";
         String CONTENT_TYPE = "multipart/form-data"; // 内容类型
-        String RequestURL = "http://api.liveeducation.ymstudio.xyz/api/user/updatephotograph?UserId="+BaseUtil.UserId;
+        String RequestURL = "http://api.liveeducation.ymstudio.xyz/api/user/updatephotograph?UserId=" + BaseUtil.UserId;
         try {
             URL url = new URL(RequestURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -391,25 +398,25 @@ public class MineFragment extends BaseFragment implements IListener {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
                     StringBuilder builder = new StringBuilder();
                     String line;
-                    while ((line = reader.readLine()) != null){
+                    while ((line = reader.readLine()) != null) {
                         builder.append(line).append("\n");
                     }
                     reader.close();
                     //该干的都干完了,记得把连接断了
                     conn.disconnect();
-                    Log.e("上传返回数据",builder.toString());
+                    Log.e("上传返回数据", builder.toString());
                     //{"status_code":200,"status_message":"操作成功","timestamp":1528113955,"data":"http://api.liveeducation.ymstudio.xyz/upload//2018-06-04//20180604200555334.jpg","obj":null}
-                    JSONObject jsonObject=new JSONObject(builder.toString());
-                    if(jsonObject.has("data")){
-                        String data=jsonObject.getString("data");
-                        if(TextUtils.isEmpty(data)){
+                    JSONObject jsonObject = new JSONObject(builder.toString());
+                    if (jsonObject.has("data")) {
+                        String data = jsonObject.getString("data");
+                        if (TextUtils.isEmpty(data)) {
                             return FAILURE;
-                        }else{
+                        } else {
                             getUserInfoById();
                         }
                     }
                     return SUCCESS;
-                }else{
+                } else {
                     return FAILURE;
                 }
             }
@@ -424,8 +431,9 @@ public class MineFragment extends BaseFragment implements IListener {
         }
         return FAILURE;
     }
+
     //签到
-    private void getSignIn(){
+    private void getSignIn() {
         DialogUtil.getInstance().showProgressDialog(getActivity());
         UserApiManager.getSignIn(new GWResponseListener() {
             @Override
@@ -434,39 +442,44 @@ public class MineFragment extends BaseFragment implements IListener {
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 String data = responseResult.getData();
                 getCurdaySignin();
-                Toast.makeText(getActivity(),"签到成功。",Toast.LENGTH_SHORT).show();
-                Log.e("签到信息返回",""+data);
+                Toast.makeText(getActivity(), "签到成功。", Toast.LENGTH_SHORT).show();
+                Log.e("签到信息返回", "" + data);
             }
+
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
                 DialogUtil.getInstance().cancelProgressDialog();
-                Toast.makeText(getActivity(),"签到失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "签到失败", Toast.LENGTH_SHORT).show();
             }
         }, BaseUtil.UserId);
     }
+
     //获取签到状态
-    private void getCurdaySignin(){
+    private void getCurdaySignin() {
         UserApiManager.getCurdaySignin(new GWResponseListener() {
             @Override
             public void successResult(Serializable result, String path, int requestCode, int resultCode) {
                 ResponseResult<String, RespObjBase> responseResult = (ResponseResult<String, RespObjBase>) result;
                 String data = responseResult.getData();
-                if(TextUtils.equals(data+"","true")){
-                    isSignIn=true;
+                if (TextUtils.equals(data + "", "true")) {
+                    isSignIn = true;
                     signIn.setBackgroundResource(R.drawable.sign_in_nor);
+                    signIn.setText("已签到");
                     signIn.setTextColor(Color.parseColor("#000000"));
-                }else{
-                    isSignIn=false;
+                } else {
+                    isSignIn = false;
                     signIn.setTextColor(Color.parseColor("#FFFFFF"));
                     signIn.setBackgroundResource(R.drawable.log_btn_pre);
+                    signIn.setText("签到");
                 }
                 signIn.setVisibility(View.VISIBLE);
-                Log.e("签到信息返回",""+data);
+                Log.e("签到信息返回", "" + data);
             }
+
             @Override
             public void errorResult(Serializable result, String path, int requestCode, int resultCode) {
-                isSignIn=false;
-                Toast.makeText(getActivity(),"签到信息获取失败",Toast.LENGTH_SHORT).show();
+                isSignIn = false;
+                Toast.makeText(getActivity(), "签到信息获取失败", Toast.LENGTH_SHORT).show();
             }
         }, BaseUtil.UserId);
     }
