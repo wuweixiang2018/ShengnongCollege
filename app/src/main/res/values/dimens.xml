@@ -9,7 +9,7 @@
     <dimen name="title">18sp</dimen>
     <dimen name="subtitle">17sp</dimen>
     <dimen name="main_content">16sp</dimen>
-    <dimen name="sub_content">14sp</dimen>
+    <dimen name="sub_content">13.5sp</dimen>
     <dimen name="trivial_content">12sp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->

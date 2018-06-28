@@ -53,7 +53,7 @@
             <RelativeLayout
                 android:layout_width="69dp"
                 android:layout_gravity="center"
-                android:layout_height="69dp">
+                android:layout_height="40dp">
                 <ImageView
                     android:id="@+id/wsgrxx_top_userImage"
                     android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_NickName"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />
@@ -104,7 +104,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_UserName"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />
@@ -134,7 +134,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_Gender"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />
@@ -173,7 +173,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_Birthday"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />
@@ -202,7 +202,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_Mobile"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />
@@ -231,7 +231,7 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/wsgrxx_label_IDCard"
                     android:gravity="left|center"
-                    android:textColorHint="#7E7E7E"
+                    android:textColorHint="@color/divide_line"
                     android:textColor="#7E7E7E"
                     android:singleLine="true"
                     android:textSize="16sp" />

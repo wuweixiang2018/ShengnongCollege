@@ -162,8 +162,7 @@
             android:layout_height="30dip"
             android:layout_centerHorizontal="true"
             android:layout_toLeftOf="@id/back_ll"
-            android:background="@drawable/camera_change" />
-
+            android:background="@drawable/camera_switch" />
 
         <ImageView
             android:id="@+id/start_record_logo_iv"

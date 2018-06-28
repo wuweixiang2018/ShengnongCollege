@@ -442,7 +442,7 @@ public class LivePublisherActivity extends VideoPublishBaseActivity implements V
                 mLivePusher.switchCamera();
 //                }
                 mLivePushConfig.setFrontCamera(mFrontCamera);
-                changeCamIV.setBackgroundResource(mFrontCamera ? R.drawable.camera_change : R.drawable.camera_change);
+                changeCamIV.setBackgroundResource(mFrontCamera ? R.drawable.camera_switch : R.drawable.camera_switch);
             }
         });
 

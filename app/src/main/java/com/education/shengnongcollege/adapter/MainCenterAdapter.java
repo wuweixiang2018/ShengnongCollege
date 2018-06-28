@@ -1,6 +1,7 @@
 package com.education.shengnongcollege.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,9 @@ public class MainCenterAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater mInflater;
     private List<GetCategoryListRespData> dataList = new ArrayList<>();
-    private int[] imagList={R.drawable.bg_circle_green,R.drawable.bg_circle_fense1,R.drawable.bg_circle_qianyellow
-    ,R.drawable.bg_circle_blue,R.drawable.bg_circle_zifense,R.drawable.bg_circle_fense2,R.drawable.bg_circle_qingse
-    ,R.drawable.bg_circle_zise,R.drawable.bg_circle_qianlanse,R.drawable.bg_circle_yellow};
+    private int[] imagList={R.drawable.circle1,R.drawable.circle2,R.drawable.circle3
+    ,R.drawable.circle4,R.drawable.circle5,R.drawable.circle6,R.drawable.circle7
+    ,R.drawable.circle8,R.drawable.circle9,R.drawable.circle10};
 
     public MainCenterAdapter(Context context, List<GetCategoryListRespData> dataList) {
         this.context = context;
@@ -65,7 +66,15 @@ public class MainCenterAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolde) view.getTag();
         }
-        holder.mItemName.setText(getItem(position).getName());
+        String name=getItem(position).getName();
+        if(!TextUtils.isEmpty(name)){
+            if(name.length()>2){
+                name=name.substring(0,2);
+            }
+            holder.mItemName.setText(name);
+        }else{
+            holder.mItemName.setText("");
+        }
         try {
             holder.mItemIcon.setBackgroundResource(imagList[position]);
         } catch (Exception e) {

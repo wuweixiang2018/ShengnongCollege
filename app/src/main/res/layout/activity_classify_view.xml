@@ -112,8 +112,7 @@
         <ListView
             android:id="@+id/classify_main_listview"
             android:layout_width="100dp"
-            android:background="@color/table_bg"
-            android:visibility="gone"
+            android:background="#EFEFEF"
             android:dividerHeight="1px"
             android:layout_height="match_parent"></ListView>
     </RelativeLayout>

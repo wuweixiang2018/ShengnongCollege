@@ -194,7 +194,11 @@ public class MineFragment extends BaseFragment implements IListener {
                 ResponseResult<UserInfoRespData, RespObjBase> responseResult = (ResponseResult<UserInfoRespData, RespObjBase>) result;
                 UserInfoRespData data = responseResult.getData();
                 BaseUtil.userData = data;
-                Glide.with(getActivity()).load(data.getPhotograph()).into(userImage);//设置头像
+                if(!TextUtils.isEmpty(data.getPhotograph())&&!TextUtils.equals("null",data.getPhotograph())){
+                    Glide.with(getActivity()).load(data.getPhotograph()).into(userImage);//设置头像
+                }else {
+                    userImage.setImageResource(R.drawable.mine_top_image_default);
+                }
                 Log.e("获取个人信息返回", "" + data.toString());
             }
 
